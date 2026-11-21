@@ -44,7 +44,7 @@ const newAcc = (key: string): Acc => ({
 
 function offer(acc: Acc, cond: CondName, tier: Tier, signal: string, m: MessageRecord, quote?: string, source: Source = 'rules') {
   if (!tier || tierRank(tier) <= tierRank(acc.conds[cond].tier)) return;
-  acc.conds[cond] = { tier, source, signal, msgId: String(m.index), ...(quote ? { quote } : {}) };
+  acc.conds[cond] = { tier, source, signal, msgId: String(m.index), ...(quote ? { quote } : {}), ...(m.date ? { date: m.date } : {}) };
 }
 
 export type AggregatorOptions = { pack?: PackNames };
@@ -123,7 +123,8 @@ export class Aggregator {
     // Attach each school-login notice to a matching account, or add an app-only account.
     for (const [k, app] of this.apps) {
       const match = out.find((acc) => normaliseApp(acc.name) === k || normaliseApp(labelOf(acc.key)) === k);
-      const sso: Cond = { tier: 'seen', source: 'rules', signal: 'IDP-NOTICE', msgId: String(app.m.index), quote: app.quote };
+      const sso: Cond = { tier: 'seen', source: 'rules', signal: 'IDP-NOTICE', msgId: String(app.m.index), quote: app.quote,
+        ...(app.m.date ? { date: app.m.date } : {}) };
       if (match) {
         match.sso = sso;
         if (tierRank(match.exists.tier) < tierRank('seen')) match.exists = sso;
