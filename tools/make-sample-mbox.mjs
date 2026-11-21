@@ -3,17 +3,20 @@
 // ranking case and every trap, plus one message from each of 3 held-out domains that stay out of
 // the pack so lane 3 has something to look up.
 //
-// Every name and domain is fictional and ends in .example (RFC 2606). IPs are 192.0.2.0/24.
-// Usage: node tools/make-sample-mbox.mjs [--held-out a.example,b.example,c.example] [out]
+// Every person and service is fictional and ends in .example (RFC 2606), except the 3 held-out
+// domains: real non-profit research sites, so the cloud lookup can recognise something real.
+// IPs are 192.0.2.0/24.
+// Usage: node tools/make-sample-mbox.mjs [--held-out a,b,c] [out]
 //
-// HELD_OUT: the plan's fallback is fictional domains, where the cloud honestly answers "not
-// recognised". If both humans approve 3 real non-commercial domains (Gate 1, decision 1), pass
-// them with --held-out and regenerate. Don't commit real domains without that approval.
+// HELD_OUT (Gate 1, decision 1): arxiv.org, zenodo.org and openreview.net. All three are run by
+// non-profits and none is in the move pack (checked by tests/unit/pack.test.ts). The plan's
+// fallback, if either of us says no, is fictional domains: pass
+// --held-out openscholar.example,datavault.example,loanhub.example and regenerate.
 import { writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
 const hi = args.indexOf('--held-out');
-const HELD_OUT = hi >= 0 ? args.splice(hi, 2)[1].split(',') : ['openscholar.example', 'datavault.example', 'loanhub.example'];
+const HELD_OUT = hi >= 0 ? args.splice(hi, 2)[1].split(',') : ['arxiv.org', 'zenodo.org', 'openreview.net'];
 const out = args[0] ?? 'fixtures/sample.example.mbox';
 
 const ME = 'jordan.reyes@alderbrook.example';
@@ -202,7 +205,7 @@ if (M.length !== 52) throw new Error(`expected 52 messages, made ${M.length}`);
 
 // 53–55: the held-out domains, one transactional message each. Kept out of the pack (T28).
 const HELD_SUBJECTS = [
-  ['Your record was updated', 'Your public record was updated with a new work: "Monte Carlo methods for small samples".'],
+  ['Your submission was announced', 'Your article "Monte Carlo methods for small samples" was announced today.'],
   ['Your upload is published', 'Your upload "Fieldwork photos 2025" is now published.'],
   ['Your profile changes were saved', 'The changes to your profile were saved. Sign in to review them.'],
 ];

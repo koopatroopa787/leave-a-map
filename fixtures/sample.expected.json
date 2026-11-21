@@ -129,6 +129,14 @@
       "suspiciousIgnored": 0
     },
     {
+      "key": "arxiv.org",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
       "key": "citewell.example",
       "section": "maybe",
       "bucket": "rest",
@@ -137,23 +145,7 @@
       "suspiciousIgnored": 0
     },
     {
-      "key": "datavault.example",
-      "section": "maybe",
-      "bucket": "rest",
-      "tier": "possible",
-      "discount": null,
-      "suspiciousIgnored": 0
-    },
-    {
-      "key": "loanhub.example",
-      "section": "maybe",
-      "bucket": "rest",
-      "tier": "possible",
-      "discount": null,
-      "suspiciousIgnored": 0
-    },
-    {
-      "key": "openscholar.example",
+      "key": "openreview.net",
       "section": "maybe",
       "bucket": "rest",
       "tier": "possible",
@@ -162,6 +154,14 @@
     },
     {
       "key": "tallyquiz.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "zenodo.org",
       "section": "maybe",
       "bucket": "rest",
       "tier": "possible",
