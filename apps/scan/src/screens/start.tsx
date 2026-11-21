@@ -36,8 +36,8 @@ export function StartScreen({ onScan, error }: Props) {
           <input type="date" value={date} onInput={(e) => setDate(e.currentTarget.value)} required />
         </label>
         <label>
-          Your exported mailbox (.mbox)
-          <input type="file" accept=".mbox,application/mbox,text/plain" onChange={(e) => setFile(e.currentTarget.files?.[0] ?? null)} required />
+          Your exported mailbox (.mbox file, or the file named "mbox" inside an exported .mbox folder)
+          <input type="file" onChange={(e) => setFile(e.currentTarget.files?.[0] ?? null)} required />
         </label>
         {(problem || error) && <p class="error" role="alert">{problem || error}</p>}
         <button type="submit">Find my accounts</button>
