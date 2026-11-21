@@ -1,6 +1,7 @@
 // packages/core/rules/aggregate.ts: folds message records into one Account per sender domain.
 // v1 (T06): existence comes from message counts only. The service-mail patterns land in T10.
 import type { Account, Cond, MessageRecord, ScanStats, Tier } from '../types.ts';
+import type { BodyInfo } from '../mbox/body.ts';
 import { accountKey, cleanName, registrableDomain } from './account-key.ts';
 import { isManualForward, isPersonSender, listHost, schoolLink, type LinkContext } from './school-link.ts';
 
@@ -20,11 +21,15 @@ export class Aggregator {
   readonly stats: ScanStats = { bytes: 0, messages: 0, schoolLinked: 0,
     skipped: { forwardedManually: 0, personSender: 0, noFrom: 0 } };
 
-  constructor(private readonly ctx: LinkContext) {
+  private readonly ctx: LinkContext;
+
+  constructor(ctx: LinkContext) {
+    this.ctx = ctx;
     this.schoolKey = registrableDomain(ctx.school);
   }
 
-  add(m: MessageRecord) {
+  // `body` is read from T09 onwards; the service-mail patterns (T10) use it.
+  add(m: MessageRecord, _body?: BodyInfo) {
     this.stats.messages++;
     if (!m.from) { this.stats.skipped.noFrom++; return; }
     if (isPersonSender(m.from.address)) { this.stats.skipped.personSender++; return; }

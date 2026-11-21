@@ -10,7 +10,8 @@
     "build": "tsc --noEmit && vite build --config apps/scan/vite.config.ts && vite build --config apps/cloud/vite.config.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "fixture": "node tools/make-fixture-mbox.mjs"
+    "fixture": "node tools/make-fixture-mbox.mjs",
+    "stress": "node tools/stress-mbox.ts"
   },
   "dependencies": {
     "firebase": "13.4.0",

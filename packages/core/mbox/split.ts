@@ -1,12 +1,14 @@
 // packages/core/mbox/split.ts: streams an .mbox file into message records, a chunk at a time.
-// Only header bytes are kept in memory; bodies are skipped and can be re-read by byte offset.
+// Memory stays flat: each message keeps its headers (up to 256 KB) and, if asked, the first
+// `keepBodyBytes` of its body. The rest is skipped and can be re-read later by byte offset.
 import type { MessageRecord } from '../types.ts';
 import { parseHeaderBlock } from './headers.ts';
 
 const NL = 0x0a;
 const CR = 0x0d;
+const GT = 0x3e;
 const HEAD_MAX = 200; // bytes of each line kept to test for a separator
-const HEADER_MAX = 256 * 1024; // header bytes kept per message; the rest are skipped
+const HEADER_MAX = 256 * 1024;
 
 /**
  * A separator is an asctime-style "From " line, as written by Takeout-style, Apple Mail and
@@ -16,8 +18,23 @@ const HEADER_MAX = 256 * 1024; // header bytes kept per message; the rest are sk
  */
 const SEPARATOR_RE =
   /^From \S+\s+(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}\s+\d{1,2}:\d{2}/;
+const ESCAPED_FROM_RE = /^>+From /;
 
-type Current = { start: number; bodyStart: number; parts: Uint8Array[]; bytes: number; inHeaders: boolean };
+/** A message record plus its raw bytes (headers, blank line, capped body), or null when bodies aren't kept. */
+export type SplitMessage = { rec: MessageRecord; raw: Uint8Array | null; truncated: boolean };
+
+type Current = {
+  start: number; bodyStart: number; inHeaders: boolean;
+  headerParts: Uint8Array[]; headerBytes: number;
+  bodyParts: Uint8Array[]; bodyBytes: number; truncated: boolean;
+};
+
+const concat = (parts: Uint8Array[], size: number) => {
+  const out = new Uint8Array(size);
+  let o = 0;
+  for (const p of parts) { out.set(p, o); o += p.length; }
+  return out;
+};
 
 export class MboxSplitter {
   private pos = 0;
@@ -26,17 +43,34 @@ export class MboxSplitter {
   private readonly head = new Uint8Array(HEAD_MAX);
   private headLen = 0;
   private lineParts: Uint8Array[] = [];
+  private collecting = false;
   private cur: Current | null = null;
   private index = 0;
   private readonly latin1 = new TextDecoder('latin1');
+  private readonly keepBody: number;
 
   /** Bytes seen before the first separator. More than a few means this isn't an mbox file. */
   leadingBytes = 0;
 
+  constructor(opts: { keepBodyBytes?: number } = {}) {
+    this.keepBody = opts.keepBodyBytes ?? 0;
+  }
+
+  /** Records only. */
   push(chunk: Uint8Array): MessageRecord[] {
-    const out: MessageRecord[] = [];
+    return this.pushMessages(chunk).map((m) => m.rec);
+  }
+
+  end(): MessageRecord[] {
+    return this.endMessages().map((m) => m.rec);
+  }
+
+  /** Records with their raw bytes, for body parsing. */
+  pushMessages(chunk: Uint8Array): SplitMessage[] {
+    const out: SplitMessage[] = [];
     let i = 0;
     while (i < chunk.length) {
+      if (this.lineLen === 0 && this.headLen === 0) this.collecting = this.wantsLine();
       const nl = chunk.indexOf(NL, i);
       const segEnd = nl === -1 ? chunk.length : nl;
       if (this.headLen < HEAD_MAX) {
@@ -45,9 +79,7 @@ export class MboxSplitter {
         this.headLen += take;
       }
       this.lineLen += segEnd - i;
-      if (this.cur?.inHeaders && this.cur.bytes < HEADER_MAX) {
-        this.lineParts.push(chunk.slice(i, nl === -1 ? segEnd : nl + 1));
-      }
+      if (this.collecting) this.lineParts.push(chunk.slice(i, nl === -1 ? segEnd : nl + 1));
       if (nl === -1) break;
       this.endLine(this.pos + nl + 1, out);
       i = nl + 1;
@@ -56,30 +88,47 @@ export class MboxSplitter {
     return out;
   }
 
-  /** Call once after the last chunk. */
-  end(): MessageRecord[] {
-    const out: MessageRecord[] = [];
-    if (this.lineLen > 0) this.endLine(this.pos, out);
+  endMessages(): SplitMessage[] {
+    const out: SplitMessage[] = [];
+    if (this.lineLen > 0 || this.lineParts.length > 0) this.endLine(this.pos, out);
     this.finish(this.pos, out);
     return out;
   }
 
-  private endLine(next: number, out: MessageRecord[]) {
+  private wantsLine(): boolean {
+    const c = this.cur;
+    if (!c) return false;
+    if (c.inHeaders) return c.headerBytes < HEADER_MAX || this.keepBody > 0;
+    if (c.bodyBytes < this.keepBody) return true;
+    c.truncated = true;
+    return false;
+  }
+
+  private endLine(next: number, out: SplitMessage[]) {
     const head = this.head.subarray(0, this.headLen);
     const blank = this.lineLen === 0 || (this.lineLen === 1 && head[0] === CR);
     const isSeparator = head[0] === 0x46 && head[4] === 0x20 && SEPARATOR_RE.test(this.latin1.decode(head));
+    const c = this.cur;
 
     if (isSeparator) {
       this.finish(this.lineStart, out);
-      this.cur = { start: this.lineStart, bodyStart: -1, parts: [], bytes: 0, inHeaders: true };
-    } else if (this.cur?.inHeaders) {
+      this.cur = { start: this.lineStart, bodyStart: -1, inHeaders: true, headerParts: [], headerBytes: 0,
+        bodyParts: [], bodyBytes: 0, truncated: false };
+    } else if (c?.inHeaders) {
       if (blank) {
-        this.cur.inHeaders = false;
-        this.cur.bodyStart = next;
-      } else {
-        for (const p of this.lineParts) { this.cur.parts.push(p); this.cur.bytes += p.length; }
+        c.inHeaders = false;
+        c.bodyStart = next;
+        if (this.keepBody > 0) this.addBody(c);
+      } else if (c.headerBytes < HEADER_MAX) {
+        for (const p of this.lineParts) { c.headerParts.push(p); c.headerBytes += p.length; }
       }
-    } else if (!this.cur) {
+    } else if (c) {
+      if (this.lineParts.length > 0) {
+        // mboxrd: ">From " in a body was written for "From "; drop one ">".
+        if (head[0] === GT && ESCAPED_FROM_RE.test(this.latin1.decode(head))) this.lineParts[0] = this.lineParts[0].subarray(1);
+        this.addBody(c);
+      }
+    } else {
       this.leadingBytes = next;
     }
 
@@ -89,23 +138,50 @@ export class MboxSplitter {
     this.lineStart = next;
   }
 
-  private finish(end: number, out: MessageRecord[]) {
+  private addBody(c: Current) {
+    for (const p of this.lineParts) { c.bodyParts.push(p); c.bodyBytes += p.length; }
+  }
+
+  private finish(end: number, out: SplitMessage[]) {
     const c = this.cur;
     if (!c) return;
     this.cur = null;
-    const block = new Uint8Array(c.bytes);
-    let o = 0;
-    for (const p of c.parts) { block.set(p, o); o += p.length; }
-    out.push({ index: this.index++, start: c.start, bodyStart: c.bodyStart < 0 ? end : c.bodyStart, end,
-      ...parseHeaderBlock(block) });
+    const header = concat(c.headerParts, c.headerBytes);
+    const rec: MessageRecord = { index: this.index++, start: c.start, bodyStart: c.bodyStart < 0 ? end : c.bodyStart, end,
+      ...parseHeaderBlock(header) };
+    const raw = this.keepBody > 0 ? concat([header, ...c.bodyParts], c.headerBytes + c.bodyBytes) : null;
+    out.push({ rec, raw, truncated: c.truncated });
   }
 }
 
 /** Convenience for tests and small files: split a whole buffer, optionally in chunks of `chunkSize`. */
 export function splitAll(bytes: Uint8Array, chunkSize = bytes.length || 1): MessageRecord[] {
-  const s = new MboxSplitter();
-  const out: MessageRecord[] = [];
-  for (let i = 0; i < bytes.length; i += chunkSize) out.push(...s.push(bytes.subarray(i, i + chunkSize)));
-  out.push(...s.end());
+  return splitAllMessages(bytes, chunkSize).map((m) => m.rec);
+}
+
+export function splitAllMessages(bytes: Uint8Array, chunkSize = bytes.length || 1, keepBodyBytes = 0): SplitMessage[] {
+  const s = new MboxSplitter({ keepBodyBytes });
+  const out: SplitMessage[] = [];
+  for (let i = 0; i < bytes.length; i += chunkSize) out.push(...s.pushMessages(bytes.subarray(i, i + chunkSize)));
+  out.push(...s.endMessages());
   return out;
+}
+
+/** Turns the bytes between a record's `start` and `end` (read later with `File.slice`) back into one message. */
+export function messageFromSlice(slice: Uint8Array): Uint8Array {
+  const first = slice.indexOf(NL);
+  const body = first === -1 ? new Uint8Array(0) : slice.subarray(first + 1);
+  const latin1 = new TextDecoder('latin1');
+  const parts: Uint8Array[] = [];
+  let size = 0;
+  for (let i = 0; i < body.length;) {
+    const nl = body.indexOf(NL, i);
+    const end = nl === -1 ? body.length : nl + 1;
+    let line = body.subarray(i, end);
+    if (line[0] === GT && ESCAPED_FROM_RE.test(latin1.decode(line.subarray(0, 40)))) line = line.subarray(1);
+    parts.push(line);
+    size += line.length;
+    i = end;
+  }
+  return concat(parts, size);
 }
