@@ -8,12 +8,16 @@ import { outboxFor } from '../../../../packages/core/outbox.ts';
 import { answersByKey } from '../../../../packages/core/lane3.ts';
 import { openConsent } from '../open-consent.ts';
 
-type Props = { accounts: RankedAccount[]; onAnswers: (byKey: Map<string, ServiceInfo>) => void };
+type Props = {
+  accounts: RankedAccount[]; onAnswers: (byKey: Map<string, ServiceInfo>) => void;
+  /** Services the move pack already knows are never offered for a lookup. */
+  known?: (domain: string) => boolean;
+};
 
-export function CloudPanel({ accounts, onAnswers }: Props) {
+export function CloudPanel({ accounts, onAnswers, known }: Props) {
   const [status, setStatus] = useState<'idle' | 'open' | 'done' | 'cancelled' | 'blocked' | 'timeout'>('idle');
   const [got, setGot] = useState(0);
-  const outbox = outboxFor(accounts);
+  const outbox = outboxFor(accounts, known);
   if (outbox.items.length === 0 && status === 'idle') return null;
 
   const start = async () => {
