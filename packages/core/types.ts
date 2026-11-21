@@ -37,7 +37,8 @@ export type Address = { name: string; address: string };
 
 export type Tier = 'seen' | 'likely' | 'possible' | null;
 export type Source = 'rules' | 'user' | 'pack' | 'on_device' | 'in_cloud';
-export type Cond = { tier: Tier; source: Source; signal: string; msgId?: string; quote?: string };
+/** One piece of evidence: how sure, where from, which rule, and the exact quote and date when there is one. */
+export type Cond = { tier: Tier; source: Source; signal: string; msgId?: string; quote?: string; date?: number };
 
 /** How a message is tied to the school address (analyst.md 1.1). */
 export type SchoolLink =
