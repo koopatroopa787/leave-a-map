@@ -9,7 +9,7 @@ import { useState } from 'preact/hooks';
 import { loadMoved, saveMoved } from '../checklist.ts';
 
 type Props = {
-  settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
+  settings: ScanSettings; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
   onAccounts: (a: RankedAccount[]) => void; onRestart: () => void;
 };
 
@@ -85,7 +85,7 @@ function Plain({ a }: { a: RankedAccount }) {
   return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span></li>;
 }
 
-export function MapScreen({ settings, accounts, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
+export function MapScreen({ settings, sample, accounts, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
   const main = accounts.filter((a) => a.section === 'main');
   const [moved, setMoved] = useState(() => loadMoved(settings.schoolDomain));
   const [saved, setSaved] = useState(true);
@@ -103,6 +103,7 @@ export function MapScreen({ settings, accounts, stats, ms, nanoItems, onAccounts
   return (
     <main class="page map">
       <header class="map-head">
+        {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every name and service here is fictional.</p>}
         <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
         <h1>What breaks on {longDate(settings.shutoffDate)}</h1>
         <p class="summary">

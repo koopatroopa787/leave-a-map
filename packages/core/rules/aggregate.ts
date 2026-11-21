@@ -9,7 +9,7 @@ import { isManualForward, isPersonSender, listHost, schoolLink, type LinkContext
 import { senderAuth } from './sender-auth.ts';
 import { EXISTENCE, messageSignals, type SignalName } from './signals.ts';
 import { idpNotice, isIdpSender, normaliseApp } from './idp-notice.ts';
-import { EMPTY_PACK, labelOf, suspiciousReason, type PackNames } from './suspicious.ts';
+import { EMPTY_PACK, labelOf, mailboxLookalike, suspiciousReason, type PackNames } from './suspicious.ts';
 
 import { bestTier, tierRank } from '../tiers.ts';
 
@@ -34,6 +34,8 @@ const FEEDS: Partial<Record<SignalName, [CondName, 'same' | 'weaker'][]>> = {
 type Acc = {
   key: string; names: Map<string, number>; link: Tier; nAll: number; nLinked: number; nMsgs: number;
   lastDate: number; otherAddress: string | null; suspicious: number; clean: number; health: boolean;
+  /** Messages that passed sender authentication. Accounts with any can vouch for their brand name. */
+  authPass: number;
   conds: Record<CondName, Cond>;
   /** The email Nano reads for this account: the newest non-bulk one, else the newest bulk one. */
   candidate: { msgId: string; date: number; subject: string; text: string; bulk: boolean } | null;
@@ -41,7 +43,7 @@ type Acc = {
 
 const newAcc = (key: string): Acc => ({
   key, names: new Map(), link: null, nAll: 0, nLinked: 0, nMsgs: 0, lastDate: 0, otherAddress: null,
-  suspicious: 0, clean: 0, health: false,
+  suspicious: 0, clean: 0, health: false, authPass: 0,
   conds: { exists: none(), sso: none(), work: none(), reset: none(), money: none(), discount: none() },
   candidate: null,
 });
@@ -102,6 +104,7 @@ export class Aggregator {
 
     if (suspiciousReason(m, auth, this.pack)) { a.suspicious++; return; }
     a.clean++;
+    if (auth === 'pass' || auth === 'pass-forwarded') a.authPass++;
     if (link.kind === 'other-address') { a.otherAddress ??= link.address; return; }
     if (link.kind === 'none') return;
 
@@ -122,13 +125,26 @@ export class Aggregator {
     }
     for (const f of fired) {
       if (f.name === 'HEALTH') { a.health = true; continue; }
+      // "Deals for students" in marketing mail isn't evidence the person has a student discount.
+      if (bulk && f.name === 'STUDENT DISCOUNT') continue;
       if (f.name === 'SSO-WELCOME') { offer(a, 'sso', 'likely', f.name, m, f.quote); continue; }
       for (const [cond, how] of FEEDS[f.name] ?? []) offer(a, cond, how === 'same' ? msgTier : weaker(msgTier), f.name, m, f.quote);
     }
   }
 
   accountsOut(): Account[] {
-    const out = [...this.accounts.values()].map((a) => this.toAccount(a));
+    // Lookalikes of services in this same mailbox (P3/P4 without the pack): every message from
+    // such a sender counts as fake-looking, so the account is ignored.
+    const trusted = new Map<string, number>();
+    for (const a of this.accounts.values()) {
+      if (a.authPass > 0 && !a.key.includes(':')) trusted.set(labelOf(a.key), (trusted.get(labelOf(a.key)) ?? 0) + a.authPass);
+    }
+    const out = [...this.accounts.values()].map((a) => {
+      const acc = this.toAccount(a);
+      if (a.key === this.schoolKey || a.key.includes(':') || !mailboxLookalike(a.key, trusted)) return acc;
+      return { ...acc, link: null, exists: none(), sso: none(), work: none(), reset: none(), money: none(), discount: none(),
+        flags: { ...acc.flags, suspiciousOnly: true, suspiciousIgnored: a.nAll } };
+    });
     // Attach each school-login notice to a matching account, or add an app-only account.
     for (const [k, app] of this.apps) {
       const match = out.find((acc) => normaliseApp(acc.name) === k || normaliseApp(labelOf(acc.key)) === k);

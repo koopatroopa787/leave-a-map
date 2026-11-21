@@ -9,26 +9,30 @@ import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } fro
 
 type State =
   | { step: 'start'; error?: string }
-  | { step: 'scanning'; settings: ScanSettings; bytesRead: number; totalBytes: number; messages: number }
-  | { step: 'done'; settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
+  | { step: 'scanning'; settings: ScanSettings; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
+  | { step: 'done'; settings: ScanSettings; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
 
 function App() {
   const [state, setState] = useState<State>({ step: 'start' });
 
-  const scan = (file: File, settings: ScanSettings) => {
+  const scan = (file: File, settings: ScanSettings, sample = false) => {
     const worker = new Worker(new URL('./scan.worker.ts', import.meta.url), { type: 'module' });
-    setState({ step: 'scanning', settings, bytesRead: 0, totalBytes: file.size, messages: 0 });
+    setState({ step: 'scanning', settings, sample, bytesRead: 0, totalBytes: file.size, messages: 0 });
     worker.onmessage = (e: MessageEvent<FromWorker>) => {
       const m = e.data;
-      if (m.type === 'progress') setState({ step: 'scanning', settings, ...m });
-      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
+      if (m.type === 'progress') setState({ step: 'scanning', settings, sample, ...m });
+      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
       else { worker.terminate(); setState({ step: 'start', error: m.message }); }
     };
     worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };
     worker.postMessage({ type: 'scan', file, settings });
   };
 
-  if (state.step === 'start') return <StartScreen onScan={scan} error={state.error} />;
+  const trySample = async () => {
+    const { sampleFile, SAMPLE_SETTINGS } = await import('./sample.ts');
+    scan(sampleFile(), SAMPLE_SETTINGS, true);
+  };
+  if (state.step === 'start') return <StartScreen onScan={scan} onSample={trySample} error={state.error} />;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
     return (
