@@ -16,6 +16,26 @@ function el(tag: string, props: Record<string, unknown> = {}, ...kids: (Node | s
 }
 
 const TERMS = 'https://ai.google.dev/gemini-api/terms';
+
+/**
+ * The lookup runs only on Gemini's paid tier: the notice below describes the paid terms, and the
+ * free tier may not be offered in the EEA, Switzerland or the UK. A production build looks things
+ * up only when built with VITE_CLOUD_LOOKUP=paid-tier-on, set once billing is on. Local
+ * development (`vite`, `--mode debug`) always can.
+ */
+export const LOOKUP_ON = import.meta.env.DEV || import.meta.env.VITE_CLOUD_LOOKUP === 'paid-tier-on';
+
+/** Shown instead of the list while the lookup is off. The scan page is never sent the ready signal, so it hands over nothing. */
+function showOff() {
+  const close = el('button', { type: 'button', id: 'consent-close', className: 'primary', textContent: 'Close' }) as HTMLButtonElement;
+  close.onclick = () => { opener?.postMessage({ type: MSG.cancelled }, SCAN_ORIGIN); window.close(); };
+  app.replaceChildren(
+    el('h1', { textContent: 'The cloud lookup isn\u2019t switched on yet' }),
+    el('p', { textContent: 'It runs only on Gemini\u2019s paid service, and that isn\u2019t on for this site yet. Leave a Map sent this window nothing, and nothing will be looked up.' }),
+    el('p', { textContent: 'Everything else works without it: the rules and the on-device AI already ran on your device.' }),
+    el('div', { className: 'actions' }, close),
+  );
+}
 const SENSITIVE_WORD = { health: 'health', money: 'money' } as const;
 
 function show(items: OutboxItem[]) {
@@ -101,5 +121,6 @@ addEventListener('message', (e: MessageEvent) => {
 if (import.meta.env.DEV && location.search === '?demo') {
   show([{ id: 'd1', senderDomain: 'quillpad.example' }, { id: 'd2', senderDomain: 'clinic.example', sensitive: 'health' },
     { id: 'd3', senderDomain: 'penny.example', sensitive: 'money' }, { id: 'd4', senderDomain: 'osf.io' }]);
-} else if (opener) opener.postMessage({ type: MSG.ready }, SCAN_ORIGIN);
+} else if (opener && !LOOKUP_ON) showOff();
+else if (opener) opener.postMessage({ type: MSG.ready }, SCAN_ORIGIN);
 else app.replaceChildren(el('p', { textContent: 'Open this window from Leave a Map.' }));

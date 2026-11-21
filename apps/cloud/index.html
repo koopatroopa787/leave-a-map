@@ -4,15 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="no-referrer" />
-    <title>Leave a Map: service lookup</title>
+    <title>Leave a Map: cloud lookup</title>
+    <style>
+      :root { --bg: #fbfaf7; --fg: #1d1c1a; --accent: #1f6f5c; color-scheme: light dark; }
+      @media (prefers-color-scheme: dark) { :root { --bg: #161513; --fg: #ece9e3; --accent: #6cc7ae; } }
+      body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+      main { max-width: 34rem; margin: 0 auto; padding: 2rem 1rem; }
+      a { color: var(--accent); }
+    </style>
   </head>
   <body>
     <main>
-      <h1>Service lookup</h1>
-      <p id="status">Not run yet.</p>
-      <button id="run" type="button">Run smoke call</button>
-      <pre id="out"></pre>
+      <h1>Leave a Map: cloud lookup</h1>
+      <p>This site only hosts the window where you approve which web addresses are looked up. It opens from <a href="https://leave-a-map.web.app">Leave a Map</a> when you click "Look these up", and does nothing on its own.</p>
     </main>
-    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
