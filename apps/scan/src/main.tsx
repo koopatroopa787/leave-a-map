@@ -1,6 +1,7 @@
 import './lockdown.ts';
 import { render } from 'preact';
 import { useState } from 'preact/hooks';
+import { lazy, Suspense } from 'preact/compat';
 import './styles.css';
 import { StartScreen } from './screens/start.tsx';
 import { ListScreen } from './screens/list.tsx';
@@ -42,4 +43,9 @@ function App() {
   return <ListScreen {...state} onRestart={() => setState({ step: 'start' })} />;
 }
 
-render(<App />, document.getElementById('app')!);
+// Firebase loads only on the Nano check screen, so the normal scan ships no SDK code.
+const NanoCheck = lazy(() => import('./screens/nano-check.tsx').then((m) => ({ default: m.NanoCheck })));
+
+const root = document.getElementById('app')!;
+if (location.hash === '#nano-check') render(<Suspense fallback={<main class="page">Loading…</main>}><NanoCheck /></Suspense>, root);
+else render(<App />, root);
