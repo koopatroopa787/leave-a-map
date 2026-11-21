@@ -1,0 +1,8 @@
+{
+  "taken": "2026-11-21",
+  "sources": [
+    { "name": "2FA Directory", "license": "MIT", "url": "https://api.2fa.directory/v3/all.json", "repo": "https://github.com/2factorauth/twofactorauth", "commit": "9b39477ccf25", "commitDate": "2026-10-24", "bytes": 515557, "sha256": "898456611bc0e222fdddba3d50312e1747907cde03942221051bd7d5750311d8" },
+    { "name": "Passkeys directory", "license": "CC-BY-4.0", "url": "https://passkeys-api.2fa.directory/v1/all.json", "repo": "https://github.com/2factorauth/passkeys", "commit": "ede77017c46b", "commitDate": "2026-10-26", "bytes": 156263, "sha256": "00592fa281308c81a1a82c06638817c44098b185a8e7e3739cd45ca9be779906" },
+    { "name": "JustDeleteMe", "license": "MIT", "url": "https://raw.githubusercontent.com/jdm-contrib/jdm/ae5d639ea305/_data/sites.json", "repo": "https://github.com/jdm-contrib/jdm", "commit": "ae5d639ea305", "commitDate": "2026-11-20", "bytes": 1267701, "sha256": "cea00c4b6e960daaabeadb46cc86e0c57fe7a6ef467d8af546dbe27277c15a71" }
+  ]
+}
