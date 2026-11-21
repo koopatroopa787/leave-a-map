@@ -43,3 +43,15 @@ describe('outbox (cloud side)', async () => {
     expect(parseOutbox({ type: 'other', items: [{ id: 'a1', senderDomain: 'a.example' }] })).toBeNull();
   });
 });
+
+describe('outbox sensitivity (T22)', async () => {
+  const { parseOutbox, toOutboxItem } = await import('../../packages/core/handoff.ts');
+  it('carries an optional health or money mark, nothing else', () => {
+    expect(toOutboxItem('a1', 'clinic.example', 'health')).toEqual({ id: 'a1', senderDomain: 'clinic.example', sensitive: 'health' });
+    expect(() => toOutboxItem('a1', 'clinic.example', 'religion' as never)).toThrow();
+    const ok = { type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'penny.example', sensitive: 'money' }, { id: 'a2', senderDomain: 'forkyard.example' }] };
+    expect(parseOutbox(ok)).toEqual(ok.items);
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'penny.example', sensitive: 'yes' }] })).toBeNull();
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'penny.example', sensitive: 'money', note: 'x' }] })).toBeNull();
+  });
+});
