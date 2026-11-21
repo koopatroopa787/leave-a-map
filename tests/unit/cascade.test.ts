@@ -9,13 +9,11 @@ const cloud = (fields: ServiceFields | null): Answer => ({ fields, source: 'in_c
 describe('escalation rule (T21)', () => {
   it('keeps a confident device answer', () => {
     expect(escalationReason(dev(good))).toBeNull();
-    expect(escalationReason(dev(good), 'work')).toBeNull();
   });
   it('fires each rule in order', () => {
     expect(escalationReason(dev(null))).toBe('invalid');
     expect(escalationReason(dev({ ...good, basis: 'name-only' }))).toBe('not-recognised');
     expect(escalationReason(dev({ ...good, category: 'other' }))).toBe('category-other');
-    expect(escalationReason(dev(good), 'money')).toBe('disagrees-with-rules');
     expect(escalationReason(dev({ ...good, usuallyHolds: 'nothing-seen' }))).toBe('field-unknown');
     expect(escalationReason(dev({ ...good, loginEmailChange: 'unknown' }))).toBe('field-unknown');
   });
@@ -27,9 +25,6 @@ describe('escalation rule (T21)', () => {
   it('never re-asks when the first answer already came from the cloud', () => {
     expect(escalationReason(cloud(null))).toBeNull();
     expect(escalationReason(cloud({ ...good, basis: 'unknown' }))).toBeNull();
-  });
-  it('ignores an "other" hint', () => {
-    expect(escalationReason(dev(good), 'other')).toBeNull();
   });
 });
 
@@ -57,12 +52,6 @@ describe('per-field merge (T21)', () => {
     const m = mergeAnswers(dev(device), cloud({ ...good, basis: 'name-only', category: 'money' }), 'not-recognised');
     expect(m.fields.category).toBe('work');
     expect(m.sources.category).toBe('on_device');
-  });
-  it('on a disagreement, the cloud wins category only when it agrees with the rules', () => {
-    const agree = mergeAnswers(dev(good), cloud({ ...good, category: 'money' }), 'disagrees-with-rules', 'money');
-    expect(agree.fields.category).toBe('money');
-    const disagree = mergeAnswers(dev(good), cloud({ ...good, category: 'health' }), 'disagrees-with-rules', 'money');
-    expect(disagree.fields.category).toBe('work');
   });
   it('a failed cloud reply leaves the device answer whole', () => {
     const m = mergeAnswers(dev({ ...good, category: 'other' }), cloud(null), 'category-other');

@@ -12,8 +12,9 @@ const scanHeaders: Record<string, string> = Object.fromEntries(
 export default defineConfig({
   root: r('.'),
   envDir: r('../..'),
-  // The scan site holds no Firebase config: only VITE_SCAN_* variables reach it.
-  envPrefix: 'VITE_SCAN_',
+  // The scan site holds no Firebase config: only VITE_SCAN_* variables reach it, plus the
+  // VITE_CLOUD_LOOKUP switch (not a secret), so both sites agree on whether the lookup is on.
+  envPrefix: ['VITE_SCAN_', 'VITE_CLOUD_LOOKUP'],
   esbuild: { jsx: 'automatic', jsxImportSource: 'preact' },
   build: { outDir: r('../../dist/scan'), emptyOutDir: true, modulePreload: { polyfill: false } },
   worker: { format: 'es' },

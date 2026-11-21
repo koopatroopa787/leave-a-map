@@ -4,6 +4,7 @@
 import type { Cond, RankedAccount } from '../../../../packages/core/types.ts';
 import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { shortDate } from '../dates.ts';
+import { signalWords } from '../../../../packages/core/signal-words.ts';
 
 const ROWS: { key: 'exists' | 'sso' | 'work' | 'reset' | 'money' | 'discount'; label: string }[] = [
   { key: 'exists', label: 'You have an account' },
@@ -22,10 +23,10 @@ function Row({ label, c }: { label: string; c: Cond }) {
         <span class={`tier tier-${c.tier}`}>{c.tier ? TIER_WORD[c.tier] : ''}</span>
         <span class={`badge src-${c.source}`}>{SOURCE_WORD[c.source]}</span>
       </div>
-      {c.quote ? <blockquote class="ev-quote">{c.quote}</blockquote> : <p class="ev-signal">{c.signal}</p>}
+      {c.quote ? <blockquote class="ev-quote">{c.quote}</blockquote> : <p class="ev-signal">{signalWords(c.signal)}</p>}
       <p class="ev-meta">
         {c.date ? `Email of ${shortDate(c.date)}` : 'No single email'}
-        {c.quote && c.signal ? ` · rule: ${c.signal}` : ''}
+        {c.quote && c.signal ? ` · ${signalWords(c.signal)}` : ''}
         {c.source === 'on_device' ? ' · inferenceSource: on_device' : ''}
         {c.source === 'in_cloud' ? ' · inferenceSource: in_cloud, typical for this kind of service' : ''}
       </p>

@@ -2,6 +2,7 @@
 // No logos: cards name the service by its sender's display name and domain only.
 import type { Bucket, Cond, NanoItem, RankedAccount, ScanSettings, ScanStats, Section } from '../../../../packages/core/types.ts';
 import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
+import { signalWords } from '../../../../packages/core/signal-words.ts';
 import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
@@ -11,6 +12,7 @@ import { applyConnections, type Connections } from '../../../../packages/core/co
 import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
 import { SchoolLoginStep } from './school-login.tsx';
 import { CloudPanel } from './cloud-panel.tsx';
+import { CLOUD_LOOKUP_ON } from '../cloud-switch.ts';
 import { NoAiBanner } from './no-ai-banner.tsx';
 import { Receipt } from './receipt.tsx';
 import type { ServiceInfo } from '../../../../packages/core/handoff.ts';
@@ -114,7 +116,7 @@ function Card({ a, rank, moved, onMoved, info, facts }: { a: RankedAccount; rank
       </div>
       {p.tier && (
         <p class="reason">
-          <span class={`tier tier-${p.tier}`}>{TIER_WORD[p.tier]}</span> {p.quote ? <q>{p.quote}</q> : p.signal} <Badge c={p} />
+          <span class={`tier tier-${p.tier}`}>{TIER_WORD[p.tier]}</span> {p.quote ? <q>{p.quote}</q> : signalWords(p.signal)} <Badge c={p} />
         </p>
       )}
       {(also.length > 0 || a.discount.tier) && (
@@ -212,7 +214,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
       })}
 
       <NanoPanel items={nanoItems} accounts={scanned} onAccounts={onAccounts} />
-      {pack !== undefined && <CloudPanel accounts={accounts} known={pack?.known} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />}
+      {CLOUD_LOOKUP_ON && pack !== undefined && <CloudPanel accounts={accounts} known={pack?.known} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />}
       <Receipt />
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>

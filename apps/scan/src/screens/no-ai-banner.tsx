@@ -1,5 +1,6 @@
 // T24: says plainly what changes when Gemini Nano isn't available in this browser.
 import { useEffect, useState } from 'preact/hooks';
+import { CLOUD_LOOKUP_ON } from '../cloud-switch.ts';
 
 export function NoAiBanner() {
   const [state, setState] = useState<string>('checking');
@@ -8,8 +9,8 @@ export function NoAiBanner() {
   return (
     <p class="no-ai" role="status" id="no-ai-banner">
       <strong>On-device AI isn't available in this browser.</strong> The list comes from the rules alone, which
-      are complete on their own. If you approve a cloud lookup, every answer comes from the cloud: on-device
-      not available here → cloud.
+      are complete on their own.
+      {CLOUD_LOOKUP_ON && ' If you approve a cloud lookup, every answer comes from the cloud: on-device not available here → cloud.'}
     </p>
   );
 }
