@@ -122,3 +122,14 @@ th { color: var(--muted); font-weight: 600; }
 .add-row input { flex: 1; min-width: 0; }
 .added li { padding: .25rem 0; }
 button.link { background: none; border: 0; padding: 0 .25rem; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+
+/* T24: lane 3 lines, no-AI banner, cloud panel */
+.lane3 { margin: .5rem 0; padding: .5rem .75rem; border-radius: 8px; background: var(--src-cloud); }
+.lane3-head { margin: 0 0 .25rem; font-weight: 600; }
+.lane3 ul { margin: 0; padding-left: 1.1rem; }
+.lane3 li { margin: .15rem 0; }
+.lane3 .trail { margin: .35rem 0 0; }
+.chips .badge { margin-left: .25rem; }
+.no-ai { margin: 1rem 0; padding: .6rem .75rem; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
+.cloud { margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.cloud h2 { font-size: 1.1rem; margin: 0 0 .35rem; }
