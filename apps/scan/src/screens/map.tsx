@@ -10,6 +10,11 @@ import { loadConnections, loadMoved, saveConnections, saveMoved } from '../check
 import { applyConnections, type Connections } from '../../../../packages/core/connections.ts';
 import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
 import { SchoolLoginStep } from './school-login.tsx';
+import { CloudPanel } from './cloud-panel.tsx';
+import { NoAiBanner } from './no-ai-banner.tsx';
+import type { ServiceInfo } from '../../../../packages/core/handoff.ts';
+import type { AnswerSource } from '../../../../packages/core/cascade.ts';
+import { applyLane3, BASIS_WORD, serviceLines, trail } from '../../../../packages/core/lane3.ts';
 
 type Props = {
   settings: ScanSettings; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
@@ -38,15 +43,29 @@ const OTHER_SECTIONS: { section: Exclude<Section, 'main'>; title: string; note: 
   { section: 'ignored', title: 'Looks fake', note: 'Mail that failed sender checks or imitates a known service. Ignored.' },
 ];
 
-export function Badge({ c }: { c: Cond }) {
+export function Badge({ c }: { c: Pick<Cond, 'source'> }) {
   return <span class={`badge src-${c.source}`}>{SOURCE_WORD[c.source]}</span>;
+}
+
+/** Lane 3: one line per field, each with the model it came from, and how the answer was reached. */
+function Lane3({ info }: { info: ServiceInfo }) {
+  const lines = serviceLines(info);
+  return (
+    <div class="lane3">
+      <p class="lane3-head">Typical for this kind of service <span class="meta">({BASIS_WORD[info.basis]})</span></p>
+      {lines.length > 0
+        ? <ul>{lines.map((l) => <li key={l.label}>{l.label}: {l.value} <Badge c={{ source: l.source as AnswerSource }} /></li>)}</ul>
+        : <p class="meta">{info.basis === 'unknown' ? 'Neither model recognises this service, so nothing is guessed.' : 'Neither model could say.'}</p>}
+      <p class="meta trail">{trail(info)}</p>
+    </div>
+  );
 }
 
 function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, rank, moved, onMoved }: { a: RankedAccount; rank: number; moved: boolean; onMoved: (v: boolean) => void }) {
+function Card({ a, rank, moved, onMoved, info }: { a: RankedAccount; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo }) {
   const p = primary(a);
   const also = (['sso', 'work', 'reset', 'money'] as const)
     .filter((b) => b !== a.bucket && (a[b].tier === 'seen' || a[b].tier === 'likely'));
@@ -70,24 +89,25 @@ function Card({ a, rank, moved, onMoved }: { a: RankedAccount; rank: number; mov
       )}
       {(also.length > 0 || a.discount.tier) && (
         <ul class="chips" aria-label="Also">
-          {also.map((b) => <li key={b}>Also {ALSO[b]}</li>)}
+          {also.map((b) => <li key={b}>Also {ALSO[b]} <Badge c={a[b]} /></li>)}
           {a.discount.tier && <li class="chip-warn">Student discount ends anyway. Export your data.</li>}
         </ul>
       )}
       {a.bucket === 'sso'
         ? <p class="move">To move: at {a.key.startsWith('app:') ? a.name : a.key}, add a password or change the login email to one you'll keep. Only then disconnect your school login.</p>
         : <p class="move">To move: open {a.key.startsWith('app:') ? a.name : a.key}, go to account settings, and change the login email to one you'll keep.</p>}
+      {info && <Lane3 info={info} />}
       <EvidenceDrawer a={a} />
       <p class="meta">{a.nLinked} email{a.nLinked === 1 ? '' : 's'} to your school address{a.lastDate ? `, last on ${shortDate(a.lastDate)}` : ''}{a.flags.suspiciousIgnored ? `. ${a.flags.suspiciousIgnored} fake-looking email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored` : ''}.</p>
     </li>
   );
 }
 
-function Plain({ a }: { a: RankedAccount }) {
+function Plain({ a, info }: { a: RankedAccount; info?: ServiceInfo }) {
   const why = a.flags.forwardedIn ? `forwarded from ${a.flags.forwardedIn}`
     : a.section === 'ignored' ? `${a.flags.suspiciousIgnored} email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored`
     : `${a.nLinked} email${a.nLinked === 1 ? '' : 's'}`;
-  return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span></li>;
+  return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span>{info && <Lane3 info={info} />}</li>;
 }
 
 export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
@@ -95,7 +115,9 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
   const [connections, setConnections] = useState<Connections>(() => loadConnections(settings.schoolDomain));
   const [connSaved, setConnSaved] = useState(true);
   const changeConnections = (c: Connections) => { setConnections(c); setConnSaved(saveConnections(settings.schoolDomain, c)); };
-  const accounts = useMemo(() => rankAccounts(applyConnections(scanned, connections)), [scanned, connections]);
+  // Lane 3 answers sit on top too, under the evidence caps, so the card can show where each came from.
+  const [lane3, setLane3] = useState<Map<string, ServiceInfo>>(new Map());
+  const accounts = useMemo(() => rankAccounts(applyConnections(applyLane3(scanned, lane3), connections)), [scanned, connections, lane3]);
   const main = accounts.filter((a) => a.section === 'main');
   const [moved, setMoved] = useState(() => loadMoved(settings.schoolDomain));
   const [saved, setSaved] = useState(true);
@@ -129,6 +151,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
         )}
       </header>
 
+      <NoAiBanner />
       <SchoolLoginStep candidates={scanned} connections={connections} onChange={changeConnections} saved={connSaved} />
 
       {main.length === 0 && <p class="empty">No accounts tied to @{settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.</p>}
@@ -137,7 +160,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
         <section key={b} class="bucket" aria-labelledby={`h-${b}`}>
           <h2 id={`h-${b}`}>{BUCKET_TITLE[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{BUCKET_WHY[b]}</p>
-          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} />)}</ol>
+          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} />)}</ol>
         </section>
       ))}
 
@@ -145,15 +168,16 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
         const list = accounts.filter((a) => a.section === section);
         if (list.length === 0) return null;
         return (
-          <details key={section} class="other">
+          <details key={section} class="other" open={section === 'maybe' && list.some((a) => lane3.has(a.key))}>
             <summary><h2>{title} <span class="count">{list.length}</span></h2></summary>
             <p class="bucket-why">{note}</p>
-            <ul class="plain">{list.map((a) => <Plain key={a.key} a={a} />)}</ul>
+            <ul class="plain">{list.map((a) => <Plain key={a.key} a={a} info={lane3.get(a.key)} />)}</ul>
           </details>
         );
       })}
 
       <NanoPanel items={nanoItems} accounts={scanned} onAccounts={onAccounts} />
+      <CloudPanel accounts={accounts} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>
       <button type="button" class="secondary" onClick={onRestart}>Scan another file</button>
     </main>
