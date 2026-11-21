@@ -9,8 +9,8 @@ Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device 
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
 > **Status (21 Nov 2026):**
-> - Lanes 1, 2 and 3 work end to end.
-> - The hosted cloud lookup waits on one App Check setting, and the README will say when it's live.
+> - Lanes 1, 2 and 3 work end to end in local builds. The scan site is live with the current code.
+> - The hosted cloud lookup is switched off until the paid Gemini tier is on and App Check attests on the hosted site. Until then, its window says so and looks nothing up. The README will say when it's live.
 > - Every result marked *pending* below is filled in from the pre-registered evaluation, including bad results.
 
 ## The problem
@@ -96,7 +96,7 @@ flowchart LR
 |---|---|---|
 | [`apps/scan/src/nano.ts`](apps/scan/src/nano.ts) | `getGenerativeModel(ai, { mode: InferenceMode.ONLY_ON_DEVICE, … })` | **Lane 2.** The Firebase config is a placeholder, so the scan site holds no real project. The model is never built unless `LanguageModel` exists; this guards against [firebase-js-sdk#10635](https://github.com/firebase/firebase-js-sdk/issues/10635), where on-device-only mode could fall back to the cloud. Every answer's `inferenceSource` is checked, and anything that isn't `on_device` throws |
 | [`apps/cloud/src/egress.ts`](apps/cloud/src/egress.ts) | `getGenerativeModel(ai, { mode: InferenceMode.PREFER_ON_DEVICE, … })` and `getGenerativeModel(ai, { mode: InferenceMode.ONLY_IN_CLOUD, … })` | **Lane 3**, the only code that sends anything to a cloud model. Firebase and App Check (reCAPTCHA Enterprise) load only after the consent click. Both modes share one enum schema. Each field records which model answered it |
-| [`apps/cloud/src/main.ts`](apps/cloud/src/main.ts) | `ONLY_IN_CLOUD` | Smoke test from the project setup. Not part of the user flow |
+| [`apps/cloud/src/main.ts`](apps/cloud/src/main.ts) | `ONLY_IN_CLOUD` | Smoke test from the project setup (`smoke.html`). Built only with `--mode check`, never deployed |
 
 **Escalation rules** ([`packages/core/cascade.ts`](packages/core/cascade.ts)) send a domain on to the cloud when the first answer:
 
@@ -200,6 +200,7 @@ npm run dev
 Open the printed local address and click **Try the sample**, or enter a school address and shutoff date and pick an `.mbox` file.
 
 - **Cloud site (lane 3):** copy `.env.example` to `.env`, fill in your Firebase web app and reCAPTCHA Enterprise site key, then run `npm run dev:cloud`.
+- **Production cloud builds look nothing up** unless built with `VITE_CLOUD_LOOKUP=paid-tier-on`. Set it only once the project is on Gemini's paid tier, because the consent window describes the paid terms.
 - **Local testing without reCAPTCHA:** put an App Check debug token in the git-ignored `.env.debug` and run `npm run dev:cloud -- --mode debug`. Production builds ignore it.
 - **Build both sites:** `npm run build`. This writes `dist/scan` and `dist/cloud`.
 - **Rebuild the move pack** from downloaded snapshots: `node tools/build-pack.ts <dir> data/pack-snapshot.json`.

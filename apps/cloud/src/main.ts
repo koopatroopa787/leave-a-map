@@ -1,5 +1,5 @@
-// apps/cloud/src/main.ts: T02 smoke call. One firebase/ai call behind App Check that prints
-// inferenceSource. The consent window and the lane 3 cascade (T21, T22) replace this page.
+// apps/cloud/src/main.ts: T02 smoke call, for smoke.html. One firebase/ai call behind App Check
+// that prints inferenceSource. Built only with `--mode check`, never deployed.
 import { initializeApp } from 'firebase/app';
 import { getToken, initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } from 'firebase/ai';
