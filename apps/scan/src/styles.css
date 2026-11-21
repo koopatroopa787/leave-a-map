@@ -45,7 +45,7 @@ th { color: var(--muted); font-weight: 600; }
 .card-head { display: flex; gap: .75rem; align-items: flex-start; }
 .rank { flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; background: var(--fg); color: var(--bg); font-weight: 700; font-size: .9rem; }
 .card-title { min-width: 0; }
-.card h4 { margin: 0; font-size: 1.05rem; }
+.card h3 { margin: 0; font-size: 1.05rem; }
 .domain { color: var(--muted); font-size: .9rem; overflow-wrap: anywhere; }
 .reason { margin: .6rem 0 0; }
 .reason q { font-style: italic; }
@@ -93,7 +93,7 @@ th { color: var(--muted); font-weight: 600; }
 .moved { margin-left: auto; display: flex; align-items: center; gap: .35rem; font-weight: 600; font-size: .9rem; cursor: pointer; flex: none; }
 .moved input { width: 1.15rem; height: 1.15rem; accent-color: var(--accent); }
 .card.is-moved { opacity: .6; }
-.card.is-moved h4 { text-decoration: line-through; }
+.card.is-moved h3 { text-decoration: line-through; }
 
 /* T29: sample */
 .sample { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
@@ -156,3 +156,4 @@ button.link { background: none; border: 0; padding: 0 .25rem; color: var(--accen
 .q2 legend { font-weight: 600; font-size: .9rem; }
 .eval-misses { padding-left: 1.1rem; }
 .eval pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .75rem; font-size: .85rem; }
+h1[tabindex="-1"]:focus { outline: none; }

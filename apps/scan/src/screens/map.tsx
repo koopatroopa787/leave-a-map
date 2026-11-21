@@ -5,7 +5,7 @@ import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { loadConnections, loadMoved, saveConnections, saveMoved } from '../checklist.ts';
 import { applyConnections, type Connections } from '../../../../packages/core/connections.ts';
 import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
@@ -104,11 +104,11 @@ function Card({ a, rank, moved, onMoved, info, facts }: { a: RankedAccount; rank
       <div class="card-head">
         <span class="rank" aria-label={`Rank ${rank}`}>{rank}</span>
         <div class="card-title">
-          <h4>{a.name}</h4>
+          <h3>{a.name}</h3>
           <span class="domain">{a.key.startsWith('app:') ? 'connected with your school login' : a.key}</span>
         </div>
         <label class="moved">
-          <input type="checkbox" checked={moved} onChange={(e) => onMoved(e.currentTarget.checked)} />
+          <input type="checkbox" checked={moved} onChange={(e) => onMoved(e.currentTarget.checked)} aria-label={`Moved: ${a.name}`} />
           <span>Moved</span>
         </label>
       </div>
@@ -163,13 +163,16 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
   };
   const movedCount = main.filter((a) => moved.has(a.key)).length;
   const buckets = (['sso', 'work', 'reset', 'money', 'rest'] as const).map((b) => [b, main.filter((a) => a.bucket === b)] as const);
+  // The list replaces the start screen, so move keyboard and screen-reader focus to its heading.
+  const title = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { title.current?.focus(); }, []);
   let rank = 0;
   return (
     <main class="page map">
       <header class="map-head">
         {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.</p>}
         <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
-        <h1>What breaks on {longDate(settings.shutoffDate)}</h1>
+        <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}</h1>
         <p class="summary">
           <strong>{main.length} account{main.length === 1 ? '' : 's'} to move</strong>, most urgent first.
           Read from {stats.messages.toLocaleString()} emails in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
