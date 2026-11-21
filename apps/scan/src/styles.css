@@ -72,3 +72,16 @@ th { color: var(--muted); font-weight: 600; }
 .nano { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 .nano pre { white-space: pre-wrap; font-size: .75rem; color: var(--muted); }
 @media (min-width: 900px) { .page.map { max-width: 52rem; } }
+
+/* T13: evidence drawer */
+.drawer { margin-top: .6rem; border-top: 1px dashed var(--line); padding-top: .5rem; }
+.drawer summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+.ev-list { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .6rem; }
+.ev-row { padding: .5rem .6rem; border-left: 3px solid var(--line); background: var(--bg); border-radius: 0 6px 6px 0; }
+.ev-what { display: flex; flex-wrap: wrap; gap: .4rem; align-items: baseline; }
+.ev-label { font-weight: 600; }
+.ev-quote { margin: .35rem 0 0; font-style: italic; overflow-wrap: anywhere; }
+.ev-quote::before { content: "“"; } .ev-quote::after { content: "”"; }
+.ev-signal { margin: .35rem 0 0; }
+.ev-meta { margin: .25rem 0 0; color: var(--muted); font-size: .85rem; }
+.ev-key { color: var(--muted); font-size: .85rem; margin: .6rem 0 0; }
