@@ -17,3 +17,19 @@ describe('lockdown (T25)', () => {
     expect(csp).not.toMatch(/report-(?:uri|to)/);
   });
 });
+
+describe('hosting cache rules', () => {
+  // Pages are re-checked on every load, so a deploy shows up at once. Built files have hashed
+  // names, so they can be kept for a year.
+  const hosting = JSON.parse(read('firebase.json')).hosting as { target: string; headers: { source: string; headers: { key: string; value: string }[] }[] }[];
+  const cache = (h: (typeof hosting)[number], source: string) =>
+    h.headers.find((x) => x.source === source)?.headers.find((x) => x.key === 'Cache-Control')?.value;
+  it.each(['scan', 'cloud'])('%s: pages no-cache, hashed assets immutable, CSP block still first', (target) => {
+    const h = hosting.find((x) => x.target === target)!;
+    expect(cache(h, '/')).toBe('no-cache');
+    expect(cache(h, '**/*.html')).toBe('no-cache');
+    expect(cache(h, '/assets/**')).toMatch(/immutable/);
+    expect(h.headers[0].source).toBe('**');
+    expect(h.headers[0].headers.some((x) => x.key === 'Content-Security-Policy')).toBe(true);
+  });
+});
