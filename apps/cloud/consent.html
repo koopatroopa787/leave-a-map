@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="no-referrer" />
     <title>Leave a Map: approve what's sent</title>
+    <style>
+      :root { --bg: #fbfaf7; --fg: #1d1c1a; --muted: #5f5b54; --line: #dedad2; --card: #fff; --accent: #1f6f5c; --warn: #8a4b0f; --warn-bg: #fbefe1; color-scheme: light dark; }
+      @media (prefers-color-scheme: dark) { :root { --bg: #161513; --fg: #ece9e3; --muted: #a8a399; --line: #34322e; --card: #1f1e1b; --accent: #6cc7ae; --warn: #f0b67a; --warn-bg: #3a2a18; } }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+      main { max-width: 34rem; margin: 0 auto; padding: 1.25rem 1rem 2rem; }
+      h1 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 .5rem; }
+      h2 { font-size: 1rem; margin: 0 0 .25rem; }
+      .what { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .75rem 1rem; margin: 1rem 0; }
+      .what ul { margin: 0; padding-left: 1.1rem; }
+      .what a { color: var(--accent); }
+      .rows { list-style: none; padding: 0; margin: .75rem 0; border-top: 1px solid var(--line); }
+      .rows li { border-bottom: 1px solid var(--line); }
+      .rows label { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .7rem .25rem; cursor: pointer; }
+      .domain { font-weight: 600; overflow-wrap: anywhere; }
+      .tag { font-size: .8rem; padding: .1rem .5rem; border-radius: 99px; background: var(--warn-bg); color: var(--warn); }
+      input[type=checkbox] { width: 1.15rem; height: 1.15rem; accent-color: var(--accent); flex: none; }
+      .adult { display: flex; align-items: center; gap: .5rem; font-weight: 600; margin: 1rem 0 .25rem; }
+      .hint { color: var(--muted); min-height: 1.5em; margin: .25rem 0 .75rem; font-size: .9rem; }
+      button { font: inherit; padding: .55rem .9rem; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; margin: .15rem 0; }
+      button.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+      button:disabled { opacity: .5; cursor: not-allowed; }
+      button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    </style>
   </head>
   <body>
     <main id="app"><p>Waiting for the list from Leave a Map…</p></main>
