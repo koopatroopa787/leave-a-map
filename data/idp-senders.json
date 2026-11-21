@@ -1,0 +1,22 @@
+[
+  {
+    "id": "google",
+    "from": "no-reply@accounts.google.com",
+    "subject": "^security alert",
+    "appPatterns": [
+      "^\\s*(.{2,80}?) was granted access to your Google Account\\b",
+      "^\\s*(.{2,80}?) connected to your Google Account\\b"
+    ],
+    "evidence": [
+      "SOURCED: 'was granted access to your Google Account' wording and sender seen in Google forum and press reports",
+      "ESTIMATE: 'connected to' older wording"
+    ]
+  },
+  {
+    "id": "alderbrook-sso",
+    "from": "no-reply@sso.alderbrook.example",
+    "example": true,
+    "subject": "^security alert",
+    "appPatterns": ["^\\s*(.{2,80}?) was granted access to your Alderbrook account\\b"]
+  }
+]

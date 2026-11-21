@@ -8,7 +8,8 @@ import type { MessageRecord } from '../../packages/core/types.ts';
 let n = 0;
 const msg = (p: Partial<MessageRecord>): MessageRecord => ({
   index: n++, start: 0, bodyStart: 0, end: 0, from: null, to: [], cc: [], deliveredTo: [], xOriginalTo: [],
-  xForwardedFor: [], returnPath: null, resentFrom: [], listId: null, subject: '', date: null, bulk: false, ...p,
+  xForwardedFor: [], returnPath: null, resentFrom: [], listId: null, subject: '', date: null, bulk: false,
+  listUnsubscribe: false, authResults: null, arcResults: null, ...p,
 });
 const ctx = makeLinkContext('alderbrook.example', ['jreyes@alderbrook.example']);
 

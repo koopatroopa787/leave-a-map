@@ -25,3 +25,4 @@ table { width: 100%; border-collapse: collapse; font-size: .95rem; }
 th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { color: var(--muted); font-weight: 600; }
 section { overflow-x: auto; }
+.muted { color: var(--muted); font-size: .9rem; }

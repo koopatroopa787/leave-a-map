@@ -57,7 +57,8 @@ describe('MboxSplitter', () => {
     expect(a.date).toBe(Date.UTC(2026, 10, 21, 10, 0, 0));
     expect(a.bulk).toBe(false);
     expect(b.subject).toBe('This week on Pagewell');
-    expect(b.bulk).toBe(true);
+    expect(b.bulk).toBe(false);
+    expect(b.listUnsubscribe).toBe(true);
     expect(b.to).toEqual([]);
     const text = new TextDecoder().decode(bytes);
     expect(text.slice(a.start, a.start + 5)).toBe('From ');
