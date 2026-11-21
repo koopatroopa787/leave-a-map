@@ -97,9 +97,12 @@ export type ScanStats = {
   skipped: { forwardedManually: number; personSender: number; noFrom: number };
 };
 
+/** One email chosen for Nano to label, already prepared by prompt prep (T16). Stays on the device. */
+export type NanoItem = { key: string; msgId: string; date?: number; senderDomain: string; text: string };
+
 /** Messages between the scan page and its Worker. */
 export type ToWorker = { type: 'scan'; file: File; settings: ScanSettings };
 export type FromWorker =
   | { type: 'progress'; bytesRead: number; totalBytes: number; messages: number }
-  | { type: 'done'; accounts: RankedAccount[]; stats: ScanStats; ms: number }
+  | { type: 'done'; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] }
   | { type: 'error'; message: string };
