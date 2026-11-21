@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.firebase/
+*.log
+# Real mailboxes never go in the repo. Only synthetic fixtures are committed.
+*.mbox
+!fixtures/*.example.mbox
+.DS_Store
+.claude/
