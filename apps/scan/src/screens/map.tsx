@@ -4,6 +4,7 @@ import type { Bucket, Cond, NanoItem, RankedAccount, ScanSettings, ScanStats, Se
 import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
+import { EvidenceDrawer } from './evidence-drawer.tsx';
 
 type Props = {
   settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
@@ -65,6 +66,7 @@ function Card({ a, rank }: { a: RankedAccount; rank: number }) {
         </ul>
       )}
       <p class="move">To move: open {a.key.startsWith('app:') ? a.name : a.key}, go to account settings, and change the login email to one you'll keep.</p>
+      <EvidenceDrawer a={a} />
       <p class="meta">{a.nLinked} email{a.nLinked === 1 ? '' : 's'} to your school address{a.lastDate ? `, last on ${shortDate(a.lastDate)}` : ''}{a.flags.suspiciousIgnored ? `. ${a.flags.suspiciousIgnored} fake-looking email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored` : ''}.</p>
     </li>
   );
