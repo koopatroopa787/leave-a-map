@@ -21,3 +21,14 @@ describe('checklist storage (T15)', () => {
     expect([...loadMoved('a.example', wrongShape)]).toEqual(['ok']);
   });
 });
+
+describe('connections storage (T19)', async () => {
+  const { loadConnections, saveConnections } = await import('../../apps/scan/src/checklist.ts');
+  it('round-trips and survives bad data', () => {
+    const s = memory();
+    expect(saveConnections('a.example', { ticked: ['x.example'], added: ['Pollpad'] }, s)).toBe(true);
+    expect(loadConnections('A.example', s)).toEqual({ ticked: ['x.example'], added: ['Pollpad'] });
+    expect(loadConnections('a.example', { getItem: () => '{"ticked": 5, "added": ["ok", 3]}', setItem: () => {} })).toEqual({ ticked: [], added: ['ok'] });
+    expect(loadConnections('a.example', { getItem: () => { throw new Error('blocked'); }, setItem: () => {} })).toEqual({ ticked: [], added: [] });
+  });
+});

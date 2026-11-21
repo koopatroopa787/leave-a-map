@@ -29,3 +29,27 @@ export function saveMoved(schoolDomain: string, moved: ReadonlySet<string>, stor
     return false;
   }
 }
+
+/** T19: services the person confirmed on their school account's connected-apps page. */
+const connKey = (schoolDomain: string) => `lam.connections.${schoolDomain.toLowerCase()}`;
+const strings = (v: unknown) => (Array.isArray(v) ? v.filter((k): k is string => typeof k === 'string').slice(0, 500) : []);
+
+export function loadConnections(schoolDomain: string, store: Store | null = storage()): { ticked: string[]; added: string[] } {
+  try {
+    const raw = store?.getItem(connKey(schoolDomain));
+    const o = (raw ? JSON.parse(raw) : {}) as { ticked?: unknown; added?: unknown };
+    return { ticked: strings(o?.ticked), added: strings(o?.added) };
+  } catch {
+    return { ticked: [], added: [] };
+  }
+}
+
+export function saveConnections(schoolDomain: string, c: { ticked: string[]; added: string[] }, store: Store | null = storage()): boolean {
+  try {
+    if (!store) return false;
+    store.setItem(connKey(schoolDomain), JSON.stringify({ ticked: c.ticked, added: c.added }));
+    return true;
+  } catch {
+    return false;
+  }
+}

@@ -5,8 +5,11 @@ import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
-import { useState } from 'preact/hooks';
-import { loadMoved, saveMoved } from '../checklist.ts';
+import { useMemo, useState } from 'preact/hooks';
+import { loadConnections, loadMoved, saveConnections, saveMoved } from '../checklist.ts';
+import { applyConnections, type Connections } from '../../../../packages/core/connections.ts';
+import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
+import { SchoolLoginStep } from './school-login.tsx';
 
 type Props = {
   settings: ScanSettings; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
@@ -71,7 +74,9 @@ function Card({ a, rank, moved, onMoved }: { a: RankedAccount; rank: number; mov
           {a.discount.tier && <li class="chip-warn">Student discount ends anyway. Export your data.</li>}
         </ul>
       )}
-      <p class="move">To move: open {a.key.startsWith('app:') ? a.name : a.key}, go to account settings, and change the login email to one you'll keep.</p>
+      {a.bucket === 'sso'
+        ? <p class="move">To move: at {a.key.startsWith('app:') ? a.name : a.key}, add a password or change the login email to one you'll keep. Only then disconnect your school login.</p>
+        : <p class="move">To move: open {a.key.startsWith('app:') ? a.name : a.key}, go to account settings, and change the login email to one you'll keep.</p>}
       <EvidenceDrawer a={a} />
       <p class="meta">{a.nLinked} email{a.nLinked === 1 ? '' : 's'} to your school address{a.lastDate ? `, last on ${shortDate(a.lastDate)}` : ''}{a.flags.suspiciousIgnored ? `. ${a.flags.suspiciousIgnored} fake-looking email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored` : ''}.</p>
     </li>
@@ -85,7 +90,12 @@ function Plain({ a }: { a: RankedAccount }) {
   return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span></li>;
 }
 
-export function MapScreen({ settings, sample, accounts, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
+export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
+  // The person's school-login ticks sit on top of the scan (and Nano's labels), never inside them.
+  const [connections, setConnections] = useState<Connections>(() => loadConnections(settings.schoolDomain));
+  const [connSaved, setConnSaved] = useState(true);
+  const changeConnections = (c: Connections) => { setConnections(c); setConnSaved(saveConnections(settings.schoolDomain, c)); };
+  const accounts = useMemo(() => rankAccounts(applyConnections(scanned, connections)), [scanned, connections]);
   const main = accounts.filter((a) => a.section === 'main');
   const [moved, setMoved] = useState(() => loadMoved(settings.schoolDomain));
   const [saved, setSaved] = useState(true);
@@ -119,6 +129,8 @@ export function MapScreen({ settings, sample, accounts, stats, ms, nanoItems, on
         )}
       </header>
 
+      <SchoolLoginStep candidates={scanned} connections={connections} onChange={changeConnections} saved={connSaved} />
+
       {main.length === 0 && <p class="empty">No accounts tied to @{settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.</p>}
 
       {buckets.filter(([, list]) => list.length > 0).map(([b, list]) => (
@@ -141,7 +153,7 @@ export function MapScreen({ settings, sample, accounts, stats, ms, nanoItems, on
         );
       })}
 
-      <NanoPanel items={nanoItems} accounts={accounts} onAccounts={onAccounts} />
+      <NanoPanel items={nanoItems} accounts={scanned} onAccounts={onAccounts} />
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>
       <button type="button" class="secondary" onClick={onRestart}>Scan another file</button>
     </main>
