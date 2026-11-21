@@ -2,7 +2,7 @@
 // from a click, label five emails, and show the source and timing of each. T27's eval mode builds on it.
 import { useEffect, useState } from 'preact/hooks';
 import { probeNano, startNano, type InferenceLog, type NanoState } from '../nano.ts';
-import { egressLog } from '../lockdown.ts';
+import { outboundCount } from '../lockdown.ts';
 import { prepForPrompt } from '../../../../packages/core/prompt-prep.ts';
 import type { Label } from '../../../../packages/core/contract.ts';
 
@@ -72,7 +72,7 @@ export function NanoCheck() {
           </tbody>
         </table>
       )}
-      <p id="egress">Outbound attempts on this page: {egressLog.length}</p>
+      <p id="egress">Outbound attempts on this page: {outboundCount()}</p>
     </main>
   );
 }

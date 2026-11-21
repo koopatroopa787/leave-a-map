@@ -133,3 +133,13 @@ button.link { background: none; border: 0; padding: 0 .25rem; color: var(--accen
 .no-ai { margin: 1rem 0; padding: .6rem .75rem; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
 .cloud { margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
 .cloud h2 { font-size: 1.1rem; margin: 0 0 .35rem; }
+
+/* T26: privacy receipt */
+.receipt { margin: 1.5rem 0; padding: 1rem; border: 1px dashed var(--line); border-radius: 10px; background: var(--surface); }
+.receipt h2 { font-size: 1.1rem; margin: 0 0 .35rem; }
+.receipt-head { margin: 0 0 .75rem; }
+.receipt dl { margin: 0 0 .75rem; }
+.receipt dt { font-weight: 600; margin-top: .6rem; }
+.receipt dd { margin: .15rem 0 0; }
+.receipt dd ul { margin: 0; padding-left: 1.1rem; }
+.receipt .domain { overflow-wrap: anywhere; }
