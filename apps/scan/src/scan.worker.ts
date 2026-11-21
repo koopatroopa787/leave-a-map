@@ -39,7 +39,8 @@ self.onmessage = async (e: MessageEvent<ToWorker>) => {
     }
     agg.stats.bytes = bytesRead;
     post({ type: 'progress', bytesRead, totalBytes: file.size, messages });
-    post({ type: 'done', accounts: rank(agg.accountsOut()), stats: agg.stats, ms: Math.round(performance.now() - started) });
+    const accounts = rank(agg.accountsOut());
+    post({ type: 'done', accounts, stats: agg.stats, ms: Math.round(performance.now() - started), nanoItems: agg.nanoItems(accounts) });
   } catch (err) {
     post({ type: 'error', message: err instanceof Error ? err.message : String(err) });
   }

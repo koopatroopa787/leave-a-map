@@ -1,7 +1,10 @@
 // T08: the bare ranked list. T14 replaces it with the full main list.
-import type { Bucket, Cond, RankedAccount, ScanSettings, ScanStats, Section } from '../../../../packages/core/types.ts';
+import type { Bucket, Cond, NanoItem, RankedAccount, ScanSettings, ScanStats, Section } from '../../../../packages/core/types.ts';
+import { SOURCE_WORD } from '../../../../packages/core/evidence.ts';
+import { NanoPanel } from './nano-panel.tsx';
 
-type Props = { settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; onRestart: () => void };
+type Props = { settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
+  onAccounts: (a: RankedAccount[]) => void; onRestart: () => void };
 
 const TITLES: Record<Section, string> = {
   main: 'Accounts to move',
@@ -23,7 +26,8 @@ const ALSO: Record<Exclude<Bucket, 'rest'>, string> = { sso: 'school login', wor
 
 function evidence(c: Cond) {
   if (!c.tier) return '—';
-  return `${TIER_WORD[c.tier]}: ${c.signal}${c.quote ? ` (“${c.quote}”)` : ''}`;
+  const source = c.source === 'rules' ? '' : ` · ${SOURCE_WORD[c.source]}`;
+  return `${TIER_WORD[c.tier]}: ${c.signal}${c.quote ? ` (“${c.quote}”)` : ''}${source}`;
 }
 
 function why(a: RankedAccount) {
@@ -46,7 +50,7 @@ function why(a: RankedAccount) {
   );
 }
 
-export function ListScreen({ settings, accounts, stats, ms, onRestart }: Props) {
+export function ListScreen({ settings, accounts, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
   const sections = (Object.keys(TITLES) as Section[])
     .map((s) => [s, accounts.filter((a) => a.section === s)] as const)
     .filter(([, list]) => list.length > 0);
@@ -82,6 +86,7 @@ export function ListScreen({ settings, accounts, stats, ms, onRestart }: Props) 
           </table>
         </section>
       ))}
+      <NanoPanel items={nanoItems} accounts={accounts} onAccounts={onAccounts} />
       <button type="button" onClick={onRestart}>Scan another file</button>
     </main>
   );

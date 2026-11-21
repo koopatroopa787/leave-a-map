@@ -1,6 +1,7 @@
 // packages/core/rules/aggregate.ts: folds messages into one Account per sender domain, with the
 // evidence conditions from analyst.md 2.2–2.3. Rules alone; pack, Nano and cloud fields come later.
-import type { Account, Cond, MessageRecord, ScanStats, Source, Tier } from '../types.ts';
+import type { Account, Cond, MessageRecord, NanoItem, RankedAccount, ScanStats, Source, Tier } from '../types.ts';
+import { prepForPrompt } from '../prompt-prep.ts';
 import type { BodyInfo } from '../mbox/body.ts';
 import { EMPTY_BODY } from '../mbox/body.ts';
 import { accountKey, cleanName, registrableDomain } from './account-key.ts';
@@ -10,9 +11,9 @@ import { EXISTENCE, messageSignals, type SignalName } from './signals.ts';
 import { idpNotice, isIdpSender, normaliseApp } from './idp-notice.ts';
 import { EMPTY_PACK, labelOf, suspiciousReason, type PackNames } from './suspicious.ts';
 
-const RANK: Record<Exclude<Tier, null>, number> = { seen: 3, likely: 2, possible: 1 };
-export const tierRank = (t: Tier) => (t ? RANK[t] : 0);
-export const bestTier = (a: Tier, b: Tier): Tier => (tierRank(a) >= tierRank(b) ? a : b);
+import { bestTier, tierRank } from '../tiers.ts';
+
+export { bestTier, tierRank };
 /** One step weaker: for signals the spec lists a column below the message's own tier. */
 const weaker = (t: Tier): Tier => (t === 'seen' ? 'likely' : t === 'likely' ? 'possible' : null);
 const none = (): Cond => ({ tier: null, source: 'rules', signal: '' });
@@ -34,12 +35,15 @@ type Acc = {
   key: string; names: Map<string, number>; link: Tier; nAll: number; nLinked: number; nMsgs: number;
   lastDate: number; otherAddress: string | null; suspicious: number; clean: number; health: boolean;
   conds: Record<CondName, Cond>;
+  /** The email Nano reads for this account: the newest non-bulk one, else the newest bulk one. */
+  candidate: { msgId: string; date: number; subject: string; text: string; bulk: boolean } | null;
 };
 
 const newAcc = (key: string): Acc => ({
   key, names: new Map(), link: null, nAll: 0, nLinked: 0, nMsgs: 0, lastDate: 0, otherAddress: null,
   suspicious: 0, clean: 0, health: false,
   conds: { exists: none(), sso: none(), work: none(), reset: none(), money: none(), discount: none() },
+  candidate: null,
 });
 
 function offer(acc: Acc, cond: CondName, tier: Tier, signal: string, m: MessageRecord, quote?: string, source: Source = 'rules') {
@@ -111,6 +115,11 @@ export class Aggregator {
       a.nMsgs++;
       if (m.date && m.date > a.lastDate) a.lastDate = m.date;
     }
+    const c = a.candidate;
+    const date = m.date ?? 0;
+    if (!manualForward && (!c || (c.bulk && !bulk) || (c.bulk === bulk && date >= c.date))) {
+      a.candidate = { msgId: String(m.index), date, subject: m.subject, text: body.text, bulk };
+    }
     for (const f of fired) {
       if (f.name === 'HEALTH') { a.health = true; continue; }
       if (f.name === 'SSO-WELCOME') { offer(a, 'sso', 'likely', f.name, m, f.quote); continue; }
@@ -135,6 +144,24 @@ export class Aggregator {
           discount: none(), flags: { schoolRun: false, forwardedIn: null, suspiciousOnly: false, bulkOnly: false,
             suspiciousIgnored: 0, health: false }, lastDate: app.m.date ?? 0, nMsgs: 1, nLinked: 1, nAll: 1 });
       }
+    }
+    return out;
+  }
+
+  /**
+   * Up to `max` emails for Nano, one per account, in ranked order: accounts to move first, then
+   * maybe accounts. Accounts that end anyway, live elsewhere or look fake are skipped.
+   */
+  nanoItems(ranked: readonly RankedAccount[], max = 200): NanoItem[] {
+    const own = [...this.ctx.own];
+    const out: NanoItem[] = [];
+    for (const r of ranked) {
+      if (out.length >= max) break;
+      if (r.section !== 'main' && r.section !== 'maybe') continue;
+      const c = this.accounts.get(r.key)?.candidate;
+      if (!c) continue;
+      out.push({ key: r.key, msgId: c.msgId, ...(c.date ? { date: c.date } : {}), senderDomain: r.key,
+        text: prepForPrompt(c.subject, c.text, { ownAddresses: own }) });
     }
     return out;
   }

@@ -26,3 +26,5 @@ th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(-
 th { color: var(--muted); font-weight: 600; }
 section { overflow-x: auto; }
 .muted { color: var(--muted); font-size: .9rem; }
+.nano { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.nano pre { white-space: pre-wrap; font-size: .75rem; color: var(--muted); }

@@ -1,0 +1,242 @@
+[
+ {
+  "domain": "forkyard0.example",
+  "kind": "code host"
+ },
+ {
+  "domain": "quillkit1.example",
+  "kind": "document editor"
+ },
+ {
+  "domain": "ledgerly2.example",
+  "kind": "LaTeX editor"
+ },
+ {
+  "domain": "tunenest3.example",
+  "kind": "design tool"
+ },
+ {
+  "domain": "pagewell4.example",
+  "kind": "bank"
+ },
+ {
+  "domain": "cartcraft5.example",
+  "kind": "payment app"
+ },
+ {
+  "domain": "notewise6.example",
+  "kind": "password manager"
+ },
+ {
+  "domain": "vaultbase7.example",
+  "kind": "phone carrier"
+ },
+ {
+  "domain": "signalhub8.example",
+  "kind": "music streaming"
+ },
+ {
+  "domain": "tallybox9.example",
+  "kind": "online store"
+ },
+ {
+  "domain": "pixelloop10.example",
+  "kind": "news site"
+ },
+ {
+  "domain": "grovewheel11.example",
+  "kind": "social network"
+ },
+ {
+  "domain": "mintyard12.example",
+  "kind": "clinic"
+ },
+ {
+  "domain": "orbitkit13.example",
+  "kind": "course platform"
+ },
+ {
+  "domain": "emberly14.example",
+  "kind": "cloud storage"
+ },
+ {
+  "domain": "harbornest15.example",
+  "kind": "code host"
+ },
+ {
+  "domain": "atlaswell16.example",
+  "kind": "document editor"
+ },
+ {
+  "domain": "cobaltcraft17.example",
+  "kind": "LaTeX editor"
+ },
+ {
+  "domain": "lumenwise18.example",
+  "kind": "design tool"
+ },
+ {
+  "domain": "pebblebase19.example",
+  "kind": "bank"
+ },
+ {
+  "domain": "forkhub20.example",
+  "kind": "payment app"
+ },
+ {
+  "domain": "quillbox21.example",
+  "kind": "password manager"
+ },
+ {
+  "domain": "ledgerloop22.example",
+  "kind": "phone carrier"
+ },
+ {
+  "domain": "tunewheel23.example",
+  "kind": "music streaming"
+ },
+ {
+  "domain": "pageyard24.example",
+  "kind": "online store"
+ },
+ {
+  "domain": "cartkit25.example",
+  "kind": "news site"
+ },
+ {
+  "domain": "notely26.example",
+  "kind": "social network"
+ },
+ {
+  "domain": "vaultnest27.example",
+  "kind": "clinic"
+ },
+ {
+  "domain": "signalwell28.example",
+  "kind": "course platform"
+ },
+ {
+  "domain": "tallycraft29.example",
+  "kind": "cloud storage"
+ },
+ {
+  "domain": "pixelwise30.example",
+  "kind": "code host"
+ },
+ {
+  "domain": "grovebase31.example",
+  "kind": "document editor"
+ },
+ {
+  "domain": "minthub32.example",
+  "kind": "LaTeX editor"
+ },
+ {
+  "domain": "orbitbox33.example",
+  "kind": "design tool"
+ },
+ {
+  "domain": "emberloop34.example",
+  "kind": "bank"
+ },
+ {
+  "domain": "harborwheel35.example",
+  "kind": "payment app"
+ },
+ {
+  "domain": "atlasyard36.example",
+  "kind": "password manager"
+ },
+ {
+  "domain": "cobaltkit37.example",
+  "kind": "phone carrier"
+ },
+ {
+  "domain": "lumenly38.example",
+  "kind": "music streaming"
+ },
+ {
+  "domain": "pebblenest39.example",
+  "kind": "online store"
+ },
+ {
+  "domain": "forkwell40.example",
+  "kind": "news site"
+ },
+ {
+  "domain": "quillcraft41.example",
+  "kind": "social network"
+ },
+ {
+  "domain": "ledgerwise42.example",
+  "kind": "clinic"
+ },
+ {
+  "domain": "tunebase43.example",
+  "kind": "course platform"
+ },
+ {
+  "domain": "pagehub44.example",
+  "kind": "cloud storage"
+ },
+ {
+  "domain": "cartbox45.example",
+  "kind": "code host"
+ },
+ {
+  "domain": "noteloop46.example",
+  "kind": "document editor"
+ },
+ {
+  "domain": "vaultwheel47.example",
+  "kind": "LaTeX editor"
+ },
+ {
+  "domain": "signalyard48.example",
+  "kind": "design tool"
+ },
+ {
+  "domain": "tallykit49.example",
+  "kind": "bank"
+ },
+ {
+  "domain": "pixelly50.example",
+  "kind": "payment app"
+ },
+ {
+  "domain": "grovenest51.example",
+  "kind": "password manager"
+ },
+ {
+  "domain": "mintwell52.example",
+  "kind": "phone carrier"
+ },
+ {
+  "domain": "orbitcraft53.example",
+  "kind": "music streaming"
+ },
+ {
+  "domain": "emberwise54.example",
+  "kind": "online store"
+ },
+ {
+  "domain": "harborbase55.example",
+  "kind": "news site"
+ },
+ {
+  "domain": "atlashub56.example",
+  "kind": "social network"
+ },
+ {
+  "domain": "cobaltbox57.example",
+  "kind": "clinic"
+ },
+ {
+  "domain": "lumenloop58.example",
+  "kind": "course platform"
+ },
+ {
+  "domain": "pebblewheel59.example",
+  "kind": "cloud storage"
+ }
+]

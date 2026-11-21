@@ -3,7 +3,7 @@
 import type { Account, Cond, Source, Tier } from './types.ts';
 import type { Basis, Label } from './contract.ts';
 import type { ServiceInfo } from './handoff.ts';
-import { tierRank } from './rules/aggregate.ts';
+import { tierRank } from './tiers.ts';
 
 export const TIER_WORD = { seen: 'Seen', likely: 'Likely', possible: 'Possible' } as const;
 export const SOURCE_WORD: Record<Source, string> = {

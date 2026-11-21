@@ -5,12 +5,12 @@ import { lazy, Suspense } from 'preact/compat';
 import './styles.css';
 import { StartScreen } from './screens/start.tsx';
 import { ListScreen } from './screens/list.tsx';
-import type { FromWorker, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
+import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
 
 type State =
   | { step: 'start'; error?: string }
   | { step: 'scanning'; settings: ScanSettings; bytesRead: number; totalBytes: number; messages: number }
-  | { step: 'done'; settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number };
+  | { step: 'done'; settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
 
 function App() {
   const [state, setState] = useState<State>({ step: 'start' });
@@ -21,7 +21,7 @@ function App() {
     worker.onmessage = (e: MessageEvent<FromWorker>) => {
       const m = e.data;
       if (m.type === 'progress') setState({ step: 'scanning', settings, ...m });
-      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, accounts: m.accounts, stats: m.stats, ms: m.ms }); }
+      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
       else { worker.terminate(); setState({ step: 'start', error: m.message }); }
     };
     worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };
@@ -40,7 +40,7 @@ function App() {
       </main>
     );
   }
-  return <ListScreen {...state} onRestart={() => setState({ step: 'start' })} />;
+  return <ListScreen {...state} onAccounts={(accounts) => setState({ ...state, accounts })} onRestart={() => setState({ step: 'start' })} />;
 }
 
 // Firebase loads only on the Nano check screen, so the normal scan ships no SDK code.
