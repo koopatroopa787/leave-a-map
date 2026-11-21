@@ -23,8 +23,14 @@ export type MessageRecord = {
   subject: string;
   /** Milliseconds since the epoch, or null when the Date header is missing or unreadable. */
   date: number | null;
-  /** Has List-Unsubscribe, or Precedence: bulk or list. */
+  /** Precedence: bulk, list or junk, or a Takeout "Category Promotions" label. Always bulk. */
   bulk: boolean;
+  /** Has List-Unsubscribe. Bulk only when no service-mail signal fires (analyst.md 1.4). */
+  listUnsubscribe: boolean;
+  /** Topmost Authentication-Results value, added by the person's own mail provider. */
+  authResults: string | null;
+  /** The `i=1` ARC-Authentication-Results value, for forwarded mail. */
+  arcResults: string | null;
 };
 
 export type Address = { name: string; address: string };
@@ -60,6 +66,8 @@ export interface Account {
     suspiciousOnly: boolean;
     bulkOnly: boolean;
     suspiciousIgnored: number;
+    /** A health pattern fired. Used only for the lane 3 consent default (health rows need their own tick). */
+    health: boolean;
   };
   /** Newest school-linked message date (ms), or 0. */
   lastDate: number;

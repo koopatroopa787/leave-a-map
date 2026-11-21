@@ -4,7 +4,8 @@ import type { Address, MessageRecord } from '../types.ts';
 
 const utf8 = new TextDecoder('utf-8');
 const KEEP = new Set(['from', 'to', 'cc', 'delivered-to', 'x-original-to', 'x-forwarded-for',
-  'return-path', 'resent-from', 'list-id', 'list-unsubscribe', 'precedence', 'subject', 'date']);
+  'return-path', 'resent-from', 'list-id', 'list-unsubscribe', 'precedence', 'subject', 'date',
+  'authentication-results', 'arc-authentication-results', 'x-gmail-labels']);
 
 export type HeaderFields = Omit<MessageRecord, 'index' | 'start' | 'bodyStart' | 'end'>;
 
@@ -52,7 +53,7 @@ export function parseDate(value: string | undefined): number | null {
   return Number.isFinite(t) ? t : null;
 }
 
-export function parseHeaderBlock(block: Uint8Array): HeaderFields & { bulk: boolean } {
+export function parseHeaderBlock(block: Uint8Array): HeaderFields {
   const h = readHeaders(block);
   const precedence = (h.get('precedence')?.[0] ?? '').toLowerCase();
   return {
@@ -67,6 +68,10 @@ export function parseHeaderBlock(block: Uint8Array): HeaderFields & { bulk: bool
     listId: h.get('list-id')?.[0] ?? null,
     subject: decodeWords(h.get('subject')?.[0] ?? '').slice(0, 300),
     date: parseDate(h.get('date')?.[0]),
-    bulk: h.has('list-unsubscribe') || precedence === 'bulk' || precedence === 'list',
+    bulk: precedence === 'bulk' || precedence === 'list' || precedence === 'junk'
+      || /(?:^|,)\s*Category Promotions\s*(?:,|$)/i.test(h.get('x-gmail-labels')?.join(',') ?? ''),
+    listUnsubscribe: h.has('list-unsubscribe'),
+    authResults: h.get('authentication-results')?.[0] ?? null,
+    arcResults: h.get('arc-authentication-results')?.find((v) => /^\s*i\s*=\s*1\s*;/.test(v)) ?? null,
   };
 }

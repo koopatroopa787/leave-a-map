@@ -47,10 +47,10 @@ describe('bodies (T09)', () => {
     const bytes = enc(THUNDERBIRD);
     const msgs = splitAllMessages(bytes, 7, 64 * 1024);
     expect(msgs).toHaveLength(2);
-    expect((await readBody(msgs[1].raw)).text).toBe('Line one From the archive >From nested');
+    expect((await readBody(msgs[1].raw)).text).toBe('Line one\nFrom the archive\n>From nested');
     const { start, end } = msgs[1].rec;
     const again = messageFromSlice(bytes.subarray(start, end));
-    expect((await readBody(again)).text).toBe('Line one From the archive >From nested');
+    expect((await readBody(again)).text).toBe('Line one\nFrom the archive\n>From nested');
   });
 
   it('caps the kept body and flags truncation, without losing the next message', async () => {

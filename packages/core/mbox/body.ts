@@ -2,7 +2,7 @@
 import PostalMime from 'postal-mime';
 
 export type BodyInfo = {
-  /** Plain text (or HTML with tags stripped), whitespace collapsed, first 4,000 characters. */
+  /** Plain text (or HTML with tags stripped), spaces collapsed, one newline between lines, first 4,000 characters. */
   text: string;
   /** Gmail email markup for an order, invoice or parcel (RECEIPT signal). */
   orderMarkup: boolean;
@@ -29,7 +29,8 @@ export function htmlToText(html: string): string {
     });
 }
 
-export const collapse = (s: string) => s.replace(/[​-‍﻿­]/g, '').replace(/\s+/g, ' ').trim();
+export const collapse = (s: string) => s.replace(/[\u200b-\u200d\ufeff\u00ad]/g, '')
+  .replace(/[^\S\n]+/g, ' ').replace(/ ?\n\s*/g, '\n').trim();
 
 export const EMPTY_BODY: BodyInfo = { text: '', orderMarkup: false };
 
