@@ -9,14 +9,16 @@ describe('handoff', () => {
   });
 
   it('keeps valid enum answers for sent ids and drops everything else', () => {
-    const ok = { id: 'a1', source: 'in_cloud', basis: 'recognised', category: 'work', usuallyHolds: 'documents', loginEmailChange: 'account-settings' };
+    const ok = { id: 'a1', sources: { basis: 'in_cloud', category: 'in_cloud', usuallyHolds: 'on_device', loginEmailChange: 'in_cloud' }, escalation: 'not-recognised', basis: 'recognised', category: 'work', usuallyHolds: 'documents', loginEmailChange: 'account-settings' };
     const out = parseServiceInfo({ type: 'lam.services', items: [
       { ...ok, url: 'https://phish.example' },
       { ...ok, id: 'not-sent' },
       { ...ok, id: 'a2', category: 'banking' },
-      { ...ok, id: 'a3', source: 'somewhere' },
+      { ...ok, id: 'a3', sources: { ...ok.sources, category: 'somewhere' } },
+      { ...ok, id: 'a4', sources: { ...ok.sources, url: 'https://phish.example' } },
+      { ...ok, id: 'a5', escalation: 'because I said so' },
       { ...ok }, // duplicate id
-    ] }, new Set(['a1', 'a2', 'a3']));
+    ] }, new Set(['a1', 'a2', 'a3', 'a4', 'a5']));
     expect(out).toEqual([ok]);
     expect(parseServiceInfo({ type: 'other', items: [ok] }, new Set(['a1']))).toEqual([]);
   });
