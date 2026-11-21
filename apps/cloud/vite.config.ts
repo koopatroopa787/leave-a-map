@@ -7,5 +7,5 @@ export default defineConfig({
   root: r('.'),
   envDir: r('../..'),
   envPrefix: 'VITE_CLOUD_',
-  build: { outDir: r('../../dist/cloud'), emptyOutDir: true },
+  build: { outDir: r('../../dist/cloud'), emptyOutDir: true, rollupOptions: { input: { index: r('index.html'), consent: r('consent.html') } } },
 });

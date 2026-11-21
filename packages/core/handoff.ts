@@ -29,3 +29,18 @@ export function parseServiceInfo(data: unknown, sentIds: ReadonlySet<string>): S
     return [{ id: item.id, source: item.source, ...fields }];
   });
 }
+
+/** Message names between the two sites. Everything else is ignored. */
+export const MSG = { ready: 'lam.ready', outbox: 'lam.outbox', services: 'lam.services', cancelled: 'lam.cancelled' } as const;
+
+/** Cloud side: accept an outbox only if every item is a valid `{ id, senderDomain }`, nothing more. */
+export function parseOutbox(data: unknown): OutboxItem[] | null {
+  const msg = data as { type?: unknown; items?: unknown } | null;
+  if (msg?.type !== MSG.outbox || !Array.isArray(msg.items) || msg.items.length === 0 || msg.items.length > MAX_OUTBOX) return null;
+  const out: OutboxItem[] = [];
+  for (const item of msg.items) {
+    if (typeof item !== 'object' || item === null || Object.keys(item).sort().join() !== 'id,senderDomain') return null;
+    try { out.push(toOutboxItem((item as OutboxItem).id, (item as OutboxItem).senderDomain)); } catch { return null; }
+  }
+  return new Set(out.map((i) => i.id)).size === out.length ? out : null;
+}

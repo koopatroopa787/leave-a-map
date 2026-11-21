@@ -46,6 +46,10 @@ function App() {
 // Firebase loads only on the Nano check screen, so the normal scan ships no SDK code.
 const NanoCheck = lazy(() => import('./screens/nano-check.tsx').then((m) => ({ default: m.NanoCheck })));
 
+const HandoffCheck = lazy(() => import('./screens/handoff-check.tsx').then((m) => ({ default: m.HandoffCheck })));
+
 const root = document.getElementById('app')!;
-if (location.hash === '#nano-check') render(<Suspense fallback={<main class="page">Loading…</main>}><NanoCheck /></Suspense>, root);
+const loading = <main class="page">Loading…</main>;
+if (location.hash === '#nano-check') render(<Suspense fallback={loading}><NanoCheck /></Suspense>, root);
+else if (location.hash === '#handoff-check') render(<Suspense fallback={loading}><HandoffCheck /></Suspense>, root);
 else render(<App />, root);
