@@ -5,6 +5,8 @@ import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
+import { useState } from 'preact/hooks';
+import { loadMoved, saveMoved } from '../checklist.ts';
 
 type Props = {
   settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
@@ -41,18 +43,22 @@ function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, rank }: { a: RankedAccount; rank: number }) {
+function Card({ a, rank, moved, onMoved }: { a: RankedAccount; rank: number; moved: boolean; onMoved: (v: boolean) => void }) {
   const p = primary(a);
   const also = (['sso', 'work', 'reset', 'money'] as const)
     .filter((b) => b !== a.bucket && (a[b].tier === 'seen' || a[b].tier === 'likely'));
   return (
-    <li class="card" id={`acct-${a.key}`}>
+    <li class={`card${moved ? ' is-moved' : ''}`} id={`acct-${a.key}`}>
       <div class="card-head">
         <span class="rank" aria-label={`Rank ${rank}`}>{rank}</span>
         <div class="card-title">
           <h4>{a.name}</h4>
           <span class="domain">{a.key.startsWith('app:') ? 'connected with your school login' : a.key}</span>
         </div>
+        <label class="moved">
+          <input type="checkbox" checked={moved} onChange={(e) => onMoved(e.currentTarget.checked)} />
+          <span>Moved</span>
+        </label>
       </div>
       {p.tier && (
         <p class="reason">
@@ -81,6 +87,17 @@ function Plain({ a }: { a: RankedAccount }) {
 
 export function MapScreen({ settings, accounts, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
   const main = accounts.filter((a) => a.section === 'main');
+  const [moved, setMoved] = useState(() => loadMoved(settings.schoolDomain));
+  const [saved, setSaved] = useState(true);
+  const toggle = (key: string, v: boolean) => {
+    setMoved((prev) => {
+      const next = new Set(prev);
+      if (v) next.add(key); else next.delete(key);
+      setSaved(saveMoved(settings.schoolDomain, next));
+      return next;
+    });
+  };
+  const movedCount = main.filter((a) => moved.has(a.key)).length;
   const buckets = (['sso', 'work', 'reset', 'money', 'rest'] as const).map((b) => [b, main.filter((a) => a.bucket === b)] as const);
   let rank = 0;
   return (
@@ -92,6 +109,13 @@ export function MapScreen({ settings, accounts, stats, ms, nanoItems, onAccounts
           <strong>{main.length} account{main.length === 1 ? '' : 's'} to move</strong>, most urgent first.
           Read from {stats.messages.toLocaleString()} emails in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
         </p>
+        {main.length > 0 && (
+          <p class="progress" aria-live="polite">
+            <strong id="moved-count">{movedCount} of {main.length} moved</strong>
+            <progress max={main.length} value={movedCount} aria-hidden="true" />
+            {!saved && <span class="meta"> This browser won't save your ticks, so they'll be gone if you reload.</span>}
+          </p>
+        )}
       </header>
 
       {main.length === 0 && <p class="empty">No accounts tied to @{settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.</p>}
@@ -100,7 +124,7 @@ export function MapScreen({ settings, accounts, stats, ms, nanoItems, onAccounts
         <section key={b} class="bucket" aria-labelledby={`h-${b}`}>
           <h2 id={`h-${b}`}>{BUCKET_TITLE[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{BUCKET_WHY[b]}</p>
-          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} />)}</ol>
+          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} />)}</ol>
         </section>
       ))}
 

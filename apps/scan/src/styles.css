@@ -85,3 +85,11 @@ th { color: var(--muted); font-weight: 600; }
 .ev-signal { margin: .35rem 0 0; }
 .ev-meta { margin: .25rem 0 0; color: var(--muted); font-size: .85rem; }
 .ev-key { color: var(--muted); font-size: .85rem; margin: .6rem 0 0; }
+
+/* T15: checklist */
+.progress { margin: .75rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.progress progress { width: 10rem; height: .6rem; }
+.moved { margin-left: auto; display: flex; align-items: center; gap: .35rem; font-weight: 600; font-size: .9rem; cursor: pointer; flex: none; }
+.moved input { width: 1.15rem; height: 1.15rem; accent-color: var(--accent); }
+.card.is-moved { opacity: .6; }
+.card.is-moved h4 { text-decoration: line-through; }
