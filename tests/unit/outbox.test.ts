@@ -10,7 +10,7 @@ const acct = (key: string, extra: Partial<RankedAccount> = {}): RankedAccount =>
 } as RankedAccount);
 
 describe('outboxFor (T22)', () => {
-  it('offers only unplaced main-list domains, marks health and money, and maps ids back', () => {
+  it('offers only unplaced main-list and maybe domains, marks health and money, and maps ids back', () => {
     const out = outboxFor([
       acct('forkyard.example', { bucket: 'work' }),
       acct('quillpad.example'),
@@ -18,12 +18,14 @@ describe('outboxFor (T22)', () => {
       acct('clinic.example', { flags: { ...acct('x').flags, health: true } }),
       acct('penny.example', { money: { tier: 'possible', source: 'rules', signal: 'receipt' } }),
       acct('elsewhere.example', { section: 'elsewhere' }),
+      acct('maybe.example', { section: 'maybe' }),
       acct('known.example'),
     ], (d) => d === 'known.example');
     expect(out.items).toEqual([
       { id: 's1', senderDomain: 'quillpad.example' },
       { id: 's2', senderDomain: 'clinic.example', sensitive: 'health' },
       { id: 's3', senderDomain: 'penny.example', sensitive: 'money' },
+      { id: 's4', senderDomain: 'maybe.example' },
     ]);
     expect(out.keyById.get('s2')).toBe('clinic.example');
   });

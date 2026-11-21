@@ -1,0 +1,212 @@
+{
+  "settings": {
+    "schoolDomain": "alderbrook.example",
+    "ownAddresses": [
+      "jordan.reyes@alderbrook.example",
+      "jreyes@alderbrook.example"
+    ],
+    "shutoffDate": "2027-03-31"
+  },
+  "rulesOnly": [
+    {
+      "key": "forkyard.example",
+      "section": "main",
+      "bucket": "sso",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "notebloom.example",
+      "section": "main",
+      "bucket": "sso",
+      "tier": "likely",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "proofwright.example",
+      "section": "main",
+      "bucket": "work",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "sketchloom.example",
+      "section": "main",
+      "bucket": "work",
+      "tier": "seen",
+      "discount": "seen",
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "stowbin.example",
+      "section": "main",
+      "bucket": "work",
+      "tier": "likely",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "tidemail.example",
+      "section": "main",
+      "bucket": "reset",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "brightpenny.example",
+      "section": "main",
+      "bucket": "money",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 1
+    },
+    {
+      "key": "paywisp.example",
+      "section": "main",
+      "bucket": "money",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "latchkin.example",
+      "section": "main",
+      "bucket": "money",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "tunefield.example",
+      "section": "main",
+      "bucket": "money",
+      "tier": "seen",
+      "discount": "seen",
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "parcelpine.example",
+      "section": "main",
+      "bucket": "rest",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "munchroute.example",
+      "section": "main",
+      "bucket": "rest",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "mendwise.example",
+      "section": "main",
+      "bucket": "rest",
+      "tier": "likely",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "chirpline.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "learnridge.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "citewell.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "datavault.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "loanhub.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "openscholar.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "tallyquiz.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "vistaroam.example",
+      "section": "maybe",
+      "bucket": "rest",
+      "tier": "possible",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "alderbrook.example",
+      "section": "ends-anyway",
+      "bucket": "rest",
+      "tier": "likely",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "pixelquay.example",
+      "section": "elsewhere",
+      "bucket": "rest",
+      "tier": null,
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "forkyard-verify.example",
+      "section": "ignored",
+      "bucket": "rest",
+      "tier": null,
+      "discount": null,
+      "suspiciousIgnored": 1
+    },
+    {
+      "key": "notebioom.example",
+      "section": "ignored",
+      "bucket": "rest",
+      "tier": null,
+      "discount": null,
+      "suspiciousIgnored": 1
+    }
+  ]
+}

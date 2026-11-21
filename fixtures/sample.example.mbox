@@ -1,0 +1,1415 @@
+From 1790000000000000001@xxx Mon Sep 04 09:07:00 +0000 2023
+X-GM-THRID: 1790000000000000001
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.sso.alderbrook.example (mail.sso.alderbrook.example. [192.0.2.11])
+        by mx.google.com with ESMTPS id s1x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 04 Sep 2023 09:07:00 +0000
+Return-Path: <bounce@sso.alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@sso.alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@sso.alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-1@sso.alderbrook.example>
+Date: Mon, 04 Sep 2023 09:07:00 +0000
+From: "Alderbrook Sign-in" <no-reply@sso.alderbrook.example>
+To: jordan.reyes@alderbrook.example
+Subject: Security alert
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Forkyard was granted access to your Alderbrook account
+jordan.reyes@alderbrook.example
+
+If you did not grant access, review the apps connected to your account.
+
+Sample message 1 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000002@xxx Mon Sep 04 10:14:00 +0000 2023
+X-GM-THRID: 1790000000000000002
+X-Gmail-Labels: Inbox
+Delivered-To: jreyes@alderbrook.example
+Received: from mail.forkyard.example (mail.forkyard.example. [192.0.2.12])
+        by mx.google.com with ESMTPS id s2x
+        for <jreyes@alderbrook.example>;
+        Mon, 04 Sep 2023 10:14:00 +0000
+Return-Path: <bounce@forkyard.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@forkyard.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@forkyard.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@forkyard.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=forkyard.example
+Message-ID: <sample-2@forkyard.example>
+Date: Mon, 04 Sep 2023 10:14:00 +0000
+From: "Forkyard" <hello@forkyard.example>
+To: jreyes@alderbrook.example
+Subject: Welcome to Forkyard
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for creating your Forkyard account. You signed up with your Alderbrook school account, so you sign in with Alderbrook.
+
+Sample message 2 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000003@xxx Tue Feb 11 11:21:00 +0000 2025
+X-GM-THRID: 1790000000000000003
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.forkyard.example (mail.forkyard.example. [192.0.2.13])
+        by mx.google.com with ESMTPS id s3x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 11 Feb 2025 11:21:00 +0000
+Return-Path: <bounce@forkyard.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@forkyard.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@forkyard.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@forkyard.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=forkyard.example
+Message-ID: <sample-3@forkyard.example>
+Date: Tue, 11 Feb 2025 11:21:00 +0000
+From: "Forkyard" <notifications@forkyard.example>
+To: jordan.reyes@alderbrook.example
+Subject: [thesis-sim] Pull request #14 merged
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your pull request #14 "Add Monte Carlo runner" was merged into main in the repository thesis-sim.
+
+Sample message 3 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000004@xxx Wed May 20 12:28:00 +0000 2026
+X-GM-THRID: 1790000000000000004
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.forkyard.example (mail.forkyard.example. [192.0.2.14])
+        by mx.google.com with ESMTPS id s4x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 20 May 2026 12:28:00 +0000
+Return-Path: <bounce@forkyard.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@forkyard.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@forkyard.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@forkyard.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=forkyard.example
+Message-ID: <sample-4@forkyard.example>
+Date: Wed, 20 May 2026 12:28:00 +0000
+From: "Forkyard" <security@forkyard.example>
+To: jordan.reyes@alderbrook.example
+Subject: New sign-in to your Forkyard account
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We noticed a new sign-in to your Forkyard account from a new device. If this was you, there is nothing to do.
+
+Sample message 4 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000005@xxx Sun Oct 01 13:35:00 +0000 2023
+X-GM-THRID: 1790000000000000005
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.notebloom.example (mail.notebloom.example. [192.0.2.15])
+        by mx.google.com with ESMTPS id s5x
+        for <jordan.reyes@alderbrook.example>;
+        Sun, 01 Oct 2023 13:35:00 +0000
+Return-Path: <bounce@notebloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@notebloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@notebloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@notebloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=notebloom.example
+Message-ID: <sample-5@notebloom.example>
+Date: Sun, 01 Oct 2023 13:35:00 +0000
+From: "Notebloom" <team@notebloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Welcome to Notebloom
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome! You signed up using your school account. Your workspace is ready.
+
+Sample message 5 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000006@xxx Tue Mar 03 14:42:00 +0000 2026
+X-GM-THRID: 1790000000000000006
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.notebloom.example (mail.notebloom.example. [192.0.2.16])
+        by mx.google.com with ESMTPS id s6x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 03 Mar 2026 14:42:00 +0000
+Return-Path: <bounce@notebloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@notebloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@notebloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@notebloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=notebloom.example
+Message-ID: <sample-6@notebloom.example>
+Date: Tue, 03 Mar 2026 14:42:00 +0000
+From: "Notebloom" <notify@notebloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Priya shared the page "Lab 4 notes" with you
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Priya shared the page "Lab 4 notes" with you. You can edit it.
+
+Sample message 6 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000007@xxx Mon Jan 15 15:49:00 +0000 2024
+X-GM-THRID: 1790000000000000007
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.proofwright.example (mail.proofwright.example. [192.0.2.17])
+        by mx.google.com with ESMTPS id s7x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 15 Jan 2024 15:49:00 +0000
+Return-Path: <bounce@proofwright.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@proofwright.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@proofwright.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@proofwright.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=proofwright.example
+Message-ID: <sample-7@proofwright.example>
+Date: Mon, 15 Jan 2024 15:49:00 +0000
+From: "Proofwright" <no-reply@proofwright.example>
+To: jordan.reyes@alderbrook.example
+Subject: Confirm your email address
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Confirm your email address to finish creating your Proofwright account. Your code is 4F7-K2Q.
+
+Sample message 7 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000008@xxx Mon Jan 15 16:56:00 +0000 2024
+X-GM-THRID: 1790000000000000008
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.proofwright.example (mail.proofwright.example. [192.0.2.18])
+        by mx.google.com with ESMTPS id s8x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 15 Jan 2024 16:56:00 +0000
+Return-Path: <bounce@proofwright.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@proofwright.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@proofwright.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@proofwright.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=proofwright.example
+Message-ID: <sample-8@proofwright.example>
+Date: Mon, 15 Jan 2024 16:56:00 +0000
+From: "Proofwright" <hello@proofwright.example>
+To: jordan.reyes@alderbrook.example
+Subject: Welcome to Proofwright
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Proofwright. Your password has been set and your account is ready.
+
+Sample message 8 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000009@xxx Wed Nov 12 17:03:00 +0000 2025
+X-GM-THRID: 1790000000000000009
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.proofwright.example (mail.proofwright.example. [192.0.2.19])
+        by mx.google.com with ESMTPS id s9x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 12 Nov 2025 17:03:00 +0000
+Return-Path: <bounce@proofwright.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@proofwright.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@proofwright.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@proofwright.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=proofwright.example
+Message-ID: <sample-9@proofwright.example>
+Date: Wed, 12 Nov 2025 17:03:00 +0000
+From: "Proofwright" <notify@proofwright.example>
+To: jordan.reyes@alderbrook.example
+Subject: Alex invited you to edit "Thesis - final"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Alex invited you to edit the project "Thesis - final".
+
+Sample message 9 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000010@xxx Thu Apr 02 08:10:00 +0000 2026
+X-GM-THRID: 1790000000000000010
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.proofwright.example (mail.proofwright.example. [192.0.2.20])
+        by mx.google.com with ESMTPS id s10x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 02 Apr 2026 08:10:00 +0000
+Return-Path: <bounce@proofwright.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@proofwright.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@proofwright.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@proofwright.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=proofwright.example
+Message-ID: <sample-10@proofwright.example>
+Date: Thu, 02 Apr 2026 08:10:00 +0000
+From: "Proofwright" <notify@proofwright.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your project "Thesis - final" compiled with 3 warnings
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your project "Thesis - final" compiled with 3 warnings.
+
+Sample message 10 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000011@xxx Thu Feb 01 09:17:00 +0000 2024
+X-GM-THRID: 1790000000000000011
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.sketchloom.example (mail.sketchloom.example. [192.0.2.21])
+        by mx.google.com with ESMTPS id s11x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 01 Feb 2024 09:17:00 +0000
+Return-Path: <bounce@sketchloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@sketchloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@sketchloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@sketchloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=sketchloom.example
+Message-ID: <sample-11@sketchloom.example>
+Date: Thu, 01 Feb 2024 09:17:00 +0000
+From: "Sketchloom" <billing@sketchloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your student plan is active
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Sketchloom student plan is active until you graduate. Amount charged: $0.00. Your plan renews each year while you are a student.
+
+Sample message 11 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000012@xxx Tue Jun 10 10:24:00 +0000 2025
+X-GM-THRID: 1790000000000000012
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.sketchloom.example (mail.sketchloom.example. [192.0.2.22])
+        by mx.google.com with ESMTPS id s12x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 10 Jun 2025 10:24:00 +0000
+Return-Path: <bounce@sketchloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@sketchloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@sketchloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@sketchloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=sketchloom.example
+Message-ID: <sample-12@sketchloom.example>
+Date: Tue, 10 Jun 2025 10:24:00 +0000
+From: "Sketchloom" <notify@sketchloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Sam commented on "Poster v3"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Sam commented on your design "Poster v3": "Love the colours."
+
+Sample message 12 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000013@xxx Sat Aug 01 11:31:00 +0000 2026
+X-GM-THRID: 1790000000000000013
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.sketchloom.example (mail.sketchloom.example. [192.0.2.23])
+        by mx.google.com with ESMTPS id s13x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 01 Aug 2026 11:31:00 +0000
+Return-Path: <bounce@sketchloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@sketchloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@sketchloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@sketchloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=sketchloom.example
+Message-ID: <sample-13@sketchloom.example>
+Date: Sat, 01 Aug 2026 11:31:00 +0000
+From: "Sketchloom" <billing@sketchloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Student status check: your student plan ends when you graduate
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We need to verify your student status. Your student plan ends when you graduate.
+
+Sample message 13 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000014@xxx Tue Sep 15 12:38:00 +0000 2026
+X-GM-THRID: 1790000000000000014
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.sketchloom.example (mail.sketchloom.example. [192.0.2.24])
+        by mx.google.com with ESMTPS id s14x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 15 Sep 2026 12:38:00 +0000
+Return-Path: <bounce@sketchloom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@sketchloom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@sketchloom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@sketchloom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=sketchloom.example
+Message-ID: <sample-14@sketchloom.example>
+Date: Tue, 15 Sep 2026 12:38:00 +0000
+From: "Sketchloom" <news@sketchloom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Go Pro: 30% off for teams
+List-Unsubscribe: <mailto:unsubscribe@sketchloom.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Upgrade to Pro today and save 30% on team plans.
+
+Sample message 14 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000015@xxx Sun Aug 20 13:45:00 +0000 2023
+X-GM-THRID: 1790000000000000015
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.stowbin.example (mail.stowbin.example. [192.0.2.25])
+        by mx.google.com with ESMTPS id s15x
+        for <jordan.reyes@alderbrook.example>;
+        Sun, 20 Aug 2023 13:45:00 +0000
+Return-Path: <bounce@stowbin.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@stowbin.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@stowbin.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@stowbin.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=stowbin.example
+Message-ID: <sample-15@stowbin.example>
+Date: Sun, 20 Aug 2023 13:45:00 +0000
+From: "Stowbin" <no-reply@stowbin.example>
+To: jordan.reyes@alderbrook.example
+Subject: Reset your Stowbin password
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We received a request to reset the password for your Stowbin account. If you did not ask, ignore this email.
+
+Sample message 15 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000016@xxx Mon Dec 01 14:52:00 +0000 2025
+X-GM-THRID: 1790000000000000016
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.stowbin.example (mail.stowbin.example. [192.0.2.26])
+        by mx.google.com with ESMTPS id s16x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 01 Dec 2025 14:52:00 +0000
+Return-Path: <bounce@stowbin.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@stowbin.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@stowbin.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@stowbin.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=stowbin.example
+Message-ID: <sample-16@stowbin.example>
+Date: Mon, 01 Dec 2025 14:52:00 +0000
+From: "Stowbin" <notify@stowbin.example>
+To: jordan.reyes@alderbrook.example
+Subject: 3 files were added to the folder "Fieldwork photos"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+3 files were added to the folder "Fieldwork photos".
+
+Sample message 16 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000017@xxx Tue Jun 30 15:59:00 +0000 2026
+X-GM-THRID: 1790000000000000017
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.learnridge.example (mail.learnridge.example. [192.0.2.27])
+        by mx.google.com with ESMTPS id s17x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 30 Jun 2026 15:59:00 +0000
+Return-Path: <bounce@learnridge.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@learnridge.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@learnridge.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@learnridge.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=learnridge.example
+Message-ID: <sample-17@learnridge.example>
+Date: Tue, 30 Jun 2026 15:59:00 +0000
+From: "Learnridge" <no-reply@learnridge.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your certificate for Intro to Statistics is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Congratulations! Your certificate for Intro to Statistics is ready to download from your Learnridge dashboard.
+
+Sample message 17 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000018@xxx Tue Sep 01 16:06:00 +0000 2026
+X-GM-THRID: 1790000000000000018
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.learnridge.example (mail.learnridge.example. [192.0.2.28])
+        by mx.google.com with ESMTPS id s18x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 01 Sep 2026 16:06:00 +0000
+Return-Path: <bounce@learnridge.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@learnridge.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@learnridge.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@learnridge.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=learnridge.example
+Message-ID: <sample-18@learnridge.example>
+Date: Tue, 01 Sep 2026 16:06:00 +0000
+From: "Learnridge" <news@learnridge.example>
+To: jordan.reyes@alderbrook.example
+Subject: New courses this autumn
+List-Unsubscribe: <mailto:unsubscribe@learnridge.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Browse our new courses this autumn.
+
+Sample message 18 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000019@xxx Sat Feb 14 17:13:00 +0000 2026
+X-GM-THRID: 1790000000000000019
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.citewell.example (mail.citewell.example. [192.0.2.29])
+        by mx.google.com with ESMTPS id s19x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 14 Feb 2026 17:13:00 +0000
+Return-Path: <bounce@citewell.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@citewell.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@citewell.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@citewell.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=citewell.example
+Message-ID: <sample-19@citewell.example>
+Date: Sat, 14 Feb 2026 17:13:00 +0000
+From: "Citewell" <sync@citewell.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your library synced: 214 references
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Citewell library synced across your devices: 214 references in 6 collections.
+
+Sample message 19 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000020@xxx Tue Aug 30 08:20:00 +0000 2022
+X-GM-THRID: 1790000000000000020
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tidemail.example (mail.tidemail.example. [192.0.2.30])
+        by mx.google.com with ESMTPS id s20x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 30 Aug 2022 08:20:00 +0000
+Return-Path: <bounce@tidemail.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tidemail.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tidemail.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tidemail.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tidemail.example
+Message-ID: <sample-20@tidemail.example>
+Date: Tue, 30 Aug 2022 08:20:00 +0000
+From: "Tidemail" <accounts@tidemail.example>
+To: jordan.reyes@alderbrook.example
+Subject: Recovery email added
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+jordan.reyes@alderbrook.example is now the recovery address for jordanr@tidemail.example. We'll use it if you ever need to reset your password.
+
+Sample message 20 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000021@xxx Sat Oct 10 09:27:00 +0000 2026
+X-GM-THRID: 1790000000000000021
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tidemail.example (mail.tidemail.example. [192.0.2.31])
+        by mx.google.com with ESMTPS id s21x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 10 Oct 2026 09:27:00 +0000
+Return-Path: <bounce@tidemail.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tidemail.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tidemail.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tidemail.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tidemail.example
+Message-ID: <sample-21@tidemail.example>
+Date: Sat, 10 Oct 2026 09:27:00 +0000
+From: "Tidemail" <security@tidemail.example>
+To: jordan.reyes@alderbrook.example
+Subject: Security alert: new sign-in to your Tidemail account
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+There was a new sign-in to your Tidemail account. We sent this alert to your recovery email.
+
+Sample message 21 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000022@xxx Sun May 05 10:34:00 +0000 2024
+X-GM-THRID: 1790000000000000022
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.latchkin.example (mail.latchkin.example. [192.0.2.32])
+        by mx.google.com with ESMTPS id s22x
+        for <jordan.reyes@alderbrook.example>;
+        Sun, 05 May 2024 10:34:00 +0000
+Return-Path: <bounce@latchkin.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@latchkin.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@latchkin.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@latchkin.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=latchkin.example
+Message-ID: <sample-22@latchkin.example>
+Date: Sun, 05 May 2024 10:34:00 +0000
+From: "Latchkin" <hello@latchkin.example>
+To: jordan.reyes@alderbrook.example
+Subject: Welcome to Latchkin: your vault is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Latchkin. Your password vault is ready. Keep your master password safe.
+
+Sample message 22 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000023@xxx Tue May 05 11:41:00 +0000 2026
+X-GM-THRID: 1790000000000000023
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.latchkin.example (mail.latchkin.example. [192.0.2.33])
+        by mx.google.com with ESMTPS id s23x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 05 May 2026 11:41:00 +0000
+Return-Path: <bounce@latchkin.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@latchkin.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@latchkin.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@latchkin.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=latchkin.example
+Message-ID: <sample-23@latchkin.example>
+Date: Tue, 05 May 2026 11:41:00 +0000
+From: "Latchkin" <billing@latchkin.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your Latchkin plan renewed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Latchkin plan renewed: $3.00. Next billing date: 5 May 2027.
+
+Sample message 23 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000024@xxx Fri Aug 25 12:48:00 +0000 2023
+X-GM-THRID: 1790000000000000024
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.brightpenny.example (mail.brightpenny.example. [192.0.2.34])
+        by mx.google.com with ESMTPS id s24x
+        for <jordan.reyes@alderbrook.example>;
+        Fri, 25 Aug 2023 12:48:00 +0000
+Return-Path: <bounce@brightpenny.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@brightpenny.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@brightpenny.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@brightpenny.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=brightpenny.example
+Message-ID: <sample-24@brightpenny.example>
+Date: Fri, 25 Aug 2023 12:48:00 +0000
+From: "Brightpenny" <hello@brightpenny.example>
+To: jordan.reyes@alderbrook.example
+Subject: Welcome to Brightpenny Checking
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Brightpenny Checking. Your account is open.
+
+Sample message 24 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000025@xxx Sat Oct 31 13:55:00 +0000 2026
+X-GM-THRID: 1790000000000000025
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.brightpenny.example (mail.brightpenny.example. [192.0.2.35])
+        by mx.google.com with ESMTPS id s25x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 31 Oct 2026 13:55:00 +0000
+Return-Path: <bounce@brightpenny.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@brightpenny.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@brightpenny.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@brightpenny.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=brightpenny.example
+Message-ID: <sample-25@brightpenny.example>
+Date: Sat, 31 Oct 2026 13:55:00 +0000
+From: "Brightpenny" <statements@brightpenny.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your October statement is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your October statement is ready. Sign in to view it.
+
+Sample message 25 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000026@xxx Mon Nov 02 14:02:00 +0000 2026
+X-GM-THRID: 1790000000000000026
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.brightpenny.example (mail.brightpenny.example. [192.0.2.36])
+        by mx.google.com with ESMTPS id s26x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 02 Nov 2026 14:02:00 +0000
+Return-Path: <bounce@brightpenny.example>
+Authentication-Results: mx.google.com;
+       dkim=none;
+       spf=softfail (google.com: domain of transitioning bounce@brightpenny.example does not designate 192.0.2.66 as permitted sender) smtp.mailfrom=bounce@brightpenny.example;
+       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=brightpenny.example
+Message-ID: <sample-26@brightpenny.example>
+Date: Mon, 02 Nov 2026 14:02:00 +0000
+From: "Brightpenny" <alerts@brightpenny.example>
+To: jordan.reyes@alderbrook.example
+Subject: Urgent: verify your account now
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your account is locked. Verify your account now or it will be closed.
+
+Sample message 26 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000027@xxx Mon Sep 09 15:09:00 +0000 2024
+X-GM-THRID: 1790000000000000027
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.paywisp.example (mail.paywisp.example. [192.0.2.37])
+        by mx.google.com with ESMTPS id s27x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 09 Sep 2024 15:09:00 +0000
+Return-Path: <bounce@paywisp.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@paywisp.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@paywisp.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@paywisp.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=paywisp.example
+Message-ID: <sample-27@paywisp.example>
+Date: Mon, 09 Sep 2024 15:09:00 +0000
+From: "Paywisp" <no-reply@paywisp.example>
+To: jordan.reyes@alderbrook.example
+Subject: Confirm your email for Paywisp
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Confirm your email to start sending money with Paywisp.
+
+Sample message 27 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000028@xxx Sun Jul 19 16:16:00 +0000 2026
+X-GM-THRID: 1790000000000000028
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.paywisp.example (mail.paywisp.example. [192.0.2.38])
+        by mx.google.com with ESMTPS id s28x
+        for <jordan.reyes@alderbrook.example>;
+        Sun, 19 Jul 2026 16:16:00 +0000
+Return-Path: <bounce@paywisp.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@paywisp.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@paywisp.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@paywisp.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=paywisp.example
+Message-ID: <sample-28@paywisp.example>
+Date: Sun, 19 Jul 2026 16:16:00 +0000
+From: "Paywisp" <receipts@paywisp.example>
+To: jordan.reyes@alderbrook.example
+Subject: You sent $12.50 to Sam Okafor
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+You sent $12.50 to Sam Okafor.
+Receipt ID PW-2213.
+
+This receipt was sent to j*****@alderbrook.example.
+
+Sample message 28 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000029@xxx Thu Aug 15 17:23:00 +0000 2024
+X-GM-THRID: 1790000000000000029
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tunefield.example (mail.tunefield.example. [192.0.2.39])
+        by mx.google.com with ESMTPS id s29x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 15 Aug 2024 17:23:00 +0000
+Return-Path: <bounce@tunefield.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tunefield.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tunefield.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tunefield.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tunefield.example
+Message-ID: <sample-29@tunefield.example>
+Date: Thu, 15 Aug 2024 17:23:00 +0000
+From: "Tunefield" <billing@tunefield.example>
+To: jordan.reyes@alderbrook.example
+Subject: Verify your student status by 1 Aug
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Keep your student discount: verify your student status by 1 Aug.
+
+Sample message 29 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000030@xxx Mon Oct 05 08:30:00 +0000 2026
+X-GM-THRID: 1790000000000000030
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tunefield.example (mail.tunefield.example. [192.0.2.40])
+        by mx.google.com with ESMTPS id s30x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 05 Oct 2026 08:30:00 +0000
+Return-Path: <bounce@tunefield.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tunefield.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tunefield.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tunefield.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tunefield.example
+Message-ID: <sample-30@tunefield.example>
+Date: Mon, 05 Oct 2026 08:30:00 +0000
+From: "Tunefield" <billing@tunefield.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your Student plan renewed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Student plan renewed: $5.99. Next billing date: 5 Nov. Student discount applied.
+
+Sample message 30 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000031@xxx Sat Apr 11 09:37:00 +0000 2026
+X-GM-THRID: 1790000000000000031
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.mendwise.example (mail.mendwise.example. [192.0.2.41])
+        by mx.google.com with ESMTPS id s31x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 11 Apr 2026 09:37:00 +0000
+Return-Path: <bounce@mendwise.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@mendwise.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@mendwise.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@mendwise.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mendwise.example
+Message-ID: <sample-31@mendwise.example>
+Date: Sat, 11 Apr 2026 09:37:00 +0000
+From: "Mendwise" <care@mendwise.example>
+To: jordan.reyes@alderbrook.example
+Subject: Appointment reminder: Thu 16 Apr, 10:30
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+This is a reminder of your appointment on Thu 16 Apr at 10:30. Sign in to the patient portal to reschedule.
+
+Sample message 31 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000032@xxx Mon Apr 20 10:44:00 +0000 2026
+X-GM-THRID: 1790000000000000032
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.mendwise.example (mail.mendwise.example. [192.0.2.42])
+        by mx.google.com with ESMTPS id s32x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 20 Apr 2026 10:44:00 +0000
+Return-Path: <bounce@mendwise.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@mendwise.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@mendwise.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@mendwise.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mendwise.example
+Message-ID: <sample-32@mendwise.example>
+Date: Mon, 20 Apr 2026 10:44:00 +0000
+From: "Mendwise" <care@mendwise.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your test results are available in the patient portal
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your test results are available. Sign in to the patient portal to view them.
+
+Sample message 32 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000033@xxx Thu Jan 22 11:51:00 +0000 2026
+X-GM-THRID: 1790000000000000033
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.chirpline.example (mail.chirpline.example. [192.0.2.43])
+        by mx.google.com with ESMTPS id s33x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 22 Jan 2026 11:51:00 +0000
+Return-Path: <bounce@chirpline.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@chirpline.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@chirpline.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@chirpline.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=chirpline.example
+Message-ID: <sample-33@chirpline.example>
+Date: Thu, 22 Jan 2026 11:51:00 +0000
+From: "Chirpline" <notify@chirpline.example>
+To: jordan.reyes@alderbrook.example
+Subject: Sam mentioned you in a post
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Sam mentioned you in a post: "Great talk today @jordan".
+
+Sample message 33 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000034@xxx Wed Jul 01 12:58:00 +0000 2026
+X-GM-THRID: 1790000000000000034
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.chirpline.example (mail.chirpline.example. [192.0.2.44])
+        by mx.google.com with ESMTPS id s34x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 01 Jul 2026 12:58:00 +0000
+Return-Path: <bounce@chirpline.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@chirpline.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@chirpline.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@chirpline.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=chirpline.example
+Message-ID: <sample-34@chirpline.example>
+Date: Wed, 01 Jul 2026 12:58:00 +0000
+From: "Chirpline" <digest@chirpline.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your weekly digest
+List-Unsubscribe: <mailto:unsubscribe@chirpline.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Here is what you missed this week.
+
+Sample message 34 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000035@xxx Mon Mar 03 13:05:00 +0000 2025
+X-GM-THRID: 1790000000000000035
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.parcelpine.example (mail.parcelpine.example. [192.0.2.45])
+        by mx.google.com with ESMTPS id s35x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 03 Mar 2025 13:05:00 +0000
+Return-Path: <bounce@parcelpine.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@parcelpine.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@parcelpine.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@parcelpine.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=parcelpine.example
+Message-ID: <sample-35@parcelpine.example>
+Date: Mon, 03 Mar 2025 13:05:00 +0000
+From: "Parcelpine" <orders@parcelpine.example>
+To: jordan.reyes@alderbrook.example
+Subject: Order confirmation #PP-48213
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="b35sample"
+
+--b35sample
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for your order #PP-48213. Order total: $24.99.
+
+Sample message 35 of the Leave a Map sample mailbox. Fictional.
+
+--b35sample
+Content-Type: text/html; charset=UTF-8
+
+<html><body><script type="application/ld+json">{"@context":"http://schema.org","@type":"Order","merchant":{"@type":"Organization","name":"Parcelpine"},"orderNumber":"PP-48213","priceCurrency":"USD","price":"24.99"}</script><p>Thanks for your order #PP-48213. Order total: $24.99.</p></body></html>
+
+--b35sample--
+
+From 1790000000000000036@xxx Wed Mar 05 14:12:00 +0000 2025
+X-GM-THRID: 1790000000000000036
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.parcelpine.example (mail.parcelpine.example. [192.0.2.46])
+        by mx.google.com with ESMTPS id s36x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 05 Mar 2025 14:12:00 +0000
+Return-Path: <bounce@parcelpine.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@parcelpine.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@parcelpine.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@parcelpine.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=parcelpine.example
+Message-ID: <sample-36@parcelpine.example>
+Date: Wed, 05 Mar 2025 14:12:00 +0000
+From: "Parcelpine" <ship@parcelpine.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your order #PP-48213 has shipped
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your order #PP-48213 has shipped.
+
+Sample message 36 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000037@xxx Thu Aug 20 15:19:00 +0000 2026
+X-GM-THRID: 1790000000000000037
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.parcelpine.example (mail.parcelpine.example. [192.0.2.47])
+        by mx.google.com with ESMTPS id s37x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 20 Aug 2026 15:19:00 +0000
+Return-Path: <bounce@parcelpine.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@parcelpine.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@parcelpine.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@parcelpine.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=parcelpine.example
+Message-ID: <sample-37@parcelpine.example>
+Date: Thu, 20 Aug 2026 15:19:00 +0000
+From: "Parcelpine" <deals@parcelpine.example>
+To: jordan.reyes@alderbrook.example
+Subject: Weekend deals
+List-Unsubscribe: <mailto:unsubscribe@parcelpine.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Deals for the weekend.
+
+Sample message 37 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000038@xxx Fri Nov 08 16:26:00 +0000 2024
+X-GM-THRID: 1790000000000000038
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.munchroute.example (mail.munchroute.example. [192.0.2.48])
+        by mx.google.com with ESMTPS id s38x
+        for <jordan.reyes@alderbrook.example>;
+        Fri, 08 Nov 2024 16:26:00 +0000
+Return-Path: <bounce@munchroute.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@munchroute.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@munchroute.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@munchroute.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=munchroute.example
+Message-ID: <sample-38@munchroute.example>
+Date: Fri, 08 Nov 2024 16:26:00 +0000
+From: "Munchroute" <receipts@munchroute.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your receipt from Munchroute: $18.40
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for ordering. Total: $18.40.
+
+Sample message 38 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000039@xxx Mon Feb 02 17:33:00 +0000 2026
+X-GM-THRID: 1790000000000000039
+X-Gmail-Labels: Inbox
+Received: from mail.munchroute.example (mail.munchroute.example. [192.0.2.49])
+        by mx.google.com with ESMTPS id s39x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 02 Feb 2026 17:33:00 +0000
+Return-Path: <bounce@munchroute.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@munchroute.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@munchroute.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@munchroute.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=munchroute.example
+Message-ID: <sample-39@munchroute.example>
+Date: Mon, 02 Feb 2026 17:33:00 +0000
+From: "Munchroute" <receipts@munchroute.example>
+To: undisclosed-recipients:;
+Subject: Your receipt from Munchroute: $9.10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for ordering. Total: $9.10.
+
+Sample message 39 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000040@xxx Mon May 05 08:40:00 +0000 2025
+X-GM-THRID: 1790000000000000040
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tallyquiz.example (mail.tallyquiz.example. [192.0.2.50])
+        by mx.google.com with ESMTPS id s40x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 05 May 2025 08:40:00 +0000
+Return-Path: <bounce@tallyquiz.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tallyquiz.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tallyquiz.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tallyquiz.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tallyquiz.example
+Message-ID: <sample-40@tallyquiz.example>
+Date: Mon, 05 May 2025 08:40:00 +0000
+From: "Tallyquiz" <hello@tallyquiz.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your quiz results for STAT 210 practice set
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+You scored 8 out of 10 on the STAT 210 practice set.
+
+Sample message 40 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000041@xxx Thu Mar 12 09:47:00 +0000 2026
+X-GM-THRID: 1790000000000000041
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.vistaroam.example (mail.vistaroam.example. [192.0.2.51])
+        by mx.google.com with ESMTPS id s41x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 12 Mar 2026 09:47:00 +0000
+Return-Path: <bounce@vistaroam.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@vistaroam.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@vistaroam.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@vistaroam.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=vistaroam.example
+Message-ID: <sample-41@vistaroam.example>
+Date: Thu, 12 Mar 2026 09:47:00 +0000
+From: "Vistaroam" <offers@vistaroam.example>
+To: jordan.reyes@alderbrook.example
+Subject: Flash sale: fares for students
+List-Unsubscribe: <mailto:unsubscribe@vistaroam.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Flash sale on fares for students this week only.
+
+Sample message 41 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000042@xxx Fri Jun 12 10:54:00 +0000 2026
+X-GM-THRID: 1790000000000000042
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.vistaroam.example (mail.vistaroam.example. [192.0.2.52])
+        by mx.google.com with ESMTPS id s42x
+        for <jordan.reyes@alderbrook.example>;
+        Fri, 12 Jun 2026 10:54:00 +0000
+Return-Path: <bounce@vistaroam.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@vistaroam.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@vistaroam.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@vistaroam.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=vistaroam.example
+Message-ID: <sample-42@vistaroam.example>
+Date: Fri, 12 Jun 2026 10:54:00 +0000
+From: "Vistaroam" <offers@vistaroam.example>
+To: jordan.reyes@alderbrook.example
+Subject: Last chance: summer trips
+List-Unsubscribe: <mailto:unsubscribe@vistaroam.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Last chance to book summer trips.
+
+Sample message 42 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000043@xxx Mon Jul 07 11:01:00 +0000 2025
+X-GM-THRID: 1790000000000000043
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.pixelquay.example (mail.pixelquay.example. [192.0.2.53])
+        by mx.google.com with ESMTPS id s43x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 07 Jul 2025 11:01:00 +0000
+X-Forwarded-For: jordanr@tidemail.example jordan.reyes@alderbrook.example
+X-Forwarded-To: jordan.reyes@alderbrook.example
+Return-Path: <jordanr+caf_=jordan.reyes=alderbrook.example@tidemail.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@pixelquay.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@pixelquay.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@pixelquay.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=pixelquay.example
+Message-ID: <sample-43@pixelquay.example>
+Date: Mon, 07 Jul 2025 11:01:00 +0000
+From: "Pixelquay" <welcome@pixelquay.example>
+To: jordanr@tidemail.example
+Subject: Welcome to Pixelquay
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Pixelquay! Your account is ready.
+
+Sample message 43 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000044@xxx Mon Jul 07 12:08:00 +0000 2025
+X-GM-THRID: 1790000000000000044
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.pixelquay.example (mail.pixelquay.example. [192.0.2.54])
+        by mx.google.com with ESMTPS id s44x
+        for <jordan.reyes@alderbrook.example>;
+        Mon, 07 Jul 2025 12:08:00 +0000
+X-Forwarded-For: jordanr@tidemail.example jordan.reyes@alderbrook.example
+X-Forwarded-To: jordan.reyes@alderbrook.example
+Return-Path: <jordanr+caf_=jordan.reyes=alderbrook.example@tidemail.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@pixelquay.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@pixelquay.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@pixelquay.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=pixelquay.example
+Message-ID: <sample-44@pixelquay.example>
+Date: Mon, 07 Jul 2025 12:08:00 +0000
+From: "Pixelquay" <no-reply@pixelquay.example>
+To: jordanr@tidemail.example
+Subject: Verify your Pixelquay email
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Verify your email to start playing.
+
+Sample message 44 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000045@xxx Wed Feb 18 13:15:00 +0000 2026
+X-GM-THRID: 1790000000000000045
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.tidemail.example (mail.tidemail.example. [192.0.2.55])
+        by mx.google.com with ESMTPS id s45x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 18 Feb 2026 13:15:00 +0000
+Return-Path: <bounce@tidemail.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tidemail.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@tidemail.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@tidemail.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tidemail.example
+Message-ID: <sample-45@tidemail.example>
+Date: Wed, 18 Feb 2026 13:15:00 +0000
+From: "Sam Okafor" <sam.okafor@tidemail.example>
+To: jordan.reyes@alderbrook.example
+Subject: Fwd: Welcome to Hireloft
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+thought you'd like this site for jobs
+
+---------- Forwarded message ---------
+From: Hireloft <hello@hireloft.example>
+To: sam.okafor@tidemail.example
+Subject: Welcome to Hireloft
+
+> Welcome to Hireloft, Sam! Your account is ready.
+
+Sample message 45 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000046@xxx Fri May 01 14:22:00 +0000 2026
+X-GM-THRID: 1790000000000000046
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.notebIoom.example (mail.notebIoom.example. [192.0.2.56])
+        by mx.google.com with ESMTPS id s46x
+        for <jordan.reyes@alderbrook.example>;
+        Fri, 01 May 2026 14:22:00 +0000
+Return-Path: <bounce@notebIoom.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@notebIoom.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@notebIoom.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@notebIoom.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=notebIoom.example
+Message-ID: <sample-46@notebIoom.example>
+Date: Fri, 01 May 2026 14:22:00 +0000
+From: "Notebloom" <security@notebIoom.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your workspace will be deleted: verify now
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Notebloom workspace will be deleted in 24 hours. Verify your password now to keep it.
+
+Sample message 46 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000047@xxx Sat Jun 06 15:29:00 +0000 2026
+X-GM-THRID: 1790000000000000047
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.forkyard-verify.example (mail.forkyard-verify.example. [192.0.2.57])
+        by mx.google.com with ESMTPS id s47x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 06 Jun 2026 15:29:00 +0000
+Return-Path: <bounce@forkyard-verify.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@forkyard-verify.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@forkyard-verify.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@forkyard-verify.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=forkyard-verify.example
+Message-ID: <sample-47@forkyard-verify.example>
+Date: Sat, 06 Jun 2026 15:29:00 +0000
+From: "Forkyard Security" <alert@forkyard-verify.example>
+To: jordan.reyes@alderbrook.example
+Subject: Unusual sign-in: confirm your password
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We detected an unusual sign-in. Confirm your password to keep your Forkyard account.
+
+Sample message 47 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000048@xxx Wed Sep 02 16:36:00 +0000 2026
+X-GM-THRID: 1790000000000000048
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.learn.alderbrook.example (mail.learn.alderbrook.example. [192.0.2.58])
+        by mx.google.com with ESMTPS id s48x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 02 Sep 2026 16:36:00 +0000
+Return-Path: <bounce@learn.alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@learn.alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@learn.alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-48@learn.alderbrook.example>
+Date: Wed, 02 Sep 2026 16:36:00 +0000
+From: "Alderbrook Learn" <no-reply@learn.alderbrook.example>
+To: jordan.reyes@alderbrook.example
+Subject: Assignment graded: STAT 210
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your assignment for STAT 210 has been graded.
+
+Sample message 48 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000049@xxx Wed Oct 14 17:43:00 +0000 2026
+X-GM-THRID: 1790000000000000049
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.learn.alderbrook.example (mail.learn.alderbrook.example. [192.0.2.59])
+        by mx.google.com with ESMTPS id s49x
+        for <jordan.reyes@alderbrook.example>;
+        Wed, 14 Oct 2026 17:43:00 +0000
+Return-Path: <bounce@learn.alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@learn.alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@learn.alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-49@learn.alderbrook.example>
+Date: Wed, 14 Oct 2026 17:43:00 +0000
+From: "Alderbrook Learn" <no-reply@learn.alderbrook.example>
+To: jordan.reyes@alderbrook.example
+Subject: New announcement in ENGL 101
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+There is a new announcement in ENGL 101.
+
+Sample message 49 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000050@xxx Sun Sep 20 08:50:00 +0000 2026
+X-GM-THRID: 1790000000000000050
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.lists.alderbrook.example (mail.lists.alderbrook.example. [192.0.2.60])
+        by mx.google.com with ESMTPS id s50x
+        for <jordan.reyes@alderbrook.example>;
+        Sun, 20 Sep 2026 08:50:00 +0000
+Return-Path: <bounce@lists.alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@lists.alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@lists.alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-50@lists.alderbrook.example>
+Date: Sun, 20 Sep 2026 08:50:00 +0000
+From: "Robotics Club" <robotics@lists.alderbrook.example>
+To: robotics@lists.alderbrook.example
+Subject: Robotics club: meeting Thursday
+List-Id: Robotics Club <robotics.lists.alderbrook.example>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+We meet Thursday at 6 in the lab.
+
+Sample message 50 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000051@xxx Thu Oct 01 09:57:00 +0000 2026
+X-GM-THRID: 1790000000000000051
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.quad.alderbrook.example (mail.quad.alderbrook.example. [192.0.2.61])
+        by mx.google.com with ESMTPS id s51x
+        for <jordan.reyes@alderbrook.example>;
+        Thu, 01 Oct 2026 09:57:00 +0000
+Return-Path: <bounce@quad.alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@quad.alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@quad.alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-51@quad.alderbrook.example>
+Date: Thu, 01 Oct 2026 09:57:00 +0000
+From: "The Daily Quad" <editor@quad.alderbrook.example>
+To: jordan.reyes@alderbrook.example
+Subject: The Daily Quad: October issue
+List-Unsubscribe: <mailto:unsubscribe@quad.alderbrook.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+The October issue is out.
+
+Sample message 51 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000052@xxx Tue Oct 20 10:04:00 +0000 2026
+X-GM-THRID: 1790000000000000052
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.alderbrook.example (mail.alderbrook.example. [192.0.2.62])
+        by mx.google.com with ESMTPS id s52x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 20 Oct 2026 10:04:00 +0000
+Return-Path: <bounce@alderbrook.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@alderbrook.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@alderbrook.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@alderbrook.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=alderbrook.example
+Message-ID: <sample-52@alderbrook.example>
+Date: Tue, 20 Oct 2026 10:04:00 +0000
+From: "Alderbrook Registrar" <registrar@alderbrook.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your Alderbrook email closes on 31 Mar 2027
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Alderbrook email account will close on 31 Mar 2027. Move anything you need before then.
+
+Sample message 52 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000053@xxx Fri Jul 10 11:11:00 +0000 2026
+X-GM-THRID: 1790000000000000053
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.openscholar.example (mail.openscholar.example. [192.0.2.63])
+        by mx.google.com with ESMTPS id s53x
+        for <jordan.reyes@alderbrook.example>;
+        Fri, 10 Jul 2026 11:11:00 +0000
+Return-Path: <bounce@openscholar.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@openscholar.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@openscholar.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@openscholar.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=openscholar.example
+Message-ID: <sample-53@openscholar.example>
+Date: Fri, 10 Jul 2026 11:11:00 +0000
+From: <no-reply@openscholar.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your record was updated
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your public record was updated with a new work: "Monte Carlo methods for small samples".
+
+Sample message 53 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000054@xxx Tue Aug 11 12:18:00 +0000 2026
+X-GM-THRID: 1790000000000000054
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.datavault.example (mail.datavault.example. [192.0.2.64])
+        by mx.google.com with ESMTPS id s54x
+        for <jordan.reyes@alderbrook.example>;
+        Tue, 11 Aug 2026 12:18:00 +0000
+Return-Path: <bounce@datavault.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@datavault.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@datavault.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@datavault.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=datavault.example
+Message-ID: <sample-54@datavault.example>
+Date: Tue, 11 Aug 2026 12:18:00 +0000
+From: <no-reply@datavault.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your upload is published
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your upload "Fieldwork photos 2025" is now published.
+
+Sample message 54 of the Leave a Map sample mailbox. Fictional.
+
+From 1790000000000000055@xxx Sat Sep 12 13:25:00 +0000 2026
+X-GM-THRID: 1790000000000000055
+X-Gmail-Labels: Inbox
+Delivered-To: jordan.reyes@alderbrook.example
+Received: from mail.loanhub.example (mail.loanhub.example. [192.0.2.65])
+        by mx.google.com with ESMTPS id s55x
+        for <jordan.reyes@alderbrook.example>;
+        Sat, 12 Sep 2026 13:25:00 +0000
+Return-Path: <bounce@loanhub.example>
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@loanhub.example header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@loanhub.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@loanhub.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=loanhub.example
+Message-ID: <sample-55@loanhub.example>
+Date: Sat, 12 Sep 2026 13:25:00 +0000
+From: <no-reply@loanhub.example>
+To: jordan.reyes@alderbrook.example
+Subject: Your profile changes were saved
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+The changes to your profile were saved. Sign in to review them.
+
+Sample message 55 of the Leave a Map sample mailbox. Fictional.

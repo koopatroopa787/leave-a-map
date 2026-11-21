@@ -1,11 +1,11 @@
 import { useState } from 'preact/hooks';
 import type { ScanSettings } from '../../../../packages/core/types.ts';
 
-type Props = { onScan: (file: File, settings: ScanSettings) => void; error?: string };
+type Props = { onScan: (file: File, settings: ScanSettings) => void; onSample: () => void; error?: string };
 
 const EMAIL_RE = /^[^@\s]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$/i;
 
-export function StartScreen({ onScan, error }: Props) {
+export function StartScreen({ onScan, onSample, error }: Props) {
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
   const [file, setFile] = useState<File | null>(null);
@@ -42,6 +42,11 @@ export function StartScreen({ onScan, error }: Props) {
         {(problem || error) && <p class="error" role="alert">{problem || error}</p>}
         <button type="submit">Find my accounts</button>
       </form>
+      <section class="sample" aria-labelledby="sample-title">
+        <h2 id="sample-title">No mailbox handy?</h2>
+        <p>Run Leave a Map on a made-up student's 55 emails. Every name and service in it is fictional.</p>
+        <button type="button" id="try-sample" class="secondary" onClick={onSample}>Try the sample</button>
+      </section>
     </main>
   );
 }

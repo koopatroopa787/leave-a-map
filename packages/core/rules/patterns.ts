@@ -13,7 +13,7 @@ export const P = {
   AMOUNT: /(?:[$€£₹¥]|\b(?:USD|EUR|GBP|INR|CAD|AUD)\b)\s?\d{1,3}(?:[,\s]\d{3})*(?:\.\d{2})?/,
   RECURRING: /\b(?:renew(?:s|ed|al)|next (?:billing|payment) date|billed (?:monthly|annually|yearly)|auto-?renew|subscription (?:renewed|confirmed|confirmation)|your (?:monthly|annual) plan)\b/i,
   CARD_ON_FILE: /\b(?:card ending(?: in)?|ending in \d{4}|card on file|saved card|payment method (?:added|updated))\b/i,
-  STATEMENT_S: /\bstatement (?:is ready|is available|for)\b|\byour (?:monthly|annual) statement\b|\b(?:balance|deposit|transfer) (?:alert|received|update)\b/i,
+  STATEMENT_S: /\bstatement (?:is ready|is available|for)\b|\byour (?:monthly|annual) statement\b|\b(?:balance|deposit|transfer) (?:alert|received|update)\b|\byou sent [$€£]?\d[\d,]*(?:\.\d{2})? to\b/i,
   RECOVERY_B: /\b(?:recovery|backup|secondary) (?:e-?mail|address)\b/i,
   WORK_STRONG: /\b(?:repositor(?:y|ies)|pull request|merge request|commit(?:ted)?|shared (?:a |the )?(?:file|folder|document|doc|page|project|board|design|notebook) with you|invited you to (?:edit|collaborate|join|comment)|commented on|mentioned you in (?:a )?(?:comment|doc|page|file))\b/i,
   WORK_WEAK: /\b(?:project|workspace|document|folder|files? (?:were|was) (?:added|uploaded)|draft|manuscript|compiled|notebook|board)\b/i,

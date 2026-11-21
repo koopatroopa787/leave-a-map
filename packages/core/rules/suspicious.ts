@@ -32,3 +32,27 @@ export function suspiciousReason(m: MessageRecord, auth: AuthVerdict, pack: Pack
   if (claimed && claimed !== org && !isPersonSender(m.from.address)) return `P5 display name claims ${claimed}`;
   return null;
 }
+
+/** Folds letters that look alike once lower-cased (i, l, 1; o, 0; rn, m; vv, w) so lookalikes compare equal. */
+export const skeleton = (label: string) =>
+  label.toLowerCase().replace(/rn/g, 'm').replace(/vv/g, 'w').replace(/[il1|]/g, 'l').replace(/0/g, 'o');
+
+/**
+ * P3/P4 against the mailbox's own services, for when the pack doesn't know the brand: a sender
+ * whose label is a lookalike of, or a "<label>-verify" style variant of, a service that sent
+ * authenticated mail to this same mailbox. `trusted` maps each such label to its count of
+ * authenticated messages. Letter folding is symmetric, so for P3 the side with more authenticated
+ * mail is taken as genuine, and a tie flags neither. Display names are not used here: real services
+ * often send under one name from several domains.
+ */
+export function mailboxLookalike(org: string, trusted: ReadonlyMap<string, number>): string | null {
+  const label = labelOf(org);
+  if (label.length < 5) return null;
+  const mine = trusted.get(label) ?? 0;
+  const sk = skeleton(label);
+  for (const [t, n] of trusted) if (t !== label && t.length >= 5 && n > mine && skeleton(t) === sk) return `P3 looks like ${t}`;
+  const bp = BRAND_PLUS.exec(label);
+  const base = bp?.[1] ?? bp?.[2];
+  if (base && trusted.has(base)) return `P4 ${base} plus a word`;
+  return null;
+}
