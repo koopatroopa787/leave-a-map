@@ -1,0 +1,8 @@
+{
+  "projects": { "default": "YOUR_PROJECT_ID" },
+  "targets": {
+    "YOUR_PROJECT_ID": {
+      "hosting": { "scan": ["YOUR_SCAN_SITE_ID"], "cloud": ["YOUR_CLOUD_SITE_ID"] }
+    }
+  }
+}

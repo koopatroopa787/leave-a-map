@@ -1,0 +1,26 @@
+{
+  "name": "leave-a-map",
+  "private": true,
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config apps/scan/vite.config.ts",
+    "dev:cloud": "vite --config apps/cloud/vite.config.ts",
+    "build": "tsc --noEmit && vite build --config apps/scan/vite.config.ts && vite build --config apps/cloud/vite.config.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fixture": "node tools/make-fixture-mbox.mjs"
+  },
+  "dependencies": {
+    "firebase": "13.4.0",
+    "postal-mime": "4.2.1",
+    "preact": "10.29.8",
+    "tldts": "7.5.5"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "7.3.8",
+    "vitest": "3.2.7"
+  }
+}
