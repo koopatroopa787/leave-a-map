@@ -1,0 +1,8 @@
+{
+  "projects": { "default": "leave-a-map" },
+  "targets": {
+    "leave-a-map": {
+      "hosting": { "scan": ["leave-a-map"], "cloud": ["leave-a-map-cloud"] }
+    }
+  }
+}
