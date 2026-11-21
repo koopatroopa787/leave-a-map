@@ -29,3 +29,15 @@ describe('parseLabel', () => {
     expect(parseLabel('{"isAccount":true,"type":"bank","holds":"payment","quote":""}', '')).toBeNull();
   });
 });
+
+describe('outbox (cloud side)', async () => {
+  const { parseOutbox } = await import('../../packages/core/handoff.ts');
+  it('accepts only { id, senderDomain } items', () => {
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'forkyard.example' }] })).toEqual([{ id: 'a1', senderDomain: 'forkyard.example' }]);
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'forkyard.example', subject: 'Welcome' }] })).toBeNull();
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'https://x.example/a' }] })).toBeNull();
+    expect(parseOutbox({ type: 'lam.outbox', items: [{ id: 'a1', senderDomain: 'a.example' }, { id: 'a1', senderDomain: 'b.example' }] })).toBeNull();
+    expect(parseOutbox({ type: 'lam.outbox', items: [] })).toBeNull();
+    expect(parseOutbox({ type: 'other', items: [{ id: 'a1', senderDomain: 'a.example' }] })).toBeNull();
+  });
+});
