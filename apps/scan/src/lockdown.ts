@@ -8,10 +8,22 @@ for (const name of ['RTCPeerConnection', 'webkitRTCPeerConnection', 'RTCDataChan
   try { delete (globalThis as any)[name]; } catch { /* non-configurable: the capture test (T25) still applies */ }
 }
 
-export type EgressEvent = { at: string; kind: 'blocked' | 'resource' | 'handoff'; detail: string };
+/**
+ * The page's own record of everything that could leave it, for the privacy receipt (T26).
+ * Outbound kinds: `resource` (something loaded from another origin) and `blocked` (an attempt the
+ * CSP or lockdown stopped). `handoff` and `answers` are the consent-window exchange. `local` notes
+ * work that stayed on this device. The log itself never leaves the page.
+ */
+export type EgressEvent = { at: string; kind: 'blocked' | 'resource' | 'handoff' | 'answers' | 'local'; detail: string; domains?: string[] };
 export const egressLog: EgressEvent[] = [];
-const add = (kind: EgressEvent['kind'], detail: string) =>
-  egressLog.push({ at: new Date().toISOString(), kind, detail });
+const listeners = new Set<() => void>();
+export const onEgress = (fn: () => void) => { listeners.add(fn); return () => { listeners.delete(fn); }; };
+const add = (kind: EgressEvent['kind'], detail: string, domains?: string[]) => {
+  egressLog.push({ at: new Date().toISOString(), kind, detail, ...(domains ? { domains } : {}) });
+  for (const fn of listeners) fn();
+};
+/** Outbound attempts only (U4 counts these). */
+export const outboundCount = () => egressLog.filter((e) => e.kind === 'blocked' || e.kind === 'resource').length;
 
 // Stays local. Never add report-uri or report-to: the browser would send those reports out.
 addEventListener('securitypolicyviolation', (e) => add('blocked', `${e.effectiveDirective} ${e.blockedURI}`));
@@ -64,4 +76,7 @@ try {
   });
 } catch { /* already created */ }
 
-export const logHandoff = (count: number) => add('handoff', `${count} sender domains to the consent window`);
+export const logHandoff = (domains: string[]) =>
+  add('handoff', `${domains.length} web address${domains.length === 1 ? '' : 'es'} shown in the consent window`, [...domains]);
+export const logAnswers = (detail: string, domains?: string[]) => add('answers', detail, domains);
+export const logLocal = (detail: string) => add('local', detail);

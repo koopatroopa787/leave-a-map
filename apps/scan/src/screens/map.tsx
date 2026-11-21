@@ -12,6 +12,7 @@ import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
 import { SchoolLoginStep } from './school-login.tsx';
 import { CloudPanel } from './cloud-panel.tsx';
 import { NoAiBanner } from './no-ai-banner.tsx';
+import { Receipt } from './receipt.tsx';
 import type { ServiceInfo } from '../../../../packages/core/handoff.ts';
 import type { AnswerSource } from '../../../../packages/core/cascade.ts';
 import { applyLane3, BASIS_WORD, serviceLines, trail } from '../../../../packages/core/lane3.ts';
@@ -178,6 +179,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
 
       <NanoPanel items={nanoItems} accounts={scanned} onAccounts={onAccounts} />
       <CloudPanel accounts={accounts} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />
+      <Receipt />
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>
       <button type="button" class="secondary" onClick={onRestart}>Scan another file</button>
     </main>

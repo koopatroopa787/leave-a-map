@@ -1,4 +1,5 @@
 import './lockdown.ts';
+import { logLocal } from './lockdown.ts';
 import { render } from 'preact';
 import { useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
@@ -21,7 +22,7 @@ function App() {
     worker.onmessage = (e: MessageEvent<FromWorker>) => {
       const m = e.data;
       if (m.type === 'progress') setState({ step: 'scanning', settings, sample, ...m });
-      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
+      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${m.stats.messages.toLocaleString()} emails in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
       else { worker.terminate(); setState({ step: 'start', error: m.message }); }
     };
     worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };

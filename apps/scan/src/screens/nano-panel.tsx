@@ -1,7 +1,7 @@
 // Lane 2 controls under the list: start Nano from a click, show progress, and record U2, U4, U6.
 import { useEffect, useState } from 'preact/hooks';
 import type { NanoItem, RankedAccount } from '../../../../packages/core/types.ts';
-import { egressLog } from '../lockdown.ts';
+import { logLocal, outboundCount } from '../lockdown.ts';
 import type { NanoRunStats, Timing } from '../nano-run.ts';
 
 type Props = { items: NanoItem[]; accounts: RankedAccount[]; onAccounts: (a: RankedAccount[]) => void };
@@ -21,7 +21,7 @@ export function NanoPanel({ items, accounts, onAccounts }: Props) {
 
   const start = async () => {
     setRunning(true); setError(''); setStartState(probe);
-    const before = egressLog.length;
+    const before = outboundCount();
     const timings: Timing[] = [];
     try {
       const { startNano } = await import('../nano.ts');
@@ -29,11 +29,13 @@ export function NanoPanel({ items, accounts, onAccounts }: Props) {
       const nano = await startNano((p) => setDownload((d) => ({ events: (d?.events ?? 0) + 1, last: p })),
         (e) => timings.push({ id: e.id, ms: e.ms, valid: e.valid }));
       setProbe('ready');
-      await labelAccounts(items, accounts, nano, timings, (a, s) => { onAccounts(a); setStats(s); });
+      let last: NanoRunStats | null = null;
+      await labelAccounts(items, accounts, nano, timings, (a, s) => { onAccounts(a); setStats(s); last = s; });
+      if (last) logLocal(`Gemini Nano labelled ${(last as NanoRunStats).done} accounts on this device`);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
-      setEgress({ before, after: egressLog.length });
+      setEgress({ before, after: outboundCount() });
       setRunning(false);
     }
   };

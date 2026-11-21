@@ -2,7 +2,7 @@
 // The scan page's CSP never changes: a popup and postMessage are not network requests from
 // this page. Only `{ id, senderDomain }` leaves, and only enum answers come back.
 import { MSG, parseServiceInfo, type OutboxItem, type ServiceInfo } from '../../../packages/core/handoff.ts';
-import { logHandoff } from './lockdown.ts';
+import { logAnswers, logHandoff } from './lockdown.ts';
 
 export const CLOUD_ORIGIN: string = import.meta.env.VITE_SCAN_CLOUD_ORIGIN ?? 'https://leave-a-map-cloud.web.app';
 
@@ -19,14 +19,23 @@ export function openConsent(items: OutboxItem[], timeoutMs = 10 * 60 * 1000): Pr
   const sentIds = new Set(items.map((i) => i.id));
   return new Promise((resolve) => {
     let sent = false;
-    const done = (r: HandoffResult) => { removeEventListener('message', onMessage); clearTimeout(timer); clearInterval(watch); resolve(r); };
+    const done = (r: HandoffResult) => {
+      removeEventListener('message', onMessage); clearTimeout(timer); clearInterval(watch);
+      if (r.kind === 'answers') {
+        const byId = new Map(items.map((i) => [i.id, i.senderDomain]));
+        const approved = r.items.map((a) => byId.get(a.id)!).filter(Boolean);
+        logAnswers(`You approved ${approved.length}; ${approved.length} enum answer${approved.length === 1 ? '' : 's'} came back`, approved);
+      } else if (r.kind === 'cancelled') logAnswers('Cancelled: nothing was looked up');
+      else if (r.kind === 'timeout') logAnswers('Timed out: answers dropped');
+      resolve(r);
+    };
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== CLOUD_ORIGIN || e.source !== popup) return;
       const type = (e.data as { type?: unknown } | null)?.type;
       if (type === MSG.ready && !sent) {
         sent = true;
         popup.postMessage({ type: MSG.outbox, items }, CLOUD_ORIGIN);
-        logHandoff(items.length);
+        logHandoff(items.map((i) => i.senderDomain));
       } else if (type === MSG.services) {
         done({ kind: 'answers', items: parseServiceInfo(e.data, sentIds) });
       } else if (type === MSG.cancelled) {
