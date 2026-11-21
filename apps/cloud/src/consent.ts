@@ -1,16 +1,12 @@
 // apps/cloud/src/consent.ts: the consent window. Shows every sender domain it was given, each
 // with an unticked box. Only ticked rows are looked up; unticked rows are discarded here.
-// T23a spike: answers are a fixed "unknown"; T21 replaces lookup() with the real cascade and
+// The lookup itself (lane 3 cascade) is in egress.ts; Firebase loads only after the click below.
 // T22 adds the 18+ box, the "select all except health and money" button and the paid-tier text.
-import { MSG, parseOutbox, type OutboxItem, type ServiceInfo } from '../../../packages/core/handoff.ts';
+import { MSG, parseOutbox, type OutboxItem } from '../../../packages/core/handoff.ts';
 
 const SCAN_ORIGIN: string = import.meta.env.VITE_CLOUD_SCAN_ORIGIN ?? 'https://leave-a-map.web.app';
 const app = document.getElementById('app')!;
 const opener = window.opener as Window | null;
-
-async function lookup(items: OutboxItem[]): Promise<ServiceInfo[]> {
-  return items.map((i) => ({ id: i.id, source: 'in_cloud', basis: 'unknown', category: 'other', usuallyHolds: 'nothing-seen', loginEmailChange: 'unknown' }));
-}
 
 function el(tag: string, props: Record<string, unknown> = {}, ...kids: (Node | string)[]): HTMLElement {
   const n = Object.assign(document.createElement(tag), props);
@@ -29,7 +25,18 @@ function show(items: OutboxItem[]) {
   send.onclick = async () => {
     const approved = boxes.filter((b) => b.box.checked).map((b) => b.item);
     send.disabled = true;
-    const answers = await lookup(approved);
+    const progress = el('p', { id: 'consent-progress', textContent: `Looking up 0 of ${approved.length}…` });
+    send.after(progress);
+    let answers;
+    try {
+      const { lookupAll } = await import('./egress.ts'); // Firebase and App Check load only now
+      answers = await lookupAll(approved, (n) => { progress.textContent = `Looking up ${n} of ${approved.length}…`; },
+        (l) => console.info('lane 3', l));
+    } catch (e) {
+      app.replaceChildren(el('p', { id: 'consent-error', textContent: `The lookup couldn't run (${(e as Error).message}). Nothing was sent back.` }));
+      opener?.postMessage({ type: MSG.cancelled }, SCAN_ORIGIN);
+      return;
+    }
     opener?.postMessage({ type: MSG.services, items: answers }, SCAN_ORIGIN);
     app.replaceChildren(el('p', { id: 'consent-done', textContent: `Sent ${answers.length} answers back. You can close this window.` }));
     setTimeout(() => window.close(), 800);

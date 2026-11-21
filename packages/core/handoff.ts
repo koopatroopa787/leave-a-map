@@ -1,9 +1,18 @@
 // packages/core/handoff.ts: the only data allowed to leave the scan site, and the only
 // answers allowed back in. Locked: `{ id, senderDomain }` out, enums in (BUILD-PLAN section 1).
 import { parseServiceFields, type ServiceFields } from './contract.ts';
+import { ESCALATION_RULES, FIELD_NAMES, type EscalationRule, type FieldSources } from './cascade.ts';
 
 export type OutboxItem = { id: string; senderDomain: string };
-export type ServiceInfo = ServiceFields & { id: string; source: 'on_device' | 'in_cloud' };
+/** One lane 3 answer. Each field says which model it came from; `escalation` names the rule that re-asked the cloud. */
+export type ServiceInfo = ServiceFields & { id: string; sources: FieldSources; escalation: EscalationRule | null };
+
+function parseSources(v: unknown): FieldSources | null {
+  const o = v as Record<string, unknown> | null;
+  if (typeof o !== 'object' || o === null || Object.keys(o).length !== FIELD_NAMES.length) return null;
+  for (const k of FIELD_NAMES) if (o[k] !== 'on_device' && o[k] !== 'in_cloud') return null;
+  return o as FieldSources;
+}
 
 export const MAX_OUTBOX = 40;
 const DOMAIN_RE = /^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
@@ -22,11 +31,12 @@ export function parseServiceInfo(data: unknown, sentIds: ReadonlySet<string>): S
   const seen = new Set<string>();
   return msg.items.flatMap((item: any) => {
     if (typeof item?.id !== 'string' || !sentIds.has(item.id) || seen.has(item.id)) return [];
-    if (item.source !== 'on_device' && item.source !== 'in_cloud') return [];
+    const sources = parseSources(item.sources);
+    const escalation = item.escalation === null ? null : (ESCALATION_RULES as readonly unknown[]).includes(item.escalation) ? item.escalation as EscalationRule : undefined;
     const fields = parseServiceFields(item);
-    if (!fields) return [];
+    if (!fields || !sources || escalation === undefined) return [];
     seen.add(item.id);
-    return [{ id: item.id, source: item.source, ...fields }];
+    return [{ id: item.id, ...fields, sources: { ...sources }, escalation }];
   });
 }
 

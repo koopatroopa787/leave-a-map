@@ -61,14 +61,20 @@ export function applyLabel(a: Account, label: Label, msg: { msgId: string; date?
  * usually holds, so it never creates existence and is capped by `basis`.
  */
 export function applyServiceInfo(a: Account, info: ServiceInfo): Account {
-  const cap = maxTier(info.source, { basis: info.basis, exists: a.exists.tier });
-  if (!cap) return a;
-  const base = { source: info.source, signal: `typical for this kind of service (${info.basis})` };
   const out = { ...a };
-  if (info.category === 'work' || info.usuallyHolds === 'documents') out.work = raise(a.work, cap, base);
-  if (info.category === 'identity' || info.usuallyHolds === 'login-for-others') out.reset = raise(a.reset, cap, base);
-  if (info.category === 'money' || info.usuallyHolds === 'payment') out.money = raise(a.money, cap, base);
-  return out;
+  // Each condition carries the source of the field that raised it, so a card can say "cloud" for
+  // one reason and "on-device" for another. The cap follows that source and the answer's basis.
+  const raiseFrom = (field: 'category' | 'usuallyHolds', cond: Cond): Cond => {
+    const source = info.sources[field];
+    const cap = maxTier(source, { basis: info.basis, exists: a.exists.tier });
+    return cap ? raise(cond, cap, { source, signal: `typical for this kind of service (${info.basis})` }) : cond;
+  };
+  const pick = (byCategory: boolean, byHolds: boolean, cond: Cond) =>
+    byCategory ? raiseFrom('category', cond) : byHolds ? raiseFrom('usuallyHolds', cond) : cond;
+  out.work = pick(info.category === 'work', info.usuallyHolds === 'documents', a.work);
+  out.reset = pick(info.category === 'identity', info.usuallyHolds === 'login-for-others', a.reset);
+  out.money = pick(info.category === 'money', info.usuallyHolds === 'payment', a.money);
+  return out.work === a.work && out.reset === a.reset && out.money === a.money ? a : out;
 }
 
 /** "Likely · on-device AI · 3 Mar 2025 · “your project was saved”". */

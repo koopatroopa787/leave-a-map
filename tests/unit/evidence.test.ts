@@ -39,7 +39,8 @@ group('tier caps', () => {
   });
 
   it('caps lane 3 answers by basis and never creates existence', () => {
-    const info = { id: 'a1', source: 'in_cloud' as const, basis: 'recognised' as const, category: 'work' as const, usuallyHolds: 'documents' as const, loginEmailChange: 'account-settings' as const };
+    const cloudAll = { basis: 'in_cloud', category: 'in_cloud', usuallyHolds: 'in_cloud', loginEmailChange: 'in_cloud' } as const;
+    const info = { id: 'a1', sources: cloudAll, escalation: null, basis: 'recognised' as const, category: 'work' as const, usuallyHolds: 'documents' as const, loginEmailChange: 'account-settings' as const };
     expect(applyServiceInfo(account(), info).work).toMatchObject({ tier: 'likely', source: 'in_cloud' });
     expect(applyServiceInfo(account(), { ...info, basis: 'name-only' }).work.tier).toBe('possible');
     const weak = account({ tier: 'possible', source: 'rules', signal: 'TRANSACTIONAL ×1' });
