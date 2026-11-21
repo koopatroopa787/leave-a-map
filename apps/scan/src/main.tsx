@@ -1,0 +1,45 @@
+import './lockdown.ts';
+import { render } from 'preact';
+import { useState } from 'preact/hooks';
+import './styles.css';
+import { StartScreen } from './screens/start.tsx';
+import { ListScreen } from './screens/list.tsx';
+import type { FromWorker, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
+
+type State =
+  | { step: 'start'; error?: string }
+  | { step: 'scanning'; settings: ScanSettings; bytesRead: number; totalBytes: number; messages: number }
+  | { step: 'done'; settings: ScanSettings; accounts: RankedAccount[]; stats: ScanStats; ms: number };
+
+function App() {
+  const [state, setState] = useState<State>({ step: 'start' });
+
+  const scan = (file: File, settings: ScanSettings) => {
+    const worker = new Worker(new URL('./scan.worker.ts', import.meta.url), { type: 'module' });
+    setState({ step: 'scanning', settings, bytesRead: 0, totalBytes: file.size, messages: 0 });
+    worker.onmessage = (e: MessageEvent<FromWorker>) => {
+      const m = e.data;
+      if (m.type === 'progress') setState({ step: 'scanning', settings, ...m });
+      else if (m.type === 'done') { worker.terminate(); setState({ step: 'done', settings, accounts: m.accounts, stats: m.stats, ms: m.ms }); }
+      else { worker.terminate(); setState({ step: 'start', error: m.message }); }
+    };
+    worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };
+    worker.postMessage({ type: 'scan', file, settings });
+  };
+
+  if (state.step === 'start') return <StartScreen onScan={scan} error={state.error} />;
+  if (state.step === 'scanning') {
+    const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
+    return (
+      <main class="page">
+        <h1>Reading your mailbox</h1>
+        <p>It stays on this device. Nothing is uploaded.</p>
+        <progress max={100} value={pct} aria-label="Scan progress" />
+        <p aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
+      </main>
+    );
+  }
+  return <ListScreen {...state} onRestart={() => setState({ step: 'start' })} />;
+}
+
+render(<App />, document.getElementById('app')!);
