@@ -143,3 +143,15 @@ button.link { background: none; border: 0; padding: 0 .25rem; color: var(--accen
 .receipt dd { margin: .15rem 0 0; }
 .receipt dd ul { margin: 0; padding-left: 1.1rem; }
 .receipt .domain { overflow-wrap: anywhere; }
+
+/* T27: eval mode */
+.eval textarea { width: 100%; font: inherit; padding: .6rem; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: inherit; }
+.eval label { display: block; margin: .75rem 0; }
+.eval-list { list-style: none; padding: 0; }
+.eval-list .card p { margin: 0 0 .35rem; }
+.q1 { display: flex; flex-wrap: wrap; gap: 1rem; }
+.q1 label, .q2 label, .eval-misses label { display: flex; align-items: center; gap: .4rem; margin: .25rem 0; font-weight: 400; }
+.q2 { border: 0; padding: .25rem 0 0; margin: 0; }
+.q2 legend { font-weight: 600; font-size: .9rem; }
+.eval-misses { padding-left: 1.1rem; }
+.eval pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .75rem; font-size: .85rem; }

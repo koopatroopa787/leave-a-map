@@ -51,10 +51,14 @@ function App() {
 // Firebase loads only on the Nano check screen, so the normal scan ships no SDK code.
 const NanoCheck = lazy(() => import('./screens/nano-check.tsx').then((m) => ({ default: m.NanoCheck })));
 
+// Eval mode (T27): `?eval=1`. Its own flow; the normal map is never shown.
+const EvalApp = lazy(() => import('./screens/eval.tsx').then((m) => ({ default: m.EvalApp })));
+
 const HandoffCheck = lazy(() => import('./screens/handoff-check.tsx').then((m) => ({ default: m.HandoffCheck })));
 
 const root = document.getElementById('app')!;
 const loading = <main class="page">Loading…</main>;
 if (location.hash === '#nano-check') render(<Suspense fallback={loading}><NanoCheck /></Suspense>, root);
 else if (location.hash === '#handoff-check') render(<Suspense fallback={loading}><HandoffCheck /></Suspense>, root);
+else if (new URLSearchParams(location.search).get('eval') === '1') render(<Suspense fallback={loading}><EvalApp /></Suspense>, root);
 else render(<App />, root);
