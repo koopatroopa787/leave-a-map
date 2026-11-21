@@ -110,6 +110,6 @@ describe('the committed pack files', () => {
   });
   it('leaves the sample\'s lookup-only services out, so the cloud step still has work', () => {
     for (const d of ['learnridge.example', 'citewell.example', 'chirpline.example', 'mendwise.example',
-      'openscholar.example', 'datavault.example', 'loanhub.example']) expect(real.known(d), d).toBe(false);
+      'arxiv.org', 'zenodo.org', 'openreview.net']) expect(real.lookup(d), d).toBeUndefined();
   });
 });

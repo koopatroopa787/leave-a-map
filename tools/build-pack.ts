@@ -81,7 +81,8 @@ for (const [k, e] of [...pack.entries()]) if (k.endsWith('.example') || (!e.c &&
 
 const out = { snapshot: info, count: pack.size, entries: Object.fromEntries([...pack.entries()].sort(([a], [b]) => a.localeCompare(b))) };
 writeFileSync('data/pack.generated.json', JSON.stringify(out) + '\n');
-const held = ['studentaid.gov', 'login.gov', 'orcid.org', 'osf.io', 'zenodo.org'];
+// The sample's held-out domains (tools/make-sample-mbox.mjs) must stay out of the pack.
+const held = ['arxiv.org', 'zenodo.org', 'openreview.net'];
 console.log(`wrote data/pack.generated.json: ${pack.size} domains`);
-console.log('held-out candidates absent from the pack (usable for the sample):', held.filter((h) => !pack.has(h)).join(', ') || 'none');
-console.log('held-out candidates present (not usable):', held.filter((h) => pack.has(h)).join(', ') || 'none');
+console.log('held-out domains absent from the pack:', held.filter((h) => !pack.has(h)).join(', ') || 'none');
+console.log('held-out domains IN the pack (pick others):', held.filter((h) => pack.has(h)).join(', ') || 'none');

@@ -167,7 +167,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
   return (
     <main class="page map">
       <header class="map-head">
-        {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every name and service here is fictional.</p>}
+        {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.</p>}
         <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
         <h1>What breaks on {longDate(settings.shutoffDate)}</h1>
         <p class="summary">

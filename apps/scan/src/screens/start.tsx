@@ -44,7 +44,7 @@ export function StartScreen({ onScan, onSample, error }: Props) {
       </form>
       <section class="sample" aria-labelledby="sample-title">
         <h2 id="sample-title">No mailbox handy?</h2>
-        <p>Run Leave a Map on a made-up student's 55 emails. Every name and service in it is fictional.</p>
+        <p>Run Leave a Map on a made-up student's 55 emails. The people and services are fictional, apart from three real research sites, so the cloud lookup has something it can recognise.</p>
         <button type="button" id="try-sample" class="secondary" onClick={onSample}>Try the sample</button>
       </section>
     </main>

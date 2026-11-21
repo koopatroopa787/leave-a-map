@@ -1343,24 +1343,24 @@ From 1790000000000000053@xxx Fri Jul 10 11:11:00 +0000 2026
 X-GM-THRID: 1790000000000000053
 X-Gmail-Labels: Inbox
 Delivered-To: jordan.reyes@alderbrook.example
-Received: from mail.openscholar.example (mail.openscholar.example. [192.0.2.63])
+Received: from mail.arxiv.org (mail.arxiv.org. [192.0.2.63])
         by mx.google.com with ESMTPS id s53x
         for <jordan.reyes@alderbrook.example>;
         Fri, 10 Jul 2026 11:11:00 +0000
-Return-Path: <bounce@openscholar.example>
+Return-Path: <bounce@arxiv.org>
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@openscholar.example header.s=s1 header.b=AAAA;
-       spf=pass (google.com: domain of bounce@openscholar.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@openscholar.example;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=openscholar.example
-Message-ID: <sample-53@openscholar.example>
+       dkim=pass header.i=@arxiv.org header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@arxiv.org designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@arxiv.org;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=arxiv.org
+Message-ID: <sample-53@arxiv.org>
 Date: Fri, 10 Jul 2026 11:11:00 +0000
-From: <no-reply@openscholar.example>
+From: <no-reply@arxiv.org>
 To: jordan.reyes@alderbrook.example
-Subject: Your record was updated
+Subject: Your submission was announced
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Your public record was updated with a new work: "Monte Carlo methods for small samples".
+Your article "Monte Carlo methods for small samples" was announced today.
 
 Sample message 53 of the Leave a Map sample mailbox. Fictional.
 
@@ -1368,18 +1368,18 @@ From 1790000000000000054@xxx Tue Aug 11 12:18:00 +0000 2026
 X-GM-THRID: 1790000000000000054
 X-Gmail-Labels: Inbox
 Delivered-To: jordan.reyes@alderbrook.example
-Received: from mail.datavault.example (mail.datavault.example. [192.0.2.64])
+Received: from mail.zenodo.org (mail.zenodo.org. [192.0.2.64])
         by mx.google.com with ESMTPS id s54x
         for <jordan.reyes@alderbrook.example>;
         Tue, 11 Aug 2026 12:18:00 +0000
-Return-Path: <bounce@datavault.example>
+Return-Path: <bounce@zenodo.org>
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@datavault.example header.s=s1 header.b=AAAA;
-       spf=pass (google.com: domain of bounce@datavault.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@datavault.example;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=datavault.example
-Message-ID: <sample-54@datavault.example>
+       dkim=pass header.i=@zenodo.org header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@zenodo.org designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@zenodo.org;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=zenodo.org
+Message-ID: <sample-54@zenodo.org>
 Date: Tue, 11 Aug 2026 12:18:00 +0000
-From: <no-reply@datavault.example>
+From: <no-reply@zenodo.org>
 To: jordan.reyes@alderbrook.example
 Subject: Your upload is published
 MIME-Version: 1.0
@@ -1393,18 +1393,18 @@ From 1790000000000000055@xxx Sat Sep 12 13:25:00 +0000 2026
 X-GM-THRID: 1790000000000000055
 X-Gmail-Labels: Inbox
 Delivered-To: jordan.reyes@alderbrook.example
-Received: from mail.loanhub.example (mail.loanhub.example. [192.0.2.65])
+Received: from mail.openreview.net (mail.openreview.net. [192.0.2.65])
         by mx.google.com with ESMTPS id s55x
         for <jordan.reyes@alderbrook.example>;
         Sat, 12 Sep 2026 13:25:00 +0000
-Return-Path: <bounce@loanhub.example>
+Return-Path: <bounce@openreview.net>
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@loanhub.example header.s=s1 header.b=AAAA;
-       spf=pass (google.com: domain of bounce@loanhub.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@loanhub.example;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=loanhub.example
-Message-ID: <sample-55@loanhub.example>
+       dkim=pass header.i=@openreview.net header.s=s1 header.b=AAAA;
+       spf=pass (google.com: domain of bounce@openreview.net designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@openreview.net;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=openreview.net
+Message-ID: <sample-55@openreview.net>
 Date: Sat, 12 Sep 2026 13:25:00 +0000
-From: <no-reply@loanhub.example>
+From: <no-reply@openreview.net>
 To: jordan.reyes@alderbrook.example
 Subject: Your profile changes were saved
 MIME-Version: 1.0
