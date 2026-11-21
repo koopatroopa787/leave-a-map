@@ -4,7 +4,7 @@ import { useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import './styles.css';
 import { StartScreen } from './screens/start.tsx';
-import { ListScreen } from './screens/list.tsx';
+import { MapScreen } from './screens/map.tsx';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
 
 type State =
@@ -40,7 +40,7 @@ function App() {
       </main>
     );
   }
-  return <ListScreen {...state} onAccounts={(accounts) => setState({ ...state, accounts })} onRestart={() => setState({ step: 'start' })} />;
+  return <MapScreen {...state} onAccounts={(accounts) => setState({ ...state, accounts })} onRestart={() => setState({ step: 'start' })} />;
 }
 
 // Firebase loads only on the Nano check screen, so the normal scan ships no SDK code.
