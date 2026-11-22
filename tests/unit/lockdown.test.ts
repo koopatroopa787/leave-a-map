@@ -33,3 +33,13 @@ describe('hosting cache rules', () => {
     expect(h.headers[0].headers.some((x) => x.key === 'Content-Security-Policy')).toBe(true);
   });
 });
+
+describe('scan site environment', () => {
+  it('exposes no Firebase config, only VITE_SCAN_* and the lookup switch', () => {
+    const cfg = read('apps/scan/vite.config.ts');
+    expect(/envPrefix: \['VITE_SCAN_', 'VITE_CLOUD_LOOKUP'\],/.test(cfg)).toBe(true);
+    const keys = [...read('.env.example').matchAll(/^#?\s*(VITE_[A-Z_]+)=/gm)].map((m) => m[1]);
+    const leaked = keys.filter((k) => k.startsWith('VITE_SCAN_') || k.startsWith('VITE_CLOUD_LOOKUP')).filter((k) => k !== 'VITE_CLOUD_LOOKUP');
+    expect(leaked).toEqual([]);
+  });
+});

@@ -100,11 +100,9 @@ async function ask(model: Model, domain: string, fallbackSource: AnswerSource, k
 export async function lookupOne(m: Models, item: OutboxItem, log?: (l: LookupLog) => void): Promise<ServiceInfo> {
   const started = performance.now();
   const first = await ask(m.first, item.senderDomain, 'on_device', 'first');
-  // The rules' category hint never leaves the scan page (the outbox is { id, senderDomain } only),
-  // so the disagreement rule can't fire here. The other three rules do.
-  const escalation = escalationReason(first, null);
+  const escalation = escalationReason(first);
   const second = escalation ? await ask(m.cloud, item.senderDomain, 'in_cloud', 'cloud') : null;
-  const merged = mergeAnswers(first, second, escalation, null);
+  const merged = mergeAnswers(first, second, escalation);
   log?.({
     id: item.id, first: first.source, firstValid: !!first.fields, escalation,
     second: second ? { source: second.source, valid: !!second.fields, category: second.fields?.category, basis: second.fields?.basis } : null,

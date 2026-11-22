@@ -24,7 +24,7 @@ export const CHANGE_WORD: Record<LoginEmailChange, string> = {
 export const BASIS_WORD: Record<Basis, string> = { recognised: 'a service the model knows', 'name-only': 'guessed from the name', unknown: 'not recognised' };
 export const RULE_WORD: Record<EscalationRule, string> = {
   invalid: 'no usable answer', 'not-recognised': 'not recognised', 'category-other': "couldn't say what kind of service",
-  'disagrees-with-rules': 'disagreed with the rules', 'field-unknown': 'left a field blank',
+  'field-unknown': 'left a field blank',
 };
 
 export type Line = { label: string; value: string; source: AnswerSource };
