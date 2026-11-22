@@ -16,6 +16,7 @@ const WORDS: Record<string, string> = {
   HEALTH: 'health-related mail',
   'RECOVERY ADDRESS': 'your school address set as a recovery address',
   'SSO-WELCOME': 'a sign-up with your school account',
+  'NO-PASSWORD HINT': 'a sign the account has no password of its own',
   'IDP-NOTICE': 'a notice that it was given access to your school account',
   'STUDENT DISCOUNT': 'a student discount',
   'WORK STRONG': 'activity on your work, such as edits, comments or merges',

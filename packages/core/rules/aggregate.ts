@@ -128,6 +128,7 @@ export class Aggregator {
       // "Deals for students" in marketing mail isn't evidence the person has a student discount.
       if (bulk && f.name === 'STUDENT DISCOUNT') continue;
       if (f.name === 'SSO-WELCOME') { offer(a, 'sso', 'likely', f.name, m, f.quote); continue; }
+      if (f.name === 'NO-PASSWORD HINT') { offer(a, 'sso', 'possible', f.name, m, f.quote); continue; }
       for (const [cond, how] of FEEDS[f.name] ?? []) offer(a, cond, how === 'same' ? msgTier : weaker(msgTier), f.name, m, f.quote);
     }
   }

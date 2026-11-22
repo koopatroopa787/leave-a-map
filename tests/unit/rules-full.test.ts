@@ -62,6 +62,8 @@ describe('service-mail signals (1.4)', () => {
     expect(names('Your student plan')).toContain('STUDENT DISCOUNT');
     expect(names('Appointment reminder')).toContain('HEALTH');
     expect(names('Hi', 'You signed up with Google on 3 May')).toContain('SSO-WELCOME');
+    expect(names('Your account', "You don't have a password yet. Add a password to your account to sign in without your school login.")).toContain('NO-PASSWORD HINT');
+    expect(names('Reset your password', 'Choose a new password.')).not.toContain('NO-PASSWORD HINT');
   });
   it('needs one of your own addresses near a recovery address phrase', () => {
     expect(names('Account updated', `Your recovery email is now ${ME}.`)).toContain('RECOVERY ADDRESS');
@@ -120,6 +122,15 @@ describe('aggregate and rank with full rules', () => {
     const out = run([notice(`Sketchpad Pro was granted access to your Google Account\n${ME}`)]);
     expect(out[0]).toMatchObject({ key: 'app:sketchpadpro', name: 'Sketchpad Pro', bucket: 'sso' });
     expect(run([notice('Sketchpad Pro was granted access to your Google Account\nvictim@other.example')])).toEqual([]);
+  });
+
+  it('keeps the no-password hint at Possible, so it never moves a card into the school-login bucket', () => {
+    const [a] = run([
+      [{ from: from('a@pinboard.example', 'Pinboard'), subject: 'Welcome to Pinboard', authResults: gmailPass('pinboard.example') }, body("You don't have a password on this account.")],
+      [{ from: from('a@pinboard.example', 'Pinboard'), subject: 'Your weekly digest', authResults: gmailPass('pinboard.example') }, body('')],
+    ]);
+    expect(a.sso).toMatchObject({ tier: 'possible', signal: 'NO-PASSWORD HINT' });
+    expect(a.bucket).toBe('rest');
   });
 
   it('caps unauthenticated mail at Likely, and weak signals one step lower', () => {
