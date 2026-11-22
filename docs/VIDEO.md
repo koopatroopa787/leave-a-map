@@ -54,7 +54,7 @@ Voice is about 270 words, which is roughly 1:50 at a calm pace. No beat goes ove
 ## Before filming (checklist)
 
 - [ ] `main` is deployed to both sites, or every shot uses the same local build.
-- [ ] The paid tier is on, so lane 3 can't fail with 402. Depends on the billing decision.
+- [ ] The cloud lookup is switched on (paid or free tier) and works on the hosted site. On the free tier, film with 10 or fewer services.
 - [ ] Hosted reCAPTCHA attests. Otherwise, use a local debug build for S6 to S8 and say so in the description.
 - [ ] Both humans have OK'd the real held-out sites appearing on screen, or the sample is regenerated with the fictional fallback.
 - [ ] Fresh Chrome profile: no bookmarks bar, extensions, other tabs, signed-in account or notifications.
