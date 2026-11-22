@@ -5,7 +5,7 @@ import { P, SSO_PHRASE } from './patterns.ts';
 import { escapeRe } from './school-link.ts';
 
 export type SignalName = 'WELCOME' | 'VERIFY' | 'RESET' | 'SECURITY' | 'RECEIPT' | 'STATEMENT' | 'RECURRING'
-  | 'CARD ON FILE' | 'RECOVERY ADDRESS' | 'WORK STRONG' | 'WORK WEAK' | 'STUDENT DISCOUNT' | 'HEALTH' | 'SSO-WELCOME';
+  | 'CARD ON FILE' | 'RECOVERY ADDRESS' | 'WORK STRONG' | 'WORK WEAK' | 'STUDENT DISCOUNT' | 'HEALTH' | 'SSO-WELCOME' | 'NO-PASSWORD HINT';
 export type Fired = { name: SignalName; quote: string };
 
 /** Signals that prove an account exists, and so stop List-Unsubscribe mail counting as bulk. */
@@ -54,6 +54,7 @@ export function messageSignals(m: MessageRecord, body: BodyInfo, ownAddresses: r
   add('STUDENT DISCOUNT', either(P.STUDENT_DISCOUNT));
   add('HEALTH', either(P.HEALTH));
   add('SSO-WELCOME', find(P.SSO_WELCOME, B) ?? find(SSO_PHRASE, B));
+  add('NO-PASSWORD HINT', find(P.NO_PASSWORD, B));
 
   // RECOVERY ADDRESS: the phrase, with one of the person's own addresses within 120 characters.
   const rec = P.RECOVERY_B.exec(B);

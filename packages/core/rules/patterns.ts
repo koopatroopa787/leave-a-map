@@ -20,6 +20,9 @@ export const P = {
   STUDENT_DISCOUNT: /\b(?:student (?:discount|plan|pricing|membership|offer|tier|status|verification|checking|account)|education(?:al)? (?:plan|pricing|discount|licen[cs]e)|academic (?:plan|pricing|discount|licen[cs]e)|verify (?:your )?student status|for students)\b/i,
   HEALTH: /\b(?:appointment|test results?|lab results?|prescription|clinic|patient portal|telehealth|your (?:doctor|provider|care team))\b/i,
   SSO_WELCOME: /\b(?:signed (?:up|in)|registered|logged in|created your account|joined) (?:with|using|via|through) (?:your )?(?:google|microsoft|school|university|institution(?:al)?|campus|sso|single sign-on|office 365|microsoft 365)(?: account)?\b/i,
+  // NO-PASSWORD HINT (analyst.md 2.3): the service says the account has no password of its own,
+  // which is how school-login accounts look. Possible only: it never moves a card on its own.
+  NO_PASSWORD: /\b(?:you (?:don't|do not|didn't|did not) (?:have|set|create) a password|(?:your account|you) (?:has|have) no password|no password (?:is )?(?:needed|required|set)|(?:add|create|set) a password (?:to|for|on) your account)\b/i,
 } as const;
 
 /** Phrases in a service's own mail that hint the account uses school login (BUILD-PLAN section 4). */

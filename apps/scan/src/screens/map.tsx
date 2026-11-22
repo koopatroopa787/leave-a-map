@@ -72,21 +72,33 @@ function PackLink({ link, children }: { link: Link; children: string }) {
   return <a href={link.url} target="_blank" rel="noopener noreferrer">{children}</a>;
 }
 
-/** How to move, from the move pack when it has a checked link, otherwise the generic steps. No model ever supplies a URL. */
+const strong = (c: Cond) => c.tier === 'seen' || c.tier === 'likely';
+
+/**
+ * How to move, from the move pack when it has a checked link, otherwise the generic steps. No model
+ * ever supplies a URL. When a student discount ends anyway and there's work or an export link,
+ * exporting comes first (analyst.md 2.5): the data matters more than the login.
+ */
 function MoveSteps({ a, facts }: { a: RankedAccount; facts?: ServiceFacts }) {
   const where = a.key.startsWith('app:') ? a.name : a.key;
   const change = facts?.changeEmail;
   const name = facts?.name ?? where;
+  const exportLink = facts?.exportData;
+  const exportFirst = strong(a.discount) && (strong(a.work) || !!exportLink);
+  const exportStep = exportLink
+    ? <p>{exportFirst ? 'First: ' : 'Save a copy first: '}<PackLink link={exportLink}>{`export your data from ${name}`}</PackLink></p>
+    : exportFirst ? <p>First, export your data from {where}. The student discount ends anyway, whatever happens to the login.</p> : null;
   return (
     <div class="move">
+      {exportFirst && exportStep}
       {a.bucket === 'sso'
-        ? <p>To move: at {where}, add a password or change the login email to one you'll keep. Only then disconnect your school login.</p>
+        ? <p>{exportFirst ? 'Then' : 'To move'}: at {where}, add a password or change the login email to one you'll keep. Only then disconnect your school login.</p>
         : change
-          ? <p>To move: change the login email to one you'll keep. <PackLink link={change}>{`How to change it at ${name}`}</PackLink>
+          ? <p>{exportFirst ? 'Then' : 'To move'}: change the login email to one you'll keep. <PackLink link={change}>{`How to change it at ${name}`}</PackLink>
             {change.checked && <span class="meta"> (checked {change.checked})</span>}</p>
-          : <p>To move: open {where}, go to account settings, and change the login email to one you'll keep.</p>}
+          : <p>{exportFirst ? 'Then' : 'To move'}: open {where}, go to account settings, and change the login email to one you'll keep.</p>}
       {a.bucket === 'sso' && change && <p><PackLink link={change}>{`How to change the login email at ${name}`}</PackLink></p>}
-      {facts?.exportData && <p>Save a copy first: <PackLink link={facts.exportData}>{`export your data from ${facts.name}`}</PackLink></p>}
+      {!exportFirst && exportStep}
       {facts?.passkeys && <p class="meta">{facts.name} takes passkeys. Adding one on a device you keep means signing in won't depend on the old address.</p>}
       {facts?.deleteAccount && <p class="meta">Don't need it any more? <PackLink link={facts.deleteAccount}>Delete the account instead</PackLink>{facts.deleteAccount.difficulty && ` (rated ${facts.deleteAccount.difficulty} on a public list)`}.</p>}
     </div>
