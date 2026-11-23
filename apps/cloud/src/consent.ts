@@ -4,8 +4,8 @@
 // T22: every box starts unticked; "Select all except health and money"; an 18+ box; the
 // logging notice for the tier this build runs on (never "nothing is kept"). On the free tier, also
 // a required region box, no health or money rows, and a cap per lookup (packages/core/cloud-tier.ts).
-import { MSG, parseOutbox, type OutboxItem } from '../../../packages/core/handoff.ts';
-import { blockedBy, canSend, cloudTier, FREE_TIER_MAX } from '../../../packages/core/cloud-tier.ts';
+import { MSG, parseOutbox, type OutboxItem, type ServiceInfo } from '../../../packages/core/handoff.ts';
+import { blockedBy, busyWords, canSend, cloudTier, FREE_TIER_MAX, LookupBusy } from '../../../packages/core/cloud-tier.ts';
 
 const SCAN_ORIGIN: string = import.meta.env.VITE_CLOUD_SCAN_ORIGIN ?? 'https://leave-a-map.web.app';
 const app = document.getElementById('app')!;
@@ -94,12 +94,19 @@ function show(items: OutboxItem[]) {
     adult.disabled = true; region.disabled = true;
     const progress = el('p', { id: 'consent-progress', textContent: `Looking up 0 of ${approved.length}…` });
     send.after(progress);
-    let answers;
+    let answers: ServiceInfo[];
     try {
       const { lookupAll } = await import('./egress.ts'); // Firebase and App Check load only now
       answers = await lookupAll(approved, (n) => { progress.textContent = `Looking up ${n} of ${approved.length}…`; },
         (l) => console.info('lane 3', l));
     } catch (e) {
+      if (e instanceof LookupBusy) {
+        // Out of quota part-way: send back only what was looked up before that, and say so plainly.
+        const partial = e.partial as ServiceInfo[];
+        app.replaceChildren(el('p', { id: 'consent-busy', textContent: busyWords(partial.length, approved.length) }));
+        opener?.postMessage(partial.length ? { type: MSG.services, items: partial } : { type: MSG.cancelled }, SCAN_ORIGIN);
+        return;
+      }
       app.replaceChildren(el('p', { id: 'consent-error', textContent: `The lookup couldn't run (${(e as Error).message}). Nothing was sent back.` }));
       opener?.postMessage({ type: MSG.cancelled }, SCAN_ORIGIN);
       return;

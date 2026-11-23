@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { blockedBy, canSend, cloudTier, FREE_TIER_MAX } from '../../packages/core/cloud-tier.ts';
+import { blockedBy, busyWords, canSend, cloudTier, FREE_TIER_MAX, isQuotaError, LookupBusy, lookupEach } from '../../packages/core/cloud-tier.ts';
 
 describe('cloud tier switch', () => {
   it('reads the two switch values and is off otherwise in production', () => {
@@ -44,5 +44,35 @@ describe('the send button', () => {
   });
   it('never sends while off', () => {
     expect(blockedBy('off', ok)).toBe('off');
+  });
+});
+
+describe('running out of quota', () => {
+  const quota = Object.assign(new Error('Error fetching from https://x: [429 ] Resource exhausted'), { customErrorData: { status: 429 } });
+  it('recognises a 429 from the SDK, by status or by message', () => {
+    expect(isQuotaError(quota)).toBe(true);
+    expect(isQuotaError(new Error('[429 Too Many Requests] RESOURCE_EXHAUSTED'))).toBe(true);
+    expect(isQuotaError(new Error('[403 ] App attestation failed'))).toBe(false);
+    expect(isQuotaError(new Error('reply was not JSON'))).toBe(false);
+    expect(isQuotaError(null)).toBe(false);
+  });
+  it('stops at the first 429 and keeps the answers already got', async () => {
+    const seen: string[] = [];
+    const one = async (d: string) => { seen.push(d); if (d === 'c') throw quota; return d.toUpperCase(); };
+    const err = await lookupEach(['a', 'b', 'c', 'd'], one).catch((e) => e);
+    expect(err).toBeInstanceOf(LookupBusy);
+    expect((err as LookupBusy<string>).partial).toEqual(['A', 'B']);
+    expect(seen).toEqual(['a', 'b', 'c']); // never asks for d
+  });
+  it('passes other errors through and reports progress', async () => {
+    await expect(lookupEach(['a'], async () => { throw new Error('not-configured'); })).rejects.toThrow('not-configured');
+    const done: number[] = [];
+    expect(await lookupEach(['a', 'b'], async (d) => d, (n) => done.push(n))).toEqual(['a', 'b']);
+    expect(done).toEqual([1, 2]);
+  });
+  it('says plainly what happened', () => {
+    expect(busyWords(0, 5)).toMatch(/busy right now.*Nothing was looked up or sent back\.$/);
+    expect(busyWords(2, 5)).toMatch(/2 of 5 services were looked up first, and only those answers were sent back\.$/);
+    expect(busyWords(0, 5)).not.toMatch(/\d{3}|quota|429/);
   });
 });

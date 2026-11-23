@@ -10,6 +10,7 @@ import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode, Schema } fro
 import { ACCOUNT_TYPES, BASIS, HOLDS, LOGIN_EMAIL_CHANGE, SERVICE_SCHEMA, parseServiceFields } from '../../../packages/core/contract.ts';
 import { buildServicePrompt, escalationReason, mergeAnswers, SERVICE_SYSTEM_PROMPT, type Answer, type AnswerSource } from '../../../packages/core/cascade.ts';
 import type { OutboxItem, ServiceInfo } from '../../../packages/core/handoff.ts';
+import { isQuotaError, lookupEach } from '../../../packages/core/cloud-tier.ts';
 
 export const CLOUD_MODEL = 'gemini-3.5-flash-lite';
 const TEXT_EN = [{ type: 'text', languages: ['en'] }];
@@ -92,6 +93,8 @@ async function ask(model: Model, domain: string, fallbackSource: AnswerSource, k
     return { fields, source };
   } catch (e) {
     lastError[kind] = String((e as Error)?.message ?? e).slice(0, 300);
+    // Out of quota: stop the whole lookup instead of quietly answering "don't know" for the rest.
+    if (isQuotaError(e)) throw e;
     return { fields: null, source: fallbackSource };
   }
 }
@@ -111,14 +114,12 @@ export async function lookupOne(m: Models, item: OutboxItem, log?: (l: LookupLog
   return { id: item.id, ...merged.fields, sources: merged.sources, escalation: merged.escalation };
 }
 
-/** Every approved domain, one at a time: the on-device model takes one prompt at a time anyway. */
+/**
+ * Every approved domain, one at a time: the on-device model takes one prompt at a time anyway.
+ * Throws LookupBusy, with the answers so far, when the project runs out of quota.
+ */
 export async function lookupAll(items: OutboxItem[], onProgress?: (done: number) => void, log?: (l: LookupLog) => void): Promise<ServiceInfo[]> {
   if (items.length === 0) return [];
   const m = initCloud();
-  const out: ServiceInfo[] = [];
-  for (const item of items) {
-    out.push(await lookupOne(m, item, log));
-    onProgress?.(out.length);
-  }
-  return out;
+  return lookupEach(items, (item) => lookupOne(m, item, log), onProgress);
 }
