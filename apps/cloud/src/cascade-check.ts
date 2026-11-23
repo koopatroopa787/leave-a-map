@@ -15,7 +15,7 @@ document.getElementById('run')!.addEventListener('click', async () => {
     const answers = await lookupAll(items, undefined, (l) => logs.push(l));
     out.textContent = JSON.stringify({ nano, lastError, results: answers.map((a, i) => ({ domain: domains[i], ...a, log: logs[i] })) }, null, 2);
   } catch (e) {
-    out.textContent = JSON.stringify({ nano, error: (e as Error).message });
+    out.textContent = JSON.stringify({ nano, error: (e as Error).message, lastError });
   }
   out.dataset.done = '1';
 });

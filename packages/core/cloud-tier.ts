@@ -40,3 +40,43 @@ export function blockedBy(tier: CloudTier, g: Gate): 'off' | 'adult' | 'region' 
   if (tier === 'free' && g.ticked > FREE_TIER_MAX) return 'too-many';
   return null;
 }
+
+/**
+ * True when the model refused because the project is out of quota (HTTP 429). Quota is per
+ * project, shared by everyone using the site, so on the free tier this is expected on busy days.
+ */
+export function isQuotaError(e: unknown): boolean {
+  const err = e as { customErrorData?: { status?: number }; message?: unknown } | null;
+  if (err?.customErrorData?.status === 429) return true;
+  return typeof err?.message === 'string' && /\[429\b|RESOURCE_EXHAUSTED/.test(err.message);
+}
+
+/** Thrown by the lookup when quota runs out. Carries the answers it got before that. */
+export class LookupBusy<T> extends Error {
+  constructor(readonly partial: T[]) { super('busy'); this.name = 'LookupBusy'; }
+}
+
+/** What the consent window says when the lookup is busy. */
+export function busyWords(done: number, total: number): string {
+  const lead = 'The cloud lookup is busy right now, because too many people are using it. Try again later.';
+  if (done === 0) return `${lead} Nothing was looked up or sent back.`;
+  return `${lead} ${done} of ${total} ${total === 1 ? 'service was' : 'services were'} looked up first, and only those answers were sent back.`;
+}
+
+/**
+ * Runs `one` on each item in order. If quota runs out, stops and throws LookupBusy with the
+ * answers so far; any other error passes through unchanged.
+ */
+export async function lookupEach<I, T>(items: I[], one: (item: I) => Promise<T>, onProgress?: (done: number) => void): Promise<T[]> {
+  const out: T[] = [];
+  for (const item of items) {
+    try {
+      out.push(await one(item));
+    } catch (e) {
+      if (isQuotaError(e)) throw new LookupBusy(out);
+      throw e;
+    }
+    onProgress?.(out.length);
+  }
+  return out;
+}
