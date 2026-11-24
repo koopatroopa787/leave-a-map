@@ -5,9 +5,11 @@ import { useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import '@fontsource-variable/atkinson-hyperlegible-mono';
-import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/full.css';
 import './styles.css';
-import { Mark } from './icons.tsx';
+import { applyDisplay, loadDisplay, TopBar } from './display.tsx';
+
+applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
 import { MapScreen } from './screens/map.tsx';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
@@ -41,9 +43,10 @@ function App() {
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
     const x = 20 + (pct / 100) * 480;
+    const stage = pct < 25 ? 'Opening your mailbox…' : pct < 75 ? 'Reading who sends you mail…' : 'Sorting what matters most…';
     return (
       <main id="main" class="page scanning screen">
-        <p class="wordmark"><Mark /> Leave a Map</p>
+        <TopBar />
         <h1>Reading your mailbox</h1>
         <p class="scan-pct" aria-hidden="true">{pct}%</p>
         <svg class="scan-art" viewBox="0 0 520 40" aria-hidden="true" focusable="false">
@@ -53,6 +56,7 @@ function App() {
         </svg>
         <progress class="vh" max={100} value={pct} aria-label="Scan progress" />
         <p class="scan-count" aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
+        <p class="scan-status" key={stage}>{stage}</p>
         <p class="assure">It stays on this device. Nothing is uploaded.</p>
       </main>
     );
