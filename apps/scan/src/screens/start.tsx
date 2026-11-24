@@ -85,7 +85,7 @@ export function StartScreen({ onScan, onSample, error }: Props) {
     <main id="main" class={`page start screen${over ? ' drop-anywhere' : ''}`}>
       <TopBar />
       <header class="hero">
-        <h1>{loss ? 'Find the accounts they left behind.' : 'Your school email is going away.'}</h1>
+        <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot">.</span></h1>
         <p class="lede">{loss
           ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
           : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
