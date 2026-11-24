@@ -22,6 +22,7 @@ import { applyPack, type Link, type Pack, type ServiceFacts } from '../../../../
 import { loadPack } from '../pack-loader.ts';
 import { Check } from '../icons.tsx';
 import { TopBar } from '../display.tsx';
+import { PixelField } from '../pixel-field.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
 
 type Props = {
@@ -138,7 +139,11 @@ function Card({ a, mode, rank, moved, onMoved, info, facts }: { a: RankedAccount
       {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
       {info && <Lane3 info={info} />}
       <EvidenceDrawer a={a} mode={mode} />
-      <p class="meta">{a.nLinked} email{a.nLinked === 1 ? '' : 's'} to {mode === 'loss' ? 'their' : 'your school'} address{a.lastDate ? `, last on ${shortDate(a.lastDate)}` : ''}{a.flags.suspiciousIgnored ? `. ${a.flags.suspiciousIgnored} fake-looking email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored` : ''}.</p>
+      <dl class="facts">
+        <div><dt>Emails to {mode === 'loss' ? 'their' : 'your'} address</dt><dd>{a.nLinked}</dd></div>
+        {a.lastDate ? <div><dt>Last one</dt><dd>{shortDate(a.lastDate)}</dd></div> : null}
+        {a.flags.suspiciousIgnored ? <div><dt>Fake ones ignored</dt><dd>{a.flags.suspiciousIgnored}</dd></div> : null}
+      </dl>
     </li>
   );
 }
@@ -191,6 +196,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
     <main id="main" class="page map screen">
       <header class="map-head">
         <TopBar />
+        <PixelField class="band" />
         {sample && <p class="sample-note" role="note">{mode === 'loss'
           ? 'Sample mailbox: Robin Hale, a made-up person. Every person and service in it is fictional.'
           : 'Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.'}</p>}

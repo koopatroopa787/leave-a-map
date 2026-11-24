@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import type { ScanSettings } from '../../../../packages/core/types.ts';
-import { HeroRoutes, Lock, Upload } from '../icons.tsx';
+import { Lock, Upload } from '../icons.tsx';
+import { PixelField } from '../pixel-field.tsx';
 import { TopBar } from '../display.tsx';
 import { countdown, longDate } from '../dates.ts';
 import type { Mode } from '../mode.ts';
@@ -85,11 +86,12 @@ export function StartScreen({ onScan, onSample, error }: Props) {
     <main id="main" class={`page start screen${over ? ' drop-anywhere' : ''}`}>
       <TopBar />
       <header class="hero">
-        <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot">.</span></h1>
+        <p class="kicker"><span>{loss ? 'After a death' : 'School email closing'}</span><span class="live">Nothing leaves this device</span></p>
+        <PixelField morph />
         <p class="lede">{loss
           ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
           : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
-        <HeroRoutes />
+        <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot">.</span></h1>
       </header>
 
       <fieldset class="modes">
