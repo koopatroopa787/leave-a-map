@@ -91,7 +91,7 @@ function MoveSteps({ a, facts }: { a: RankedAccount; facts?: ServiceFacts }) {
  * never suggests signing in as the person.
  */
 function LossSteps({ a }: { a: RankedAccount }) {
-  const where = a.key.startsWith('app:') ? a.name : a.key;
+  const where = a.name;
   const step = {
     money: <p>Contact {where}'s bereavement or estates team. They'll say what they need, usually a death certificate and proof that you can act for the estate. Ask about balances, claims and payments that should stop.</p>,
     work: <p>Ask {where} how it handles a member who has died. Some let family request a copy of photos and files, or turn the account into a memorial. Ask before anything is closed.</p>,
