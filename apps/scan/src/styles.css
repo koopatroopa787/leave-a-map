@@ -183,9 +183,6 @@ th { color: var(--muted); font-weight: 700; }
 
 /* ---------- Start ---------- */
 .start { display: grid; gap: var(--space-6); padding-top: var(--space-5); }
-.hero { display: grid; gap: var(--space-4); padding-block: var(--space-3) var(--space-2); }
-.hero h1 { font-size: clamp(3rem, .8rem + 8.5vw, 7rem); font-weight: 600; line-height: .9; margin: 0; letter-spacing: -0.055em; }
-.hero h1 .dot { color: var(--accent); }
 .assure {
   display: flex; gap: var(--space-3); align-items: flex-start; margin: 0;
   padding: var(--space-3) 0; border-block: var(--dash);
@@ -232,8 +229,6 @@ th { color: var(--muted); font-weight: 700; }
 
 /* ---------- Scanning ---------- */
 .scanning { min-height: 80dvh; display: grid; align-content: center; gap: var(--space-4); }
-.scan-pct { margin: 0; text-align: right; font-family: var(--font-hand); font-size: clamp(3.5rem, 2rem + 6vw, 6.5rem); line-height: 1; color: var(--muted); }
-.scan-pct span { font-size: .45em; }
 .scan-count { margin: 0; font-variant-numeric: tabular-nums; color: var(--muted); }
 
 /* ---------- Map: header ---------- */
@@ -244,7 +239,7 @@ th { color: var(--muted); font-weight: 700; }
   color: var(--muted); font-family: var(--font-mono); font-weight: 700; font-size: .85rem; letter-spacing: .06em; overflow-wrap: anywhere;
 }
 .eyebrow::before { content: ""; flex: none; width: .5rem; height: .5rem; border-radius: 50%; background: var(--accent); }
-.map-head h1 { margin: 0; }
+.map-head h1 { margin: 0; font-size: var(--step-4); line-height: .92; letter-spacing: -0.05em; }
 .summary { margin: 0; font-family: var(--font-display); font-size: var(--step-1); letter-spacing: -0.01em; color: var(--muted); }
 .summary strong { color: var(--ink); }
 .count { display: inline-grid; place-items: center; min-width: 1.75em; height: 1.75em; padding: 0 .45em; margin-left: .35em; border-radius: var(--radius-s); background: var(--sunk); color: var(--ink); font-family: var(--font-mono); font-size: .68em; font-weight: 700; letter-spacing: 0; vertical-align: .2em; }
@@ -446,18 +441,18 @@ details[open] > summary .chev { transform: rotate(90deg); }
 }
 @media (min-width: 48rem) {
   .page { padding-inline: var(--space-5); }
-  .page.map { max-width: 50rem; }
   .progress { margin-inline: calc(-1 * var(--space-5)); padding-inline: var(--space-5); }
 }
 
 /* ---------- Top bar and the Display menu ---------- */
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border: var(--dash); }
 .topbar .wordmark { margin: 0; }
-button.display-btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; padding: .4rem .9rem; background: transparent; border-color: transparent; font-family: var(--font-mono); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; }
-button.display-btn:hover { border-color: var(--line-strong); }
-.display-btn svg { width: 1.15rem; height: 1.15rem; }
+/* Like a call-to-action: orange outline and text, the icon in a filled orange square on the right. */
+button.display-btn { display: inline-flex; align-items: center; gap: .75rem; min-height: 2.75rem; padding: .3rem .3rem .3rem .9rem; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-family: var(--font-mono); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .22em; }
+button.display-btn:hover { background: var(--accent-soft); border-color: var(--accent-hover); }
+.display-btn svg { order: 2; width: 1.9rem; height: 1.9rem; padding: .3rem; background: var(--accent); color: var(--accent-fg); }
 .display-panel {
-  position: fixed; inset: auto; top: 4.25rem; right: max(1rem, calc(50vw - 23rem)); margin: 0;
+  position: fixed; inset: auto; top: 5rem; right: var(--gutter); margin: 0;
   width: min(23rem, calc(100vw - 2rem)); max-height: calc(100dvh - 5.5rem); overflow: auto;
   padding: var(--space-5); border: 1px solid var(--line); border-radius: var(--radius-l);
   background: var(--surface); color: var(--ink); box-shadow: var(--shadow-2);
@@ -517,9 +512,6 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 :root.motion-ok .screen > :nth-child(2) { animation-delay: 80ms; } :root.motion-ok .screen > :nth-child(3) { animation-delay: 160ms; }
 :root.motion-ok .screen > :nth-child(4) { animation-delay: 240ms; } :root.motion-ok .screen > :nth-child(5) { animation-delay: 320ms; }
 :root.motion-ok .screen > :nth-child(n+6) { animation-delay: 400ms; }
-:root.motion-ok .hero { animation: none; }
-:root.motion-ok .hero > .pixel-field { animation: fade 1.2s var(--ease-out) backwards; }
-:root.motion-ok .hero > :not(.pixel-field) { animation: rise var(--dur-3) var(--ease-expo) .5s backwards; }
 /* Typing: a station lights up when its answer is in */
 :root.motion-ok .station.is-done .station-n { animation: pop .5s var(--ease-expo); }
 :root.motion-ok .field-note.is-good, :root.motion-ok .field-note.is-warn { animation: rise .35s var(--ease-expo); }
@@ -570,7 +562,7 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 /* ---------- Print: the list as a checklist on paper ---------- */
 @media print {
   .progress { position: static; }
-  .cloud, .nano, .no-ai, .skip, button, .pixel-field { display: none !important; }
+  .cloud, .nano, .no-ai, .skip, button, .dots, .intro, .hand-pct, .foot-dots, .curtain { display: none !important; }
   .card { box-shadow: none; break-inside: avoid; }
   details { display: block; }
 }
@@ -588,14 +580,6 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 .loss-note { margin: 0; padding: var(--space-4); border: var(--dash); border-radius: var(--radius-m); background: var(--sunk); max-width: 62ch; }
 
 
-/* ---------- Pixel field and the reference-style text ---------- */
-/* The dot-matrix canvas (pixel-field.tsx) runs edge to edge; it reads its colour from `color`. */
-.pixel-field { display: block; width: 100vw; margin-inline: calc(50% - 50vw); height: clamp(15rem, 44vh, 26rem); color: var(--accent); }
-.pixel-field.band { height: 6.5rem; margin-block: var(--space-2) 0; }
-.scan-stage .pixel-field { height: clamp(16rem, 50vh, 30rem); }
-:root[data-contrast="more"] .pixel-field { opacity: .75; }
-@media (forced-colors: active) { .pixel-field { display: none; } }
-
 /* Small labels in a row, like a sign: what this is, and a status with a dot. */
 .kicker { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-4); margin: 0;
   font-family: var(--font-mono); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; color: var(--muted); }
@@ -607,3 +591,66 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 .facts div { min-width: 0; }
 .facts dt { font-family: var(--font-mono); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
 .facts dd { margin: .15rem 0 0; font-family: var(--font-display); font-weight: 600; }
+
+
+/* ---------- The reference layout: wide frame, dot canvas, curtain ---------- */
+:root { --gutter: clamp(1rem, 3.5vw, 3rem); }
+/* Main screens run the full width, left-aligned. Reading blocks keep a 46rem measure, and the
+ * space to their right is where the dot canvas puts its small shape. */
+.page:is(.start, .map, .scanning) { max-width: none; padding-inline: var(--gutter); }
+.page:is(.start, .map, .scanning) > :not(.topbar, .hero, .curtain, .site-foot, .scan-stage, .hand-pct) { width: 100%; max-width: 46rem; }
+.page:is(.start, .map) { display: grid; gap: var(--space-6); align-content: start; }
+
+/* The canvas (dots.tsx) is fixed behind everything. The page is on top, so cards cover it and
+ * text is never painted over. It takes its colour from `color`. */
+.dots { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; color: var(--accent); }
+.page { position: relative; z-index: 1; }
+:root[data-contrast="more"] .dots { opacity: .6; }
+
+/* Opening: the page is transparent while the dot shape grows and the counter runs. */
+.intro { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+:root.is-intro .page { opacity: 0; }
+:root.motion-ok .page { transition: opacity .6s var(--ease-out); }
+.hand-pct { position: fixed; right: var(--gutter); bottom: var(--space-4); z-index: 2; margin: 0; font-family: var(--font-hand); font-size: clamp(4rem, 2rem + 7vw, 8.5rem); line-height: 1; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
+.hand-pct span { font-size: .3em; margin-left: .1em; }
+
+/* Hero: labels on top, room for the picture, then the lede and a very large headline. */
+.hero { min-height: calc(100svh - 6.5rem); display: grid; grid-template-rows: auto 1fr; gap: var(--space-5); padding-block: var(--space-3) var(--space-5); }
+.hero-text { align-self: end; display: grid; gap: var(--space-4); }
+.hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: 0; max-width: 15ch; }
+h1 .dot { color: var(--accent); margin-left: .04em; }
+@media (max-width: 899px) { .hero { min-height: max(36rem, calc(100svh - 6rem)); } }
+
+/* Mono labels: small, uppercase, widely spaced. */
+.kicker, .modes legend, .label, .curtain-label, .foot-row { font-family: var(--font-mono); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .26em; }
+.wordmark { letter-spacing: .3em; }
+
+/* The orange curtain between the hero and the form, with a black hill rising into its bottom edge. */
+.curtain { position: relative; overflow: hidden; margin-inline: calc(50% - 50vw); padding: clamp(4rem, 14vh, 9rem) var(--gutter) clamp(7rem, 26vh, 14rem); background: var(--accent); color: var(--accent-fg); }
+.curtain::after { content: ""; position: absolute; left: 16%; right: 16%; bottom: -1px; height: clamp(3.5rem, 15vh, 9rem); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.curtain-label { margin: 0 0 var(--space-4); }
+.curtain-line { margin: 0; max-width: 16ch; font-family: var(--font-display); font-size: clamp(2.25rem, 1rem + 5.5vw, 6.5rem); font-weight: 700; line-height: .9; letter-spacing: -0.05em; text-wrap: balance; }
+.work { display: grid; gap: var(--space-6); }
+
+/* Footer: two columns of facts, then the name spelled in dots across the window. */
+.site-foot { margin-top: var(--space-7); padding-top: var(--space-5); border-top: var(--dash); display: grid; gap: var(--space-5); }
+.foot-cols { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); max-width: 52rem; }
+.foot-cols p { margin: 0; }
+.foot-cols .label { margin-bottom: var(--space-2); color: var(--muted); }
+.plain-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.foot-dots { height: clamp(8rem, 17vw, 18rem); }
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); margin: 0; padding-top: var(--space-3); border-top: var(--dash); color: var(--muted); }
+
+.scan-stage { height: clamp(16rem, 52vh, 32rem); }
+.scanning { min-height: 0; align-content: start; }
+
+@supports (animation-timeline: view()) {
+  /* The curtain opens from a tilted shape to the full width as it scrolls in. */
+  :root.motion-ok .curtain { animation: curtain linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
+}
+@keyframes curtain { from { clip-path: polygon(28% 22%, 86% 4%, 96% 72%, 12% 96%); } to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
+
+@media (forced-colors: active) { .dots, .intro, .hand-pct, .foot-dots { display: none; } .curtain::after { display: none; } }
+
+/* Small text keeps a readable line length inside the 46rem column. */
+.field-hint, .sample p, .field-note, .bucket-why { max-width: 54ch; }

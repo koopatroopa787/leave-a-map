@@ -68,3 +68,21 @@ export function DisplayMenu() {
 export const TopBar = () => (
   <div class="topbar"><p class="wordmark"><Mark /> Leave a Map</p><DisplayMenu /></div>
 );
+
+/** Page footer: how it works, where the Display menu is, and the name spelled in dots (dots.tsx). */
+export const SiteFoot = () => (
+  <footer class="site-foot">
+    <div class="foot-cols">
+      <div>
+        <p class="label">How it works</p>
+        <ul class="plain-list"><li>Reads the .mbox file on this device</li><li>Can't send anything over the network</li><li>Keeps your ticks in this browser only</li></ul>
+      </div>
+      <div>
+        <p class="label">Easier to read</p>
+        <p>Display, at the top of the page: bigger text, light colours, more contrast, no animation.</p>
+      </div>
+    </div>
+    <div class="foot-dots" data-dots="word" aria-hidden="true" />
+    <p class="foot-row"><span>Leave a Map</span><span>Runs in your browser</span></p>
+  </footer>
+);

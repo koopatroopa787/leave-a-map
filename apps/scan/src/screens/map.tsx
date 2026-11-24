@@ -21,8 +21,7 @@ import { applyLane3, BASIS_WORD, serviceLines, trail } from '../../../../package
 import { applyPack, type Link, type Pack, type ServiceFacts } from '../../../../packages/core/pack.ts';
 import { loadPack } from '../pack-loader.ts';
 import { Check } from '../icons.tsx';
-import { TopBar } from '../display.tsx';
-import { PixelField } from '../pixel-field.tsx';
+import { SiteFoot, TopBar } from '../display.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
 
 type Props = {
@@ -194,18 +193,17 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
   let rank = 0;
   return (
     <main id="main" class="page map screen">
-      <header class="map-head">
-        <TopBar />
-        <PixelField class="band" />
+      <TopBar />
+      <header class="map-head" data-dots="side">
         {sample && <p class="sample-note" role="note">{mode === 'loss'
           ? 'Sample mailbox: Robin Hale, a made-up person. Every person and service in it is fictional.'
           : 'Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.'}</p>}
         {mode === 'loss' ? <>
           <p class="eyebrow">Mail sent to {who}</p>
-          <h1 ref={title} tabIndex={-1}>Their accounts, money first</h1>
+          <h1 ref={title} tabIndex={-1}>Their accounts, money first<span class="dot" aria-hidden="true">*</span></h1>
         </> : <>
           <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
-          <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}</h1>
+          <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}<span class="dot" aria-hidden="true">*</span></h1>
         </>}
         <p class="summary">
           <strong>{main.length} account{main.length === 1 ? '' : 's'} {mode === 'loss' ? 'found' : 'to move'}</strong>, {mode === 'loss' ? 'in the order to deal with them' : 'most urgent first'}.
@@ -247,7 +245,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
       {main.length === 0 && <p class="empty">{mode === 'loss' ? `No accounts tied to ${who} were found in this file. Check that it's the export of their mailbox.` : `No accounts tied to @${settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.`}</p>}
 
       {buckets.filter(([, list]) => list.length > 0).map(([b, list]) => (
-        <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`}>
+        <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`} data-dots="side">
           <h2 id={`h-${b}`}>{c.title[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{c.why[b]}</p>
           <ol class="cards">{list.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} />)}</ol>
@@ -272,6 +270,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to {mode === 'loss' ? who : `@${settings.schoolDomain}`} were skipped.</p>
       <div class="end"><button type="button" class="secondary" onClick={onRestart}>Scan another file</button></div>
+      <SiteFoot />
     </main>
   );
 }

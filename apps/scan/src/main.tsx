@@ -10,7 +10,7 @@ import '@fontsource/architects-daughter/latin-400.css';
 import './styles.css';
 import { applyDisplay, loadDisplay, TopBar } from './display.tsx';
 import { sampleFailed, sampleLoaded, sampleWanted, STALE_MESSAGE, storage } from './stale-page.ts';
-import { PixelField } from './pixel-field.tsx';
+import { Dots } from './dots.tsx';
 
 applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
@@ -23,8 +23,37 @@ type State =
   | { step: 'scanning'; settings: ScanSettings; mode: Mode; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
   | { step: 'done'; settings: ScanSettings; mode: Mode; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
 
+const pad = (n: number) => String(n).padStart(2, '0');
+
+/**
+ * The opening, when motion is on: a dot shape grows in the middle of a black page while a
+ * handwritten counter runs to 100, then the page fades in. About 1.4 s. The page stays in the
+ * accessibility tree the whole time; it's only transparent.
+ */
+function Intro({ onDone }: { onDone: () => void }) {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const root = document.documentElement, t0 = performance.now();
+    root.classList.add('is-intro');
+    let r = 0;
+    const step = (now: number) => {
+      const v = Math.min(100, Math.round((now - t0) / 14));
+      setP(v);
+      if (v < 100) r = requestAnimationFrame(step); else { root.classList.remove('is-intro'); onDone(); }
+    };
+    r = requestAnimationFrame(step);
+    return () => { cancelAnimationFrame(r); root.classList.remove('is-intro'); };
+  }, []);
+  return (
+    <div class="intro" data-dots="loader" data-progress={p / 100} aria-hidden="true">
+      <p class="hand-pct">{pad(p)}<span>%</span></p>
+    </div>
+  );
+}
+
 function App() {
   const [state, setState] = useState<State>({ step: 'start' });
+  const [intro, setIntro] = useState(() => document.documentElement.classList.contains('motion-ok'));
 
   const scan = (file: File, settings: ScanSettings, mode: Mode, sample = false) => {
     const worker = new Worker(new URL('./scan.worker.ts', import.meta.url), { type: 'module' });
@@ -53,7 +82,7 @@ function App() {
   };
   // After the reload above, run the sample straight away.
   useEffect(() => { if (sampleWanted(storage())) void trySample(); }, []);
-  if (state.step === 'start') return <StartScreen onScan={scan} onSample={trySample} error={state.error} />;
+  if (state.step === 'start') return <>{intro && <Intro onDone={() => setIntro(false)} />}<StartScreen onScan={scan} onSample={trySample} error={state.error} /></>;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
     const loss = state.mode === 'loss';
@@ -61,11 +90,9 @@ function App() {
     return (
       <main id="main" class="page scanning screen">
         <TopBar />
-        <h1>Reading {loss ? 'their' : 'your'} mailbox</h1>
-        <div class="scan-stage" aria-hidden="true">
-          <PixelField grow={pct / 100} />
-          <p class="scan-pct">{pct}<span>%</span></p>
-        </div>
+        <h1>Reading {loss ? 'their' : 'your'} mailbox<span class="dot" aria-hidden="true">*</span></h1>
+        <div class="scan-stage" data-dots="loader" data-progress={pct / 100} aria-hidden="true" />
+        <p class="hand-pct" aria-hidden="true">{pad(pct)}<span>%</span></p>
         <progress class="vh" max={100} value={pct} aria-label="Scan progress" />
         <p class="scan-count" aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
         <p class="scan-status" key={stage}>{stage}</p>
@@ -89,4 +116,4 @@ const loading = <main id="main" class="page" aria-busy="true">Loading…</main>;
 if (location.hash === '#nano-check') render(<Suspense fallback={loading}><NanoCheck /></Suspense>, root);
 else if (location.hash === '#handoff-check') render(<Suspense fallback={loading}><HandoffCheck /></Suspense>, root);
 else if (new URLSearchParams(location.search).get('eval') === '1') render(<Suspense fallback={loading}><EvalApp /></Suspense>, root);
-else render(<App />, root);
+else render(<><Dots /><App /></>, root);
