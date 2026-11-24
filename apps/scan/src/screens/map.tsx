@@ -20,6 +20,7 @@ import type { AnswerSource } from '../../../../packages/core/cascade.ts';
 import { applyLane3, BASIS_WORD, serviceLines, trail } from '../../../../packages/core/lane3.ts';
 import { applyPack, type Link, type Pack, type ServiceFacts } from '../../../../packages/core/pack.ts';
 import { loadPack } from '../pack-loader.ts';
+import { Check, Mark } from '../icons.tsx';
 
 type Props = {
   settings: ScanSettings; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
@@ -116,7 +117,7 @@ function Card({ a, rank, moved, onMoved, info, facts }: { a: RankedAccount; rank
   return (
     <li class={`card${moved ? ' is-moved' : ''}`} id={`acct-${a.key}`}>
       <div class="card-head">
-        <span class="rank" aria-label={`Rank ${rank}`}>{rank}</span>
+        <span class="rank" role="img" aria-label={`Rank ${rank}${moved ? ', moved' : ''}`}>{moved ? <Check /> : rank}</span>
         <div class="card-title">
           <h3>{a.name}</h3>
           <span class="domain">{a.key.startsWith('app:') ? 'connected with your school login' : a.key}</span>
@@ -182,8 +183,9 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
   useEffect(() => { title.current?.focus(); }, []);
   let rank = 0;
   return (
-    <main class="page map">
+    <main id="main" class="page map screen">
       <header class="map-head">
+        <p class="wordmark"><Mark /> Leave a Map</p>
         {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.</p>}
         <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
         <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}</h1>
@@ -206,7 +208,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
       {main.length === 0 && <p class="empty">No accounts tied to @{settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.</p>}
 
       {buckets.filter(([, list]) => list.length > 0).map(([b, list]) => (
-        <section key={b} class="bucket" aria-labelledby={`h-${b}`}>
+        <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`}>
           <h2 id={`h-${b}`}>{BUCKET_TITLE[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{BUCKET_WHY[b]}</p>
           <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} />)}</ol>
@@ -218,7 +220,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
         if (list.length === 0) return null;
         return (
           <details key={section} class="other" open={section === 'maybe' && list.some((a) => lane3.has(a.key))}>
-            <summary><h2>{title} <span class="count">{list.length}</span></h2></summary>
+            <summary><h2><span class="chev" aria-hidden="true" />{title} <span class="count">{list.length}</span></h2></summary>
             <p class="bucket-why">{note}</p>
             <ul class="plain">{list.map((a) => <Plain key={a.key} a={a} info={lane3.get(a.key)} />)}</ul>
           </details>
@@ -230,7 +232,7 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
       <Receipt />
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
       <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>
-      <button type="button" class="secondary" onClick={onRestart}>Scan another file</button>
+      <div class="end"><button type="button" class="secondary" onClick={onRestart}>Scan another file</button></div>
     </main>
   );
 }

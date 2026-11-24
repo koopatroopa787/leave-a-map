@@ -3,7 +3,11 @@ import { logLocal } from './lockdown.ts';
 import { render } from 'preact';
 import { useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
+import '@fontsource-variable/atkinson-hyperlegible-next';
+import '@fontsource-variable/atkinson-hyperlegible-mono';
+import '@fontsource-variable/fraunces';
 import './styles.css';
+import { Mark } from './icons.tsx';
 import { StartScreen } from './screens/start.tsx';
 import { MapScreen } from './screens/map.tsx';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
@@ -36,12 +40,20 @@ function App() {
   if (state.step === 'start') return <StartScreen onScan={scan} onSample={trySample} error={state.error} />;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
+    const x = 20 + (pct / 100) * 480;
     return (
-      <main class="page">
+      <main id="main" class="page scanning screen">
+        <p class="wordmark"><Mark /> Leave a Map</p>
         <h1>Reading your mailbox</h1>
-        <p>It stays on this device. Nothing is uploaded.</p>
-        <progress max={100} value={pct} aria-label="Scan progress" />
-        <p aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
+        <p class="scan-pct" aria-hidden="true">{pct}%</p>
+        <svg class="scan-art" viewBox="0 0 520 40" aria-hidden="true" focusable="false">
+          <path class="track" d="M20 20 H500" />
+          <path class="done" d="M20 20 H500" pathLength={1} stroke-dasharray="1" stroke-dashoffset={1 - pct / 100} />
+          <circle class="train" cx={x} cy="20" r="9" />
+        </svg>
+        <progress class="vh" max={100} value={pct} aria-label="Scan progress" />
+        <p class="scan-count" aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
+        <p class="assure">It stays on this device. Nothing is uploaded.</p>
       </main>
     );
   }
@@ -57,7 +69,7 @@ const EvalApp = lazy(() => import('./screens/eval.tsx').then((m) => ({ default: 
 const HandoffCheck = lazy(() => import('./screens/handoff-check.tsx').then((m) => ({ default: m.HandoffCheck })));
 
 const root = document.getElementById('app')!;
-const loading = <main class="page">Loading…</main>;
+const loading = <main id="main" class="page" aria-busy="true">Loading…</main>;
 if (location.hash === '#nano-check') render(<Suspense fallback={loading}><NanoCheck /></Suspense>, root);
 else if (location.hash === '#handoff-check') render(<Suspense fallback={loading}><HandoffCheck /></Suspense>, root);
 else if (new URLSearchParams(location.search).get('eval') === '1') render(<Suspense fallback={loading}><EvalApp /></Suspense>, root);
