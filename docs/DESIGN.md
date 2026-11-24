@@ -23,8 +23,17 @@ Dark by default: black page, warm off-white text, and one orange for the things 
 
 - Square corners everywhere. Frames are thin dashed lines, like a printed map's grid.
 - Short labels (the wordmark, section labels, tiers) are in the mono face, uppercase and widely spaced.
-- A **dot field** (`apps/scan/src/pixel-field.tsx`): a canvas of small orange squares, densest along three route lines and their stops. It flickers a little, gathers into one ring as you scroll past it on the start screen, grows out from the centre as the scan runs, and sits as a thin band at the top of the map. It is decorative (`aria-hidden`), text never sits on it, and with motion off it draws one still frame. Forced colours and print hide it.
-- The start screen's header: a mono label row ("School email closing" / "After a death", and "Nothing leaves this device" with an orange dot), the dot field, a short lede, then a very large, tight headline ending in an orange full stop.
+- **Dot canvas** (`apps/scan/src/dots.tsx`): one canvas fixed to the window behind the page. Pictures are drawn into a tiny canvas (one pixel per dot), blurred, broken up by a slow noise field, and read back, so each picture becomes a shaded cloud of small orange squares. Sections ask for a shape with `data-dots`:
+  - `hero`: an envelope, a key, a padlock, a map pin and the route mark, in turn, each dissolving into the next. It shrinks into a ball as the hero scrolls away.
+  - `side`: the same picture, small, in the empty space to the right of the 46rem column (wide screens only).
+  - `loader`: the picture in the middle, growing with `data-progress`. Used for the opening and the scan.
+  - `word`: LEAVE A MAP spelled in dots in the footer.
+  Each visible section is weighted by how much of it is on screen, so scrolling morphs one shape into the next. A row of ruler ticks on the right edge shows the scroll position. The page sits above the canvas, so cards cover it and text is never painted over. It is `aria-hidden`, and forced colours and print hide it.
+- **Opening** (motion on only): a black page with the dot shape growing in the middle and a handwritten counter running to 100% in the bottom-right corner, about 1.4 s, then the page fades in. The scan screen uses the same loader and counter.
+- **Layout**: full width with a gutter, left-aligned. Reading blocks keep a 46rem measure. The start screen's hero fills the first screen: mono labels on top, room for the picture, then the lede and a very large, tight headline that ends in an orange asterisk.
+- **Curtain**: an orange full-width band after the hero with one big line ("Three steps. Nothing is uploaded."), and a black hill rising into its bottom edge. Where scroll-driven animation is supported, it opens from a tilted shape as it scrolls in.
+- **Header**: dashed frame. The Display button is styled like a call-to-action: orange outline and text, its icon in a filled orange square.
+- **Footer**: how it works, where the Display menu is, then the name in dots.
 - Account cards end in label/value rows: a mono uppercase label over a bold value (emails to the address, the last one, fake ones ignored).
 - No glows, gradients, blurred glass or confetti.
 
@@ -81,8 +90,9 @@ Every main screen has a **Display** button (top right). It opens a native `popov
 All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx` sets that class from the Display menu; "Match device" follows `prefers-reduced-motion`. Without the class, every animation and transition is off.
 
 - Screens rise in, one block after another. The dotted routes fade in and the stops pop.
-- The scan screen's dot field grows out from the centre as the percentage climbs.
-- The dot field flickers at about 12 frames a second, and the start screen's one changes shape as you scroll.
+- The opening loader, and the scan's: the dot shape grows from the middle as the counter climbs.
+- The dot canvas flickers at about 12 frames a second, the hero picture changes every few seconds, and the shapes morph as you scroll. With motion off, the canvas holds one still frame and only redraws when the page scrolls or changes.
+- The orange curtain opens as it scrolls in (`animation-timeline: view()`, where supported).
 - A bucket's line grows down, and its cards rise in as they scroll into view (`animation-timeline: view()`, where supported).
 - Stops pop when ticked. In school mode, the progress line says how you're doing ("First one done.", "Over halfway.", "All done."). The other mode stays quiet: "There's no rush."
 - `<details>` open smoothly where `interpolate-size` is supported.
@@ -95,7 +105,7 @@ All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx
 - Targets: buttons are 48 px tall and toggles 44 px. Nothing is under 24 px (WCAG 2.5.8).
 - Start form errors are linked to the field (`aria-invalid`), and focus moves to the field. The error itself is `role="alert"`.
 - The file field is a real `<input type="file">` laid over a drop zone, so the keyboard, screen readers and drag and drop all work.
-- The scan progress keeps a native `<progress>` for screen readers. The dot field and the big handwritten percentage are `aria-hidden`.
+- The scan progress keeps a native `<progress>` for screen readers. The dot canvas and the big handwritten percentage are `aria-hidden`.
 - Print stylesheet: the map prints as a plain checklist.
 
 ## Rules for new UI

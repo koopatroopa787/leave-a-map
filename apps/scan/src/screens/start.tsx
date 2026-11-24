@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import type { ScanSettings } from '../../../../packages/core/types.ts';
 import { Lock, Upload } from '../icons.tsx';
-import { PixelField } from '../pixel-field.tsx';
-import { TopBar } from '../display.tsx';
+import { SiteFoot, TopBar } from '../display.tsx';
 import { countdown, longDate } from '../dates.ts';
 import type { Mode } from '../mode.ts';
 
@@ -85,15 +84,22 @@ export function StartScreen({ onScan, onSample, error }: Props) {
   return (
     <main id="main" class={`page start screen${over ? ' drop-anywhere' : ''}`}>
       <TopBar />
-      <header class="hero">
+      <header class="hero" data-dots="hero">
         <p class="kicker"><span>{loss ? 'After a death' : 'School email closing'}</span><span class="live">Nothing leaves this device</span></p>
-        <PixelField morph />
-        <p class="lede">{loss
-          ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
-          : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
-        <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot">.</span></h1>
+        <div class="hero-text">
+          <p class="lede">{loss
+            ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
+            : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
+          <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot" aria-hidden="true">*</span></h1>
+        </div>
       </header>
 
+      <div class="curtain">
+        <p class="curtain-label">How it works</p>
+        <p class="curtain-line">{loss ? 'One account at a time. Nothing is uploaded.' : 'Three steps. Nothing is uploaded.'}</p>
+      </div>
+
+      <div class="work" data-dots="side">
       <fieldset class="modes">
         <legend>What are you sorting out?</legend>
         {MODES.map(([m, title, sub]) => (
@@ -170,6 +176,9 @@ export function StartScreen({ onScan, onSample, error }: Props) {
           : 'Run Leave a Map on a made-up student\'s 55 emails. The people and services are fictional, apart from three real research sites, so the cloud lookup has something it can recognise.'}</p>
         <button type="button" id="try-sample" class="secondary" onClick={() => onSample(mode)}>Try the sample</button>
       </section>
+      </div>
+
+      <SiteFoot />
     </main>
   );
 }
