@@ -13,30 +13,32 @@ import { sampleFailed, sampleLoaded, sampleWanted, STALE_MESSAGE, storage } from
 applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
 import { MapScreen } from './screens/map.tsx';
+import type { Mode } from './mode.ts';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
 
 type State =
   | { step: 'start'; error?: string }
-  | { step: 'scanning'; settings: ScanSettings; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
-  | { step: 'done'; settings: ScanSettings; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
+  | { step: 'scanning'; settings: ScanSettings; mode: Mode; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
+  | { step: 'done'; settings: ScanSettings; mode: Mode; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
 
 function App() {
   const [state, setState] = useState<State>({ step: 'start' });
 
-  const scan = (file: File, settings: ScanSettings, sample = false) => {
+  const scan = (file: File, settings: ScanSettings, mode: Mode, sample = false) => {
     const worker = new Worker(new URL('./scan.worker.ts', import.meta.url), { type: 'module' });
-    setState({ step: 'scanning', settings, sample, bytesRead: 0, totalBytes: file.size, messages: 0 });
+    setState({ step: 'scanning', settings, mode, sample, bytesRead: 0, totalBytes: file.size, messages: 0 });
     worker.onmessage = (e: MessageEvent<FromWorker>) => {
       const m = e.data;
-      if (m.type === 'progress') setState({ step: 'scanning', settings, sample, ...m });
-      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${m.stats.messages.toLocaleString()} emails in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
+      if (m.type === 'progress') setState({ step: 'scanning', settings, mode, sample, ...m });
+      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${m.stats.messages.toLocaleString()} emails in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, mode, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
       else { worker.terminate(); setState({ step: 'start', error: m.message }); }
     };
     worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };
     worker.postMessage({ type: 'scan', file, settings });
   };
 
-  const trySample = async () => {
+  // ponytail: after a stale-page reload the sample runs in school mode; keep the mode in the flag if that matters.
+  const trySample = async (mode: Mode = 'school') => {
     let mod: typeof import('./sample.ts');
     try { mod = await import('./sample.ts'); } catch {
       // A page older than the site asks for a sample chunk that's gone (see stale-page.ts).
@@ -44,7 +46,8 @@ function App() {
       return;
     }
     sampleLoaded(storage());
-    scan(mod.sampleFile(), mod.SAMPLE_SETTINGS, true);
+    const [file, settings] = mod.sample(mode);
+    scan(file, settings, mode, true);
   };
   // After the reload above, run the sample straight away.
   useEffect(() => { if (sampleWanted(storage())) void trySample(); }, []);
@@ -52,11 +55,12 @@ function App() {
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
     const x = 20 + (pct / 100) * 480;
-    const stage = pct < 25 ? 'Opening your mailbox…' : pct < 75 ? 'Reading who sends you mail…' : 'Sorting what matters most…';
+    const loss = state.mode === 'loss';
+    const stage = pct < 25 ? 'Opening the mailbox…' : pct < 75 ? `Reading who sends ${loss ? 'them' : 'you'} mail…` : 'Sorting what matters most…';
     return (
       <main id="main" class="page scanning screen">
         <TopBar />
-        <h1>Reading your mailbox</h1>
+        <h1>Reading {loss ? 'their' : 'your'} mailbox</h1>
         <p class="scan-pct" aria-hidden="true">{pct}%</p>
         <svg class="scan-art" viewBox="0 0 520 40" aria-hidden="true" focusable="false">
           <path class="track" d="M20 20 H500" />
