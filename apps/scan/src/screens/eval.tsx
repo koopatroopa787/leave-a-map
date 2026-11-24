@@ -112,7 +112,7 @@ export function EvalApp() {
 
   if (step === 'memory') {
     return (
-      <main class="page eval">
+      <main id="main" class="page eval">
         <p class="eyebrow">Evaluation mode · nothing leaves this page</p>
         <h1>First, from memory</h1>
         <p>Type every account you think uses your school email, one per line. Don't look at your inbox. You have two minutes; you can finish early.</p>
@@ -127,11 +127,11 @@ export function EvalApp() {
     );
   }
   if (step === 'start') return <StartScreen onScan={runScan} onSample={trySample} error={error} />;
-  if (step === 'scanning') return <main class="page eval"><h1>Reading your mailbox</h1><p>It stays on this device. Results stay hidden until you've labelled them.</p></main>;
+  if (step === 'scanning') return <main id="main" class="page eval"><h1>Reading your mailbox</h1><p>It stays on this device. Results stay hidden until you've labelled them.</p></main>;
 
   if (step === 'nano') {
     return (
-      <main class="page eval">
+      <main id="main" class="page eval">
         <h1>On-device AI</h1>
         {nanoState === 'checking' && <p>Checking whether Gemini Nano runs in this browser…</p>}
         {nanoState === 'unavailable' && <p>Gemini Nano isn't available here, so only the rules arm runs. That's a useful result too.</p>}
@@ -148,7 +148,7 @@ export function EvalApp() {
 
   if (step === 'label') {
     return (
-      <main class="page eval">
+      <main id="main" class="page eval">
         <h1>Is each one yours?</h1>
         <p>{cand.keys.length} services, in random order{cand.sampled ? ' (a sample of a long list)' : ''}. For each: do you have, or did you have, an account there tied to your school address?</p>
         <p class="meta" aria-live="polite">{answered} of {cand.keys.length} answered</p>
@@ -183,7 +183,7 @@ export function EvalApp() {
 
   if (step === 'misses') {
     return (
-      <main class="page eval">
+      <main id="main" class="page eval">
         <h1>Anything missing?</h1>
         {names.length === 0 ? <p>You didn't type any names in the memory test.</p> : <p>These are the names you typed at the start.</p>}
         <ul class="eval-misses">
@@ -230,7 +230,7 @@ export function EvalApp() {
   const m = counts.memory;
   const copy = async () => { try { await navigator.clipboard.writeText(json); setCopied(true); } catch { setCopied(false); } };
   return (
-    <main class="page eval">
+    <main id="main" class="page eval">
       <h1>Your counts</h1>
       <p class="summary" id="eval-summary">You named {m.named}. We found {m.foundConfirmed} confirmed account{m.foundConfirmed === 1 ? '' : 's'}, {m.foundNotNamed} you didn't name. We missed {m.namedNotFound} you named.</p>
       <p>This is everything that would be shared: numbers only, no names, no addresses, no email. Read it, then copy it to the team if you're happy.</p>
