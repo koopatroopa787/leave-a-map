@@ -23,7 +23,9 @@ Dark by default: black page, warm off-white text, and one orange for the things 
 
 - Square corners everywhere. Frames are thin dashed lines, like a printed map's grid.
 - Short labels (the wordmark, section labels, tiers) are in the mono face, uppercase and widely spaced.
-- The start screen's route art is drawn in dotted segments, like a dot-matrix sign.
+- A **dot field** (`apps/scan/src/pixel-field.tsx`): a canvas of small orange squares, densest along three route lines and their stops. It flickers a little, gathers into one ring as you scroll past it on the start screen, grows out from the centre as the scan runs, and sits as a thin band at the top of the map. It is decorative (`aria-hidden`), text never sits on it, and with motion off it draws one still frame. Forced colours and print hide it.
+- The start screen's header: a mono label row ("School email closing" / "After a death", and "Nothing leaves this device" with an orange dot), the dot field, a short lede, then a very large, tight headline ending in an orange full stop.
+- Account cards end in label/value rows: a mono uppercase label over a bold value (emails to the address, the last one, fake ones ignored).
 - No glows, gradients, blurred glass or confetti.
 
 ## Type
@@ -33,8 +35,9 @@ Dark by default: black page, warm off-white text, and one orange for the things 
 | Headings | Plus Jakarta Sans, weight 700, tight letter spacing | A plain, strong sans for the big headings |
 | Body and UI | Atkinson Hyperlegible Next | Made by the Braille Institute so that easily confused letters (I l 1, O 0) look different |
 | Domains, counts, labels | Atkinson Hyperlegible Mono | Domains are read character by character |
+| The scan's big percentage | Architects Daughter | One handwritten touch; decorative, so it's `aria-hidden` and the real progress is a `<progress>` |
 
-All three fonts are bundled from `@fontsource-variable` (OFL), so they're served from our own origin and the scan CSP (`font-src 'self'`) doesn't change. The cloud CSP has no `font-src`, so the consent window uses system fonts.
+All four fonts are bundled from Fontsource (OFL), so they're served from our own origin and the scan CSP (`font-src 'self'`) doesn't change. The cloud CSP has no `font-src`, so the consent window uses system fonts.
 
 Body text is 17 px with a line height of 1.6. Every size is in rem, so browser zoom and text size settings work.
 
@@ -78,7 +81,8 @@ Every main screen has a **Display** button (top right). It opens a native `popov
 All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx` sets that class from the Display menu; "Match device" follows `prefers-reduced-motion`. Without the class, every animation and transition is off.
 
 - Screens rise in, one block after another. The dotted routes fade in and the stops pop.
-- The scan screen fills a line, with a pulsing marker at its end.
+- The scan screen's dot field grows out from the centre as the percentage climbs.
+- The dot field flickers at about 12 frames a second, and the start screen's one changes shape as you scroll.
 - A bucket's line grows down, and its cards rise in as they scroll into view (`animation-timeline: view()`, where supported).
 - Stops pop when ticked. In school mode, the progress line says how you're doing ("First one done.", "Over halfway.", "All done."). The other mode stays quiet: "There's no rush."
 - `<details>` open smoothly where `interpolate-size` is supported.
@@ -91,7 +95,7 @@ All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx
 - Targets: buttons are 48 px tall and toggles 44 px. Nothing is under 24 px (WCAG 2.5.8).
 - Start form errors are linked to the field (`aria-invalid`), and focus moves to the field. The error itself is `role="alert"`.
 - The file field is a real `<input type="file">` laid over a drop zone, so the keyboard, screen readers and drag and drop all work.
-- The scan progress keeps a native `<progress>` for screen readers. The drawn line is `aria-hidden`.
+- The scan progress keeps a native `<progress>` for screen readers. The dot field and the big handwritten percentage are `aria-hidden`.
 - Print stylesheet: the map prints as a plain checklist.
 
 ## Rules for new UI

@@ -6,9 +6,11 @@ import { lazy, Suspense } from 'preact/compat';
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import '@fontsource-variable/atkinson-hyperlegible-mono';
 import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource/architects-daughter/latin-400.css';
 import './styles.css';
 import { applyDisplay, loadDisplay, TopBar } from './display.tsx';
 import { sampleFailed, sampleLoaded, sampleWanted, STALE_MESSAGE, storage } from './stale-page.ts';
+import { PixelField } from './pixel-field.tsx';
 
 applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
@@ -54,19 +56,16 @@ function App() {
   if (state.step === 'start') return <StartScreen onScan={scan} onSample={trySample} error={state.error} />;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
-    const x = 20 + (pct / 100) * 480;
     const loss = state.mode === 'loss';
     const stage = pct < 25 ? 'Opening the mailbox…' : pct < 75 ? `Reading who sends ${loss ? 'them' : 'you'} mail…` : 'Sorting what matters most…';
     return (
       <main id="main" class="page scanning screen">
         <TopBar />
         <h1>Reading {loss ? 'their' : 'your'} mailbox</h1>
-        <p class="scan-pct" aria-hidden="true">{pct}%</p>
-        <svg class="scan-art" viewBox="0 0 520 40" aria-hidden="true" focusable="false">
-          <path class="track" d="M20 20 H500" />
-          <path class="done" d="M20 20 H500" pathLength={1} stroke-dasharray="1" stroke-dashoffset={1 - pct / 100} />
-          <circle class="train" cx={x} cy="20" r="9" />
-        </svg>
+        <div class="scan-stage" aria-hidden="true">
+          <PixelField grow={pct / 100} />
+          <p class="scan-pct">{pct}<span>%</span></p>
+        </div>
         <progress class="vh" max={100} value={pct} aria-label="Scan progress" />
         <p class="scan-count" aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
         <p class="scan-status" key={stage}>{stage}</p>
