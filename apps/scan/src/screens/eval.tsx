@@ -58,7 +58,7 @@ export function EvalApp() {
     };
     worker.postMessage({ type: 'scan', file, settings });
   };
-  const trySample = async () => { const { sampleFile, SAMPLE_SETTINGS } = await import('../sample.ts'); runScan(sampleFile(), SAMPLE_SETTINGS); };
+  const trySample = async () => { const [file, settings] = (await import('../sample.ts')).sample('school'); runScan(file, settings); };
 
   // Arm H: the same scan labelled by Nano, twice. Each run records Nano's own label per account.
   const runNano = async () => {
