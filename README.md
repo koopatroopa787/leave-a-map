@@ -8,9 +8,9 @@ Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device 
 - **Use it on your own mail:** export your school mailbox as an `.mbox` file and pick it on the start screen.
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
-> **Status (21 Nov 2026):**
-> - Lanes 1, 2 and 3 work end to end in local builds. The scan site is live with the current code.
-> - The hosted cloud lookup is switched off until the team picks Gemini's paid or free tier and App Check attests on the hosted site. Until then, the live scan site doesn't offer it. The README will say when it's live.
+> **Status (24 Nov 2026):**
+> - Lanes 1, 2 and 3 work end to end, and both sites are live with the current code.
+> - **The hosted cloud lookup is live** on Gemini's paid tier, with App Check (reCAPTCHA Enterprise) enforced. A click-through on the live sites got answers back on 24 Nov. Hosting and AI Logic are on separate Firebase projects; only the cloud site talks to AI Logic.
 > - Every result marked *pending* below is filled in from the pre-registered evaluation, including bad results.
 
 ## The problem
@@ -160,7 +160,9 @@ That's the whole claim. It doesn't cover your browser's own background traffic, 
 | Network requests from the scan page in a full run | **0** | Chrome net log, by network isolation key | 21 Nov 2026 |
 | Two-site handoff on the live sites | **3 sent, 2 ticked, 2 answers back, 0 requests from the scan page** | `#handoff-check` | 21 Nov 2026 |
 | Rules alone vs rules + Nano on real mailboxes | *pending* | [`docs/EVAL.md`](docs/EVAL.md), pre-registered at commit `03b3f2a` before any run | – |
-| Hosted run of all three lanes on a Nano machine | *pending* | T32 | – |
+| Lane 3 cascade from a production build, real App Check (no debug token), no Nano in the browser | **3 of 3 held-out sites answered in the cloud, all valid, 0.75–2.2 s each** | `cascade-check.html` (check build, not deployed), on `localhost` | 24 Nov 2026 |
+| Lane 3 on the live sites, App Check enforced | **Answers sent back to the scan page** | Click-through on the hosted sites | 24 Nov 2026 |
+| Hosted run of all three lanes on a Nano machine, with per-field sources | *pending* | T32 | – |
 
 ### Evaluation (pre-registered)
 

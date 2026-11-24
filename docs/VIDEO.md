@@ -54,8 +54,8 @@ Voice is about 270 words, which is roughly 1:50 at a calm pace. No beat goes ove
 ## Before filming (checklist)
 
 - [ ] `main` is deployed to both sites, or every shot uses the same local build.
-- [ ] The cloud lookup is switched on (paid or free tier) and works on the hosted site. On the free tier, film with 10 or fewer services.
-- [ ] Hosted reCAPTCHA attests. Otherwise, use a local debug build for S6 to S8 and say so in the description.
+- [x] The cloud lookup is switched on and works on the hosted site (paid tier, 24 Nov).
+- [x] Hosted reCAPTCHA attests, with App Check enforced (24 Nov). S6 to S8 can be filmed on the live sites.
 - [ ] Both humans have OK'd the real held-out sites appearing on screen, or the sample is regenerated with the fictional fallback.
 - [ ] Fresh Chrome profile: no bookmarks bar, extensions, other tabs, signed-in account or notifications.
 - [ ] Nano machine: Nano is `available` with no bypass flag. Take a screenshot of `chrome://on-device-internals` for our own record only. Don't put it in the video.
