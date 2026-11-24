@@ -2,19 +2,37 @@
 
 The look of the scan site (`apps/scan`) and the consent window (`apps/cloud/consent.html`). The tokens live at the top of `apps/scan/src/styles.css`; the consent window copies the colour tokens.
 
+## Two modes, one map
+
+The start screen asks "What are you sorting out?":
+
+- **My school email is closing.** Move each account to an address you'll keep, before the shut-off date.
+- **Someone has died.** List the accounts in their mailbox, in the order to deal with them: money (banks, pensions, insurance, bills) first, then photos and files, then other accounts, and their email, phone and passwords last, because notices from everything else arrive there.
+
+The scan (`packages/core`) is the same for both. Only the words, the order of the lines and the steps change; they live in `apps/scan/src/mode.ts`. The second mode has no date, no student-discount chip and no school-login step. Its steps never link to a page that needs the person's login, and say not to sign in as them. A short note says the list isn't legal advice.
+
 ## Idea: the list is a route map
 
-- Each bucket is a coloured **line**. Each account is a numbered **stop** on it, in rank order.
-- Marking an account moved fills its stop with a tick and sinks the card into the page.
+- Each bucket is a coloured **line**. Each account is a numbered square **stop** on it, in rank order.
+- Marking an account moved (or done) fills its stop with a tick and sinks the card into the page.
 - Colour is never the only signal. Every line has a written title, and every stop a number.
+
+## Look
+
+Dark by default: black page, warm off-white text, and one orange for the things that matter (the primary button, the chosen option, a status dot, the full stop at the end of the headline). Light is one choice away in the Display menu.
+
+- Square corners everywhere. Frames are thin dashed lines, like a printed map's grid.
+- Short labels (the wordmark, section labels, tiers) are in the mono face, uppercase and widely spaced.
+- The start screen's route art is drawn in dotted segments, like a dot-matrix sign.
+- No glows, gradients, blurred glass or confetti.
 
 ## Type
 
 | Role | Font | Why |
 |---|---|---|
+| Headings | Plus Jakarta Sans, weight 700, tight letter spacing | A plain, strong sans for the big headings |
 | Body and UI | Atkinson Hyperlegible Next | Made by the Braille Institute so that easily confused letters (I l 1, O 0) look different |
-| Domains, counts, quotes | Atkinson Hyperlegible Mono | Domains are read character by character |
-| Headings | Fraunces, upright, weight 620, soft axis at 100 | Rounded, friendly headings. Never italic |
+| Domains, counts, labels | Atkinson Hyperlegible Mono | Domains are read character by character |
 
 All three fonts are bundled from `@fontsource-variable` (OFL), so they're served from our own origin and the scan CSP (`font-src 'self'`) doesn't change. The cloud CSP has no `font-src`, so the consent window uses system fonts.
 
@@ -22,18 +40,18 @@ Body text is 17 px with a line height of 1.6. Every size is in rem, so browser z
 
 ## Colour
 
-- All colours are OKLCH tokens, with light and dark sets. The palette is a soft lilac-white with an indigo accent and a warm coral for human touches (the hand-drawn underline, the greeting dot). A faint colour glow sits behind the page; high contrast removes it.
+- All colours are OKLCH tokens. Dark is the base set; light is a second set.
 - `prefers-contrast: more`, or High in the Display menu, makes muted text full ink.
 - `forced-colors` (Windows High Contrast) switches lines and stops to system colours.
-- Measured on the start screen, the Display panel and the sample map (with one and with all accounts moved), at 320, 375 and 1280 px, in light, dark and high contrast, and with Larger text and Wider spacing: every text node is at least 5.7:1, against AA's 4.5:1.
+- Measured on the start screen and the map in both modes (with none and with all accounts ticked), at 320 and 1280 px, in dark, light and high contrast: no axe violations, and every text node is at least 5.7:1, against AA's 4.5:1.
 
-| Line | Bucket |
-|---|---|
-| Red | You sign in with your school account |
-| Blue | Holds your work |
-| Violet | Can reset your other accounts |
-| Amber | Money |
-| Green | Uses your school address |
+| Line | School mode | Someone has died |
+|---|---|---|
+| Red | You sign in with your school account | Signs in through another of their accounts |
+| Blue | Holds your work | Holds their photos and files |
+| Violet | Can reset your other accounts | Their email, phone and passwords |
+| Amber | Money | Money: banks, pensions, insurance, bills |
+| Green | Uses your school address | Other accounts in their name |
 
 ## Display menu
 
@@ -42,15 +60,15 @@ Every main screen has a **Display** button (top right). It opens a native `popov
 | Setting | Options | How it works |
 |---|---|---|
 | Text size | Normal, Large (115%), Larger (132%) | `data-text` on `<html>`; every size is in rem |
-| Colours | Match device, Light, Dark | `data-theme` |
-| Contrast | Normal, High | `data-contrast`; muted text becomes full ink, lines darken, glow goes |
+| Colours | Match device, Light, Dark (default) | `data-theme` |
+| Contrast | Normal, High | `data-contrast`; muted text becomes full ink, lines darken |
 | Animation | Match device, On, Off | the `.motion-ok` class on `<html>` |
 | Letter spacing | Normal, Wider | `data-spacing`; wider letter, word and line spacing, which helps some dyslexic readers |
 
 ## Typing help on the start screen
 
-- Email: no auto-capitals or autocorrect, and an email keyboard on phones. As you type, a note says which domain will be searched. It gently warns if the address is incomplete or looks personal (gmail, outlook, icloud and similar).
-- Date: quick choices (in 30 days, 3 months, 6 months) next to the date field. The chosen date is read back in words, like "24 Feb 2027, in 92 days".
+- Email: no auto-capitals or autocorrect, and an email keyboard on phones. As you type, a note says which address or domain will be searched. In school mode it gently warns if the address looks personal (gmail, outlook, icloud and similar).
+- Date (school mode): quick choices (in 30 days, 3 months, 6 months) next to the date field. The chosen date is read back in words, like "24 Feb 2027, in 92 days".
 - Enter moves on to the next empty step instead of showing an error.
 - The mailbox file can be dropped anywhere on the page.
 - When something is missing, focus moves to that field and the message says what to do.
@@ -59,12 +77,10 @@ Every main screen has a **Display** button (top right). It opens a native `popov
 
 All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx` sets that class from the Display menu; "Match device" follows `prefers-reduced-motion`. Without the class, every animation and transition is off.
 
-- Opening: the colour glow fades up, the headline's words land one by one, a hand-drawn underline draws under "going away.", and the routes draw themselves before a small train sets off along one.
-- The Display panel slides in. Primary buttons get a soft shine on hover.
-- Screens rise in, one block after another.
+- Screens rise in, one block after another. The dotted routes fade in and the stops pop.
 - The scan screen fills a line, with a pulsing marker at its end.
 - A bucket's line grows down, and its cards rise in as they scroll into view (`animation-timeline: view()`, where supported).
-- Stops pop when ticked. Ticking the last one shows a short celebration with a little confetti, and the progress line says how you're doing ("First one done.", "Over halfway.", "All done.").
+- Stops pop when ticked. In school mode, the progress line says how you're doing ("First one done.", "Over halfway.", "All done."). The other mode stays quiet: "There's no rush."
 - `<details>` open smoothly where `interpolate-size` is supported.
 
 ## Accessibility checklist
@@ -83,4 +99,5 @@ All motion is CSS, and it only runs when `<html>` has `.motion-ok`. `display.tsx
 - Use the tokens. Don't put hex or OKLCH values in components.
 - No inline `style` attributes or `<style>` tags on the scan site; the CSP blocks them. Put styles in `styles.css`.
 - No HTML strings (Trusted Types). Icons are Preact SVG elements in `apps/scan/src/icons.tsx`.
-- New motion goes inside the reduced-motion query.
+- New motion goes inside `:root.motion-ok`.
+- New wording that differs between the modes goes in `mode.ts`.

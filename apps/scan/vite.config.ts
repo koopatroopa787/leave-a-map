@@ -16,7 +16,8 @@ export default defineConfig({
   // VITE_CLOUD_LOOKUP switch (not a secret), so both sites agree on whether the lookup is on.
   envPrefix: ['VITE_SCAN_', 'VITE_CLOUD_LOOKUP'],
   esbuild: { jsx: 'automatic', jsxImportSource: 'preact' },
-  build: { outDir: r('../../dist/scan'), emptyOutDir: true, modulePreload: { polyfill: false } },
+  // assetsInlineLimit 0: an inlined data: font would break the CSP (font-src 'self').
+  build: { outDir: r('../../dist/scan'), emptyOutDir: true, modulePreload: { polyfill: false }, assetsInlineLimit: 0 },
   worker: { format: 'es' },
   preview: { headers: scanHeaders, port: 4173, strictPort: true },
 });

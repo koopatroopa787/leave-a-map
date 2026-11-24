@@ -6,20 +6,21 @@
     <meta name="referrer" content="no-referrer" />
     <title>Leave a Map: approve what's sent</title>
     <style>
-      /* Same tokens as the scan site (apps/scan/src/styles.css). System fonts: this site's CSP has no font-src. */
+      /* Same colour tokens as the scan site (apps/scan/src/styles.css): black, off-white, one orange. System fonts: this site's CSP has no font-src. */
       :root {
-        color-scheme: light dark;
-        --paper: oklch(98.3% 0.008 290); --surface: oklch(100% 0 0); --sunk: oklch(96.2% 0.012 290);
-        --ink: oklch(22% 0.035 282); --muted: oklch(45% 0.035 282); --line: oklch(91.5% 0.014 290); --line-strong: oklch(80% 0.022 290);
-        --accent: oklch(50% 0.2 280); --accent-hover: oklch(44% 0.2 280); --accent-fg: oklch(99% 0.01 280); --accent-soft: oklch(94.5% 0.035 285);
-        --focus: oklch(50% 0.2 280); --warn-fg: oklch(44% 0.1 65); --warn-soft: oklch(96% 0.045 85); --cloud: oklch(94% 0.035 240);
+        color-scheme: dark light;
+        --paper: oklch(0% 0 0); --surface: oklch(9% 0 0); --sunk: oklch(20.5% 0 0);
+        --ink: oklch(88.5% 0.012 125); --muted: oklch(72% 0 0); --line: oklch(30% 0 0); --line-strong: oklch(56% 0 0);
+        --accent: oklch(70.5% 0.19 47); --accent-hover: oklch(76% 0.16 55); --accent-fg: oklch(0% 0 0); --accent-soft: oklch(17% 0 0);
+        --focus: oklch(76% 0.16 55); --warn-fg: oklch(86% 0.12 85); --warn-soft: oklch(24% 0.05 80); --cloud: oklch(20.5% 0 0);
+        --dash: 1px dashed var(--line-strong);
       }
-      @media (prefers-color-scheme: dark) {
+      @media (prefers-color-scheme: light) {
         :root {
-          --paper: oklch(16% 0.028 282); --surface: oklch(20.5% 0.032 282); --sunk: oklch(13.5% 0.024 282);
-          --ink: oklch(95.5% 0.01 290); --muted: oklch(77% 0.03 285); --line: oklch(30% 0.035 282); --line-strong: oklch(42% 0.04 282);
-          --accent: oklch(77% 0.14 285); --accent-hover: oklch(83% 0.12 285); --accent-fg: oklch(18% 0.05 282); --accent-soft: oklch(29% 0.07 285);
-          --focus: oklch(80% 0.14 285); --warn-fg: oklch(86% 0.11 85); --warn-soft: oklch(27% 0.05 75); --cloud: oklch(30% 0.06 240);
+          --paper: oklch(100% 0 0); --surface: oklch(100% 0 0); --sunk: oklch(96.5% 0 0);
+          --ink: oklch(14.5% 0 0); --muted: oklch(43.5% 0 0); --line: oklch(87% 0 0); --line-strong: oklch(55% 0 0);
+          --accent: oklch(53% 0.17 40); --accent-hover: oklch(47% 0.155 38); --accent-fg: oklch(100% 0 0); --accent-soft: oklch(95.5% 0.03 55);
+          --focus: oklch(53% 0.17 40); --warn-fg: oklch(43% 0.1 65); --warn-soft: oklch(95.5% 0.045 85); --cloud: oklch(96.5% 0 0);
         }
       }
       @media (prefers-contrast: more) { :root { --muted: var(--ink); --line: var(--line-strong); } }
@@ -27,35 +28,35 @@
       html, body { overflow-x: clip; }
       body { margin: 0; background: var(--paper); color: var(--ink); font: 1.0625rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
       main { max-width: 36rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; }
-      h1 { font: 650 clamp(1.5rem, 1.1rem + 2vw, 2rem)/1.15 ui-serif, Georgia, serif; letter-spacing: -0.01em; margin: 0 0 .75rem; text-wrap: balance; }
-      h2 { font-size: 1rem; margin: 0 0 .35rem; }
+      h1 { font: 700 clamp(1.6rem, 1.1rem + 2.4vw, 2.25rem)/1.08 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: -0.035em; margin: 0 0 .75rem; text-wrap: balance; }
+      h2 { font: 700 .8rem/1.4 ui-monospace, "Cascadia Mono", monospace; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); margin: 0 0 .5rem; }
       p { text-wrap: pretty; }
-      .what { background: var(--cloud); border-radius: 14px; padding: 1rem 1.15rem; margin: 1.25rem 0; }
+      .what { background: var(--cloud); border: var(--dash); padding: 1rem 1.15rem; margin: 1.25rem 0; }
       .what ul { margin: 0; padding-left: 1.2rem; }
       .what li + li { margin-top: .35rem; }
       a { color: var(--accent); text-underline-offset: .18em; }
       .bulk { display: flex; flex-wrap: wrap; gap: .5rem; }
-      .rows { list-style: none; padding: 0; margin: 1rem 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+      .rows { list-style: none; padding: 0; margin: 1rem 0; background: var(--surface); border: var(--dash); overflow: hidden; }
       .rows li + li { border-top: 1px solid var(--line); }
       .rows label { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; min-height: 3rem; padding: .6rem 1rem; cursor: pointer; transition: background 140ms; }
       .rows label:hover { background: var(--sunk); }
       .rows label:has(input:checked) { background: var(--accent-soft); }
       .domain { font-family: ui-monospace, "Cascadia Mono", monospace; font-weight: 600; overflow-wrap: anywhere; }
-      .tag { font-size: .8rem; font-weight: 700; padding: .1rem .55rem; border-radius: 99px; background: var(--warn-soft); color: var(--warn-fg); }
+      .tag { font-size: .8rem; font-weight: 700; padding: .1rem .5rem; background: var(--warn-soft); color: var(--warn-fg); }
       input[type=checkbox] { width: 1.3rem; height: 1.3rem; accent-color: var(--accent); flex: none; margin: 0; cursor: pointer; }
       input:disabled { cursor: not-allowed; }
       .adult { display: flex; align-items: center; gap: .65rem; min-height: 2.75rem; font-weight: 700; margin: .75rem 0 0; cursor: pointer; }
       .hint { color: var(--muted); min-height: 1.6em; margin: .5rem 0 1rem; font-size: .9rem; }
       .actions { display: flex; flex-wrap: wrap; gap: .6rem; }
-      button { font: inherit; font-weight: 700; min-height: 2.75rem; padding: .6rem 1.15rem; border-radius: 999px; border: 2px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; transition: background 140ms, border-color 140ms, transform 140ms; }
+      button { font: inherit; font-weight: 700; min-height: 2.75rem; padding: .6rem 1.15rem; border: 2px dashed var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; transition: background 140ms, border-color 140ms, transform 140ms; }
       button:hover { background: var(--sunk); border-color: var(--muted); }
-      button:active { transform: translateY(1px) scale(.985); }
-      button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+      button:active { transform: translateY(1px); }
+      button.primary { background: var(--accent); border-color: var(--accent); border-style: solid; color: var(--accent-fg); }
       button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
       button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
-      :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
-      #consent-done, #consent-busy, #consent-error, #consent-progress { padding: 1rem 1.15rem; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; }
-      #consent-done { background: var(--accent-soft); border-color: transparent; }
+      :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+      #consent-done, #consent-busy, #consent-error, #consent-progress { padding: 1rem 1.15rem; background: var(--surface); border: var(--dash); font-weight: 600; }
+      #consent-done { background: var(--accent-soft); border: 1px solid var(--accent); }
       @media (prefers-reduced-motion: no-preference) {
         main > * { animation: rise 420ms cubic-bezier(.22, 1, .36, 1) backwards; }
         main > :nth-child(2) { animation-delay: 50ms; } main > :nth-child(3) { animation-delay: 100ms; } main > :nth-child(n+4) { animation-delay: 150ms; }

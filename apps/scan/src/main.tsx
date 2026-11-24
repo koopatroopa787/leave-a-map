@@ -5,7 +5,7 @@ import { useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import '@fontsource-variable/atkinson-hyperlegible-mono';
-import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/plus-jakarta-sans';
 import './styles.css';
 import { applyDisplay, loadDisplay, TopBar } from './display.tsx';
 

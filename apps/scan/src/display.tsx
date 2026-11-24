@@ -9,7 +9,7 @@ export type Display = {
   motion: 'system' | 'on' | 'off'; spacing: 'normal' | 'wide';
 };
 const KEY = 'leave-a-map:display';
-const DEFAULT: Display = { text: 'm', theme: 'system', contrast: 'normal', motion: 'system', spacing: 'normal' };
+const DEFAULT: Display = { text: 'm', theme: 'dark', contrast: 'normal', motion: 'system', spacing: 'normal' };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function loadDisplay(): Display {

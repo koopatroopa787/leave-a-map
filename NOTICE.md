@@ -43,4 +43,4 @@ The scan site bundles these fonts from [Fontsource](https://fontsource.org). All
 |---|---|
 | Atkinson Hyperlegible Next | Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors |
 | Atkinson Hyperlegible Mono | Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors |
-| Fraunces | Copyright 2020 The Fraunces Project Authors |
+| Plus Jakarta Sans | Copyright 2020 The Plus Jakarta Sans Project Authors |
