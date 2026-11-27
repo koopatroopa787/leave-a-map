@@ -89,8 +89,8 @@ export function StartScreen({ onScan, onSample, error }: Props) {
         <div class="hero-text">
           <p class="lede">{loss
             ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
-            : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
-          <h1>{loss ? 'Find the accounts they left behind' : 'Your old email is going away'}<span class="dot" aria-hidden="true">*</span></h1>
+            : 'An email address is closing? Find every account tied to it before it does. Three quick steps.'}</p>
+          <h1>Map what an inbox leaves behind<span class="dot" aria-hidden="true">*</span></h1>
         </div>
       </header>
 
