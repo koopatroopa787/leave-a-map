@@ -137,13 +137,20 @@ export function Dots() {
         if (kind === 'hero') {
           // As the hero scrolls up, the picture shrinks and rounds into a ball.
           const p = clamp(-r.top / Math.max(1, r.height * .7)), wide = W >= 900;
-          const x = wide ? r.left + r.width * .66 : r.left + r.width * .5;
-          // On wide screens the picture fits the band between the labels and the lede, so it never sits behind text.
+          // On wide screens the pictures fit the band between the labels and the lede, so they never sit
+          // behind text. One picture is capped by the band's height and left most of its width empty, so
+          // the band holds two or three pictures side by side instead, each on its own beat.
           const tt = e.querySelector('.hero-text')?.getBoundingClientRect().top ?? r.bottom, top = r.top + 56, band = tt - 32 - top;
+          const n = wide ? (r.width >= 1100 ? 3 : 2) : 1;
           const y = (wide ? top + band / 2 : r.top + r.height * .36) + p * r.height * .25;
-          const s = (wide ? Math.min(r.width * .48, band) : Math.min(r.width * .9, r.height * .5)) * (1 - p * .55);
-          add(v * (1 - p * .6), (c) => picture(c, t, x, y, s));
-          add(v * p * .9, (c) => ball(c, x, y, s));
+          const s = (wide ? Math.min((r.width / n) * .9, band) : Math.min(r.width * .9, r.height * .5)) * (1 - p * .55);
+          for (let q = 0; q < n; q++) {
+            const x = r.left + r.width * (q + .5) / n;
+            // Offsets of 4/3 of a turn keep neighbours on different pictures and stagger their fades.
+            const tq = t + q * HOLD * 4 / 3;
+            add(v * (1 - p * .6), (c) => picture(c, tq, x, y, s));
+            add(v * p * .9, (c) => ball(c, x, y, s));
+          }
         } else if (kind === 'side' && i === side) {
           // Room to the right of the 46rem column; skip it when there isn't any.
           const col = r.left + Math.min(r.width, 736);

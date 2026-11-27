@@ -1,13 +1,13 @@
 # Leave a Map
 
-**Your school email has a shutoff date. Leave a Map reads your mailbox on your own device and ranks the accounts tied to that address, so you move the ones that matter before you're locked out.**
+**An email address you rely on is closing: a school address after graduation, a work address when you leave a job, or an old provider. Leave a Map reads that mailbox on your own device and ranks the accounts tied to the address, so you move the ones that matter before you're locked out.**
 
-It has a second mode for when **someone has died**: it maps the accounts in their mailbox for the person sorting out their affairs, with money first.
+A second mode, **After a loss**, maps the accounts in the mailbox of someone who has passed away, for the person sorting out their affairs, with money first.
 
 Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device for your mail, and a Gemini cloud model only for the web addresses you approve.
 
 - **Try it:** https://leave-a-map.web.app. No login is needed: pick a mode, then click **Try the sample**. Each mode has its own fictional sample mailbox.
-- **Use it on your own mail:** export your school mailbox as an `.mbox` file and pick it on the start screen.
+- **Use it on your own mail:** export the mailbox of the address that's closing as an `.mbox` file and pick it on the start screen.
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
 > **Status (28 Nov 2026):**
@@ -17,7 +17,7 @@ Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device 
 
 ## The problem
 
-Universities close graduates' school email on a fixed date:
+Addresses close on a fixed date. School email is the clearest case, because universities close graduates' accounts on a schedule:
 
 - One US university's alumni address service [ends on 31 Jan 2027](https://alumni.duke.edu/benefits-services).
 - Another [deletes the class of 2026's school accounts on 31 Mar 2027](https://services.northwestern.edu/TDClient/30/Portal/KB/Article/2658/Google-Workspace-FAQ-for-Alumni), about 300 days after graduation.
@@ -47,25 +47,25 @@ We read its public description only and copied no code (it's GPL-3.0; this repo 
 
 ## What it does
 
-1. **Enter your school address and its shutoff date, then pick the `.mbox` file.** It's read in a Worker on a page that isn't allowed to make network requests.
+1. **Enter the address that's closing and its shutoff date, then pick the `.mbox` file.** It's read in a Worker on a page that isn't allowed to make network requests.
 2. **Get the list of what breaks on that date,** in the order to fix it:
-   1. You sign in with your school account
+   1. You sign in with your school or work account
    2. Holds your work
    3. Can reset your other accounts
    4. Money
    5. Everything else tied to the address
 3. **Every card says why it's there:** a tier (**Seen**, **Likely** or **Possible**), the source (rules, on-device AI, cloud AI, the service list or you), and the exact quote and date from your mail.
 4. **Fake-looking mail is set aside.** That covers failed sender checks and lookalike domains. **Mail forwarded in from another address** goes in its own section.
-5. **A guided school-login step** opens your school account's connected-apps page. It warns you to add a password, or change the login email at the service, *before* you disconnect it.
+5. **A guided login step** opens your school or work account's connected-apps page. It warns you to add a password, or change the login email at the service, *before* you disconnect it.
 6. **Move links:**
    - From a dated list of public sources, plus links a person opened and checked.
    - No model ever supplies a URL.
    - Without a checked link, the card says "open the service → account settings".
 7. **A "Moved" checklist** with a counter. It's kept only in this browser.
 
-### Second mode: someone has died
+### Second mode: After a loss
 
-The start screen asks "What are you sorting out?". The second answer is for the person handling the affairs of someone who has died, using an export of that person's mailbox.
+The start screen asks "What are you sorting out?". The second answer, **After a loss**, is for the person handling the affairs of someone who has passed away, using an export of that person's mailbox.
 
 - **Same scan, same three lanes, same privacy.** Only the words, the order and the steps change. They're all in [`apps/scan/src/mode.ts`](apps/scan/src/mode.ts).
 - **No shutoff date.** Enter their address and pick the file.
@@ -206,9 +206,9 @@ Known issues, recorded before the run:
 - **One cloud model** (`gemini-3.5-flash-lite`), and the cloud lookup needs App Check.
 - **Lane 3 knows services, not you.** It describes what a kind of service usually holds, never what your account holds.
 - **Fictional services:** neither model can recognise one, so they're answered honestly as "not recognised".
-- **The school-login page can be incomplete.** Schools can hide apps, so the list from your school account's page may be partial.
+- **The connected-apps page can be incomplete.** Schools and employers can hide apps, so the list from that account's page may be partial.
 - **We don't protect against a malicious build of this app.** The code is public so anyone can check it.
-- **The someone-has-died mode isn't evaluated.** The pre-registered evaluation covers school mailboxes only.
+- **The After a loss mode isn't evaluated.** The pre-registered evaluation covers school mailboxes only.
 - **In that mode, mail is tied to their address's domain.** On a large webmail domain, mail sent to other people at the same provider can count as theirs. That's rare in a personal mailbox.
 
 ## Run it
@@ -219,7 +219,7 @@ npm test
 npm run dev
 ```
 
-Open the printed local address and click **Try the sample**, or enter a school address and shutoff date and pick an `.mbox` file.
+Open the printed local address and click **Try the sample**, or enter the address that's closing and its shutoff date and pick an `.mbox` file.
 
 - **Cloud site (lane 3):** copy `.env.example` to `.env`, fill in your Firebase web app and reCAPTCHA Enterprise site key, then run `npm run dev:cloud`.
 - **Production builds look nothing up** unless built with `VITE_CLOUD_LOOKUP` set:

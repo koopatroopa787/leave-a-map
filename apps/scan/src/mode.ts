@@ -1,7 +1,8 @@
 // apps/scan/src/mode.ts: the two things Leave a Map can map. The scan itself (packages/core) is the
 // same for both; only the words, the order of the lines and the steps change.
-//   school: my school email is closing, so move each account to an address I'll keep.
-//   loss:   someone has died, and I'm sorting out the accounts their mailbox shows.
+//   school: an email address I use (school, work or an old provider) is closing, so move each
+//           account to an address I'll keep. The id stays 'school' because saved checklists use it.
+//   loss:   after a loss: I'm sorting out the accounts of someone who has passed away.
 import type { Bucket, Section } from '../../../packages/core/types.ts';
 
 export type Mode = 'school' | 'loss';
@@ -14,36 +15,36 @@ type Copy = {
   other: { section: Exclude<Section, 'main'>; title: string; note: string }[];
   done: string;
   appKey: string;
-  /** Rewrites rule wording that speaks to the mailbox owner ("your school address"). */
+  /** Rewrites rule wording that speaks to the mailbox owner ("your old address"). */
   say: (s: string) => string;
 };
 
 export const COPY: Record<Mode, Copy> = {
   school: {
     title: {
-      sso: 'You sign in with your school account',
+      sso: 'You sign in with your school or work account',
       work: 'Holds your work',
       reset: 'Can reset your other accounts',
       money: 'Money',
-      rest: 'Uses your school address',
+      rest: 'Uses your old address',
     },
     why: {
       sso: 'These have no password of their own. They stop working the day the address does.',
       work: 'Files, code or documents you may lose access to.',
       reset: 'Password managers, phone and mail accounts that can recover everything else.',
       money: 'Banks, cards and subscriptions that bill you.',
-      rest: 'Accounts where your school address is the login or contact email.',
+      rest: 'Accounts where your old address is the login or contact email.',
     },
-    also: { sso: 'school login', work: 'holds work', reset: 'resets others', money: 'money' },
+    also: { sso: 'school or work login', work: 'holds work', reset: 'resets others', money: 'money' },
     order: ['sso', 'work', 'reset', 'money', 'rest'],
     other: [
       { section: 'maybe', title: 'Maybe accounts', note: 'Only newsletters or a single email so far. Check these if you have time.' },
-      { section: 'ends-anyway', title: 'Ends with your address anyway', note: 'Run by your school. Nothing to move.' },
+      { section: 'ends-anyway', title: 'Ends with your address anyway', note: 'Run by your school or employer. Nothing to move.' },
       { section: 'elsewhere', title: 'Tied to another address', note: 'Mail forwarded in from another address. Not affected by the shutoff.' },
       { section: 'ignored', title: 'Looks fake', note: 'Mail that failed sender checks or imitates a known service. Ignored.' },
     ],
     done: 'Moved',
-    appKey: 'connected with your school login',
+    appKey: 'connected with your school or work login',
     say: (s) => s,
   },
   loss: {
@@ -72,8 +73,8 @@ export const COPY: Record<Mode, Copy> = {
     done: 'Done',
     appKey: 'signs in through another of their accounts',
     say: (s) => s
-      .replace(/your school address/g, 'their address')
-      .replace(/your school account/g, 'another of their accounts')
+      .replace(/your (?:old|school) address/g, 'their address')
+      .replace(/your school(?: or work)? account/g, 'another of their accounts')
       .replace(/\byour\b/g, 'their').replace(/\bYou\b/g, 'They'),
   },
 };
