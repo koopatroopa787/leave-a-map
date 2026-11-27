@@ -1,6 +1,9 @@
 // apps/cloud/src/consent.ts: the consent window. Shows every sender domain it was given, each
 // with an unticked box. Only ticked rows are looked up; unticked rows are discarded here.
 // The lookup itself (lane 3 cascade) is in egress.ts; Firebase loads only after the click below.
+// Wording about the mailbox stays neutral ("the emails"), because the window doesn't know whether
+// the mailbox is the person's own or someone else's (the someone-has-died mode). "You" is the person
+// at the screen.
 // T22: every box starts unticked; "Select all except health and money"; an 18+ box; the
 // logging notice for the tier this build runs on (never "nothing is kept"). On the free tier, also
 // a required region box, no health or money rows, and a cap per lookup (packages/core/cloud-tier.ts).
@@ -120,12 +123,12 @@ function show(items: OutboxItem[]) {
   const terms = el('a', { href: TERMS, target: '_blank', rel: 'noopener noreferrer', textContent: 'Gemini API terms' });
   app.replaceChildren(
     el('h1', { textContent: 'Look these up in the cloud?' }),
-    el('p', { textContent: 'Leave a Map couldn\u2019t tell from your email what these services usually hold. A model can guess from the web address alone. Nothing is ticked until you tick it.' }),
+    el('p', { textContent: 'Leave a Map couldn\u2019t tell from the emails what these services usually hold. A model can guess from the web address alone. Nothing is ticked until you tick it.' }),
     el('div', { className: 'what' },
       el('h2', { textContent: 'What is sent' }),
       el('ul', {},
         el('li', { textContent: 'Only the web address of each service you tick, like forkyard.example.' }),
-        el('li', { textContent: 'Never your emails, your address, names or dates.' }),
+        el('li', { textContent: 'Never the emails themselves, the email address, names or dates.' }),
         free
           ? el('li', {}, 'It goes to Google\u2019s free Gemini service through Firebase, with your IP address and an app check token, like any web request. On the free service, Google may use what is sent and its answers to improve its products, and people at Google may read them (', terms, '). Don\u2019t tick a service you want to keep private. Health and money services are never sent.')
           : el('li', {}, 'It goes to Google\u2019s Gemini model through Firebase, with your IP address and an app check token, like any web request. The paid Gemini service keeps requests and answers for a limited time (', terms, '), so don\u2019t tick a service you want to keep private.'),
