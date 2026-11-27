@@ -50,7 +50,7 @@ export function NanoCheck() {
   };
 
   return (
-    <main id="main" class="page wide">
+    <main class="page wide">
       <h1>Nano check</h1>
       <p>On-device model: <strong id="nano-state">{state}</strong>{progress !== null && progress < 1 ? ` · downloading ${Math.round(progress * 100)}%` : ''}</p>
       {state === 'unavailable'

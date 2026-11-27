@@ -39,7 +39,7 @@ export function EvidenceDrawer({ a }: { a: RankedAccount }) {
   if (rows.length === 0) return null;
   return (
     <details class="drawer">
-      <summary><span class="chev" aria-hidden="true" />Why this account? <span class="meta">({rows.length} piece{rows.length === 1 ? '' : 's'} of evidence)</span></summary>
+      <summary>Why this account? <span class="meta">({rows.length} piece{rows.length === 1 ? '' : 's'} of evidence)</span></summary>
       <ul class="ev-list">{rows.map((r) => <Row key={r.key} label={r.label} c={a[r.key]} />)}</ul>
       <p class="ev-key"><strong>Seen</strong>: an authenticated email says so. <strong>Likely</strong>: strong signs, or AI quoting your email. <strong>Possible</strong>: weak signs. AI is never Seen.</p>
     </details>
