@@ -4,16 +4,14 @@
 import { useState } from 'preact/hooks';
 import { Mark, Sliders } from './icons.tsx';
 
-export type Display = {
-  text: 'm' | 'l' | 'xl'; theme: 'system' | 'light' | 'dark'; contrast: 'normal' | 'more';
-  motion: 'system' | 'on' | 'off'; spacing: 'normal' | 'wide';
-};
+import { cleanDisplay, DEFAULT, type Display } from './display-values.ts';
+
+export type { Display };
 const KEY = 'leave-a-map:display';
-const DEFAULT: Display = { text: 'm', theme: 'dark', contrast: 'normal', motion: 'system', spacing: 'normal' };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function loadDisplay(): Display {
-  try { return { ...DEFAULT, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }; } catch { return DEFAULT; }
+  try { return cleanDisplay(JSON.parse(localStorage.getItem(KEY) ?? '{}')); } catch { return DEFAULT; }
 }
 
 export function applyDisplay(d: Display) {
@@ -35,9 +33,13 @@ const GROUPS: { [K in keyof Display]: { legend: string; opts: Opt<K> } } = {
 export function DisplayMenu() {
   const [d, setD] = useState(loadDisplay);
   const set = <K extends keyof Display>(k: K, v: Display[K]) => {
-    const next = { ...d, [k]: v };
-    setD(next); applyDisplay(next);
-    try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* private mode: still applies until reload */ }
+    // From the latest state, not this render's copy, so two changes in one tick both stick.
+    setD((prev) => {
+      const next = { ...prev, [k]: v };
+      applyDisplay(next);
+      try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* private mode: still applies until reload */ }
+      return next;
+    });
   };
   return (
     <>
