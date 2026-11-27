@@ -599,7 +599,7 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
  * space to their right is where the dot canvas puts its small shape. */
 .page:is(.start, .map, .scanning) { max-width: none; padding-inline: var(--gutter); }
 .page:is(.start, .map, .scanning) > :not(.topbar, .hero, .curtain, .site-foot, .scan-stage, .hand-pct) { width: 100%; max-width: 46rem; }
-.page:is(.start, .map) { display: grid; gap: var(--space-6); align-content: start; }
+.page:is(.start, .map) { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-content: start; }
 
 /* The canvas (dots.tsx) is fixed behind everything. The page is on top, so cards cover it and
  * text is never painted over. It takes its colour from `color`. */
@@ -654,3 +654,11 @@ h1 .dot { color: var(--accent); margin-left: .04em; }
 
 /* Small text keeps a readable line length inside the 46rem column. */
 .field-hint, .sample p, .field-note, .bucket-why { max-width: 54ch; }
+
+/* Narrow phones: the top bar's narrow sizes, repeated here because the rules above come later
+ * than the first narrow block and would otherwise win. Without this, Display is cut off at 320px. */
+@media (max-width: 30rem) {
+  .wordmark { letter-spacing: .12em; font-size: .8rem; }
+  .topbar { padding-left: var(--space-3); }
+  button.display-btn { padding-inline: .5rem; letter-spacing: .1em; }
+}

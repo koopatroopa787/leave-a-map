@@ -1,5 +1,6 @@
 // T14: the main list. "What breaks on <date>", a countdown, rank sections and text-only cards.
 // No logos: cards name the service by its sender's display name and domain only.
+import { emails } from '../words.ts';
 import type { Bucket, Cond, NanoItem, RankedAccount, ScanSettings, ScanStats, Section } from '../../../../packages/core/types.ts';
 import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { signalWords } from '../../../../packages/core/signal-words.ts';
@@ -207,7 +208,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         </>}
         <p class="summary">
           <strong>{main.length} account{main.length === 1 ? '' : 's'} {mode === 'loss' ? 'found' : 'to move'}</strong>, {mode === 'loss' ? 'in the order to deal with them' : 'most urgent first'}.
-          Read from {stats.messages.toLocaleString()} emails in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
+          Read from {emails(stats.messages)} in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
         </p>
         {main.length > 0 && (
           <p class="progress" aria-live="polite">
@@ -268,7 +269,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
       {CLOUD_LOOKUP_ON && pack !== undefined && <CloudPanel accounts={accounts} known={pack?.known} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />}
       <Receipt />
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
-      <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to {mode === 'loss' ? who : `@${settings.schoolDomain}`} were skipped.</p>
+      <p class="foot">{emails(stats.skipped.personSender)} from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to {mode === 'loss' ? who : `@${settings.schoolDomain}`} were skipped.</p>
       <div class="end"><button type="button" class="secondary" onClick={onRestart}>Scan another file</button></div>
       <SiteFoot />
     </main>

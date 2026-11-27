@@ -1,5 +1,6 @@
 import './lockdown.ts';
 import { logLocal } from './lockdown.ts';
+import { emails } from './words.ts';
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
@@ -16,10 +17,11 @@ applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
 import { MapScreen } from './screens/map.tsx';
 import type { Mode } from './mode.ts';
+import type { StartValues } from './screens/start.tsx';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
 
 type State =
-  | { step: 'start'; error?: string }
+  | { step: 'start'; error?: string; last?: StartValues }
   | { step: 'scanning'; settings: ScanSettings; mode: Mode; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
   | { step: 'done'; settings: ScanSettings; mode: Mode; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
 
@@ -58,14 +60,16 @@ function App() {
 
   const scan = (file: File, settings: ScanSettings, mode: Mode, sample = false) => {
     const worker = new Worker(new URL('./scan.worker.ts', import.meta.url), { type: 'module' });
+    // If the file turns out to be unreadable, the form comes back with what was typed, not empty.
+    const last: StartValues | undefined = sample ? undefined : { mode, email: settings.ownAddresses[0] ?? '', date: settings.shutoffDate };
     setState({ step: 'scanning', settings, mode, sample, bytesRead: 0, totalBytes: file.size, messages: 0 });
     worker.onmessage = (e: MessageEvent<FromWorker>) => {
       const m = e.data;
       if (m.type === 'progress') setState({ step: 'scanning', settings, mode, sample, ...m });
-      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${m.stats.messages.toLocaleString()} emails in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, mode, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
-      else { worker.terminate(); setState({ step: 'start', error: m.message }); }
+      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${emails(m.stats.messages)} in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, mode, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
+      else { worker.terminate(); setState({ step: 'start', error: m.message, last }); }
     };
-    worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.' }); };
+    worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.', last }); };
     worker.postMessage({ type: 'scan', file, settings });
   };
 
@@ -89,7 +93,7 @@ function App() {
     try { if (storage()?.getItem(SAMPLE_MODE_KEY) === 'loss') mode = 'loss'; storage()?.removeItem(SAMPLE_MODE_KEY); } catch { /* school sample */ }
     void trySample(mode);
   }, []);
-  if (state.step === 'start') return <>{intro && <Intro onDone={() => setIntro(false)} />}<StartScreen onScan={scan} onSample={trySample} error={state.error} /></>;
+  if (state.step === 'start') return <>{intro && <Intro onDone={() => setIntro(false)} />}<StartScreen onScan={scan} onSample={trySample} error={state.error} initial={state.last} /></>;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
     const loss = state.mode === 'loss';
@@ -101,7 +105,7 @@ function App() {
         <div class="scan-stage" data-dots="loader" data-progress={pct / 100} aria-hidden="true" />
         <p class="hand-pct" aria-hidden="true">{pad(pct)}<span>%</span></p>
         <progress class="vh" max={100} value={pct} aria-label="Scan progress" />
-        <p class="scan-count" aria-live="polite">{pct}% · {state.messages.toLocaleString()} emails read</p>
+        <p class="scan-count" aria-live="polite">{pct}% · {emails(state.messages)} read</p>
         <p class="scan-status" key={stage}>{stage}</p>
         <p class="assure">It stays on this device. Nothing is uploaded.</p>
       </main>

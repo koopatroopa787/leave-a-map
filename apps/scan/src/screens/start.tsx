@@ -5,7 +5,9 @@ import { SiteFoot, TopBar } from '../display.tsx';
 import { countdown, longDate } from '../dates.ts';
 import type { Mode } from '../mode.ts';
 
-type Props = { onScan: (file: File, settings: ScanSettings, mode: Mode) => void; onSample: (mode: Mode) => void; error?: string };
+/** What was typed last time, so a failed scan doesn't empty the form. The file isn't kept: it was the problem. */
+export type StartValues = { mode: Mode; email: string; date: string };
+type Props = { onScan: (file: File, settings: ScanSettings, mode: Mode) => void; onSample: (mode: Mode) => void; error?: string; initial?: StartValues };
 
 const EMAIL_RE = /^[^@\s]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$/i;
 // Common personal providers. Only used for a friendly hint; the scan still runs if the person insists.
@@ -33,11 +35,11 @@ const MODES: [Mode, string, string][] = [
   ['loss', 'After a loss', 'Sorting out the accounts of someone who has passed away: money, bills, photos, and what to close.'],
 ];
 
-export function StartScreen({ onScan, onSample, error }: Props) {
-  const [mode, setMode] = useState<Mode>('school');
-  const [email, setEmail] = useState('');
-  const [touched, setTouched] = useState(false);
-  const [date, setDate] = useState('');
+export function StartScreen({ onScan, onSample, error, initial }: Props) {
+  const [mode, setMode] = useState<Mode>(initial?.mode ?? 'school');
+  const [email, setEmail] = useState(initial?.email ?? '');
+  const [touched, setTouched] = useState(!!initial?.email);
+  const [date, setDate] = useState(initial?.date ?? '');
   const [file, setFile] = useState<File | null>(null);
   const [problem, setProblem] = useState<{ field: Field; text: string } | null>(null);
   const [over, setOver] = useState(false);
