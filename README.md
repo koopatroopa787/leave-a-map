@@ -2,14 +2,16 @@
 
 **Your school email has a shutoff date. Leave a Map reads your mailbox on your own device and ranks the accounts tied to that address, so you move the ones that matter before you're locked out.**
 
+It has a second mode for when **someone has died**: it maps the accounts in their mailbox for the person sorting out their affairs, with money first.
+
 Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device for your mail, and a Gemini cloud model only for the web addresses you approve.
 
-- **Try it:** https://leave-a-map.web.app. No login is needed: click **Try the sample**.
+- **Try it:** https://leave-a-map.web.app. No login is needed: pick a mode, then click **Try the sample**. Each mode has its own fictional sample mailbox.
 - **Use it on your own mail:** export your school mailbox as an `.mbox` file and pick it on the start screen.
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
-> **Status (24 Nov 2026):**
-> - Lanes 1, 2 and 3 work end to end, and both sites are live with the current code.
+> **Status (28 Nov 2026):**
+> - Lanes 1, 2 and 3 work end to end, and both sites are live with the current code, in both modes.
 > - **The hosted cloud lookup is live** on Gemini's paid tier, with App Check (reCAPTCHA Enterprise) enforced. A click-through on the live sites got answers back on 24 Nov. Hosting and AI Logic are on separate Firebase projects; only the cloud site talks to AI Logic.
 > - Every result marked *pending* below is filled in from the pre-registered evaluation, including bad results.
 
@@ -60,6 +62,22 @@ We read its public description only and copied no code (it's GPL-3.0; this repo 
    - No model ever supplies a URL.
    - Without a checked link, the card says "open the service → account settings".
 7. **A "Moved" checklist** with a counter. It's kept only in this browser.
+
+### Second mode: someone has died
+
+The start screen asks "What are you sorting out?". The second answer is for the person handling the affairs of someone who has died, using an export of that person's mailbox.
+
+- **Same scan, same three lanes, same privacy.** Only the words, the order and the steps change. They're all in [`apps/scan/src/mode.ts`](apps/scan/src/mode.ts).
+- **No shutoff date.** Enter their address and pick the file.
+- **The order to deal with things:**
+  1. Money: banks, pensions, insurance, bills
+  2. Their photos and files
+  3. Accounts that sign in through another of their accounts
+  4. Other accounts in their name
+  5. Their email, phone and passwords, last, because letters and codes from everything else arrive there
+- **Each card points to the service's own bereavement process** and says not to sign in as them, even with the password.
+- **Not legal advice.** The map says so, and points to a solicitor, the probate or estates office, or a local bereavement service.
+- **Sample:** [`fixtures/estate.example.mbox`](fixtures/estate.example.mbox), 26 fictional emails, made by `tools/make-estate-mbox.mjs`.
 
 ## How it works: three lanes
 
@@ -190,6 +208,8 @@ Known issues, recorded before the run:
 - **Fictional services:** neither model can recognise one, so they're answered honestly as "not recognised".
 - **The school-login page can be incomplete.** Schools can hide apps, so the list from your school account's page may be partial.
 - **We don't protect against a malicious build of this app.** The code is public so anyone can check it.
+- **The someone-has-died mode isn't evaluated.** The pre-registered evaluation covers school mailboxes only.
+- **In that mode, mail is tied to their address's domain.** On a large webmail domain, mail sent to other people at the same provider can count as theirs. That's rare in a personal mailbox.
 
 ## Run it
 

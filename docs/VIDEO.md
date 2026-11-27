@@ -1,6 +1,6 @@
 # Demo video: script and shot list (T34)
 
-**Target: 2:50, hard limit under 3:00.** The outline comes from `strategist.md` section 5, updated to match what was built. Everything is filmed on the sample mailbox.
+**Target: 2:58, hard limit under 3:00.** The outline comes from `strategist.md` section 5, updated to match what was built. Everything is filmed on the two fictional sample mailboxes.
 
 **Deadlines:**
 - Nano footage filmed by **Thu 26**.
@@ -18,7 +18,7 @@
 
 ## Script
 
-Voice is about 270 words, which is roughly 1:50 at a calm pace. No beat goes over 125 words a minute, which leaves room for pauses and on-screen reading.
+Voice is about 300 words, which is roughly 2:00 at a calm pace. No beat goes over 125 words a minute, which leaves room for pauses and on-screen reading.
 
 | Time | Beat | On screen | Voice | Caption |
 |---|---|---|---|---|
@@ -30,7 +30,8 @@ Voice is about 270 words, which is roughly 1:50 at a calm pace. No beat goes ove
 | 1:32–2:15 | **Lane 3, the cascade** (core beat) | The "Look up services in the cloud" panel: "9 services can't be placed from your email alone." Click "Look these up". The consent window opens on the second site: every box unticked, "What is sent", the 18+ box. Tick the 18+ box, click "Select all except health and money", then send. Back on the map, cards get "Typical for this kind of service" lines: expected: a real research site **"Answered on-device"** with on-device badges, and a fictional one **"On-device: not recognised → asked the cloud"** with cloud badges. Film whatever actually happens, and if the trail differs, change the voice to match it, not the footage | "For services neither the rules nor the device know, there's a cloud lookup. But only the web address leaves, only after you tick it, in a separate window. The on-device model answers first. When it doesn't recognise a service, and only then, the cloud model fills the gap. Every line says which model answered." | "Lane 3 · PREFER_ON_DEVICE → ONLY_IN_CLOUD"; then "On-device answered what it knew. The cloud filled the gap." |
 | 2:15–2:25 | **No Nano** | A second machine without Nano: the banner "Not available in this browser, so only the rules ran." The same lookup, every line "cloud" | "On a machine without Nano, nothing breaks. The rules still work, and the cloud takes every lookup, and says so." | "Without Gemini Nano" |
 | 2:25–2:38 | **Proof** | Privacy receipt: "N web addresses looked up with your approval, 0 other requests from this page", next to the empty Network panel | "And here's the receipt: the web addresses you approved, and zero other requests from the page that read your mail." | "Measured: 0 requests from the scan page" |
-| 2:38–2:50 | **Result and close** | The final list with the counter after a few ticks (for example "3 of 13 moved"), a card with "How to change it at …" and "Save a copy first". Then black: "The cloud knows the world. Only your laptop knows your life." Then "Leave a Map · Firebase AI Logic · github.com/romaaurora787/leave-a-map · Apache-2.0" | "Tick them off before the date. The cloud knows the world. Only your laptop knows your life." | – |
+| 2:38–2:48 | **Second mode** | Back to the start screen. "What are you sorting out?" → "Someone has died" → "Try the sample". The map: "Their accounts, money first", then one card's step "Contact … bereavement or estates team" and "Don't sign in as them" | "The same three lanes help when someone has died: their accounts, money first, each with the service's own bereavement process. Never signing in as them." | "Second mode · same scan, same privacy" |
+| 2:48–2:58 | **Result and close** | The final list with the counter after a few ticks (for example "3 of 13 moved"), a card with "How to change it at …" and "Save a copy first". Then black: "The cloud knows the world. Only your laptop knows your life." Then "Leave a Map · Firebase AI Logic · github.com/romaaurora787/leave-a-map · Apache-2.0" | "Tick them off before the date. The cloud knows the world. Only your laptop knows your life." | – |
 
 **The counts depend on the run.** "9 services" and the receipt's N come from the sample as it is today. Read them off the screen while filming, and don't edit them afterwards. If T27 has published results by Fri, add one caption at 2:38 with its headline, worded exactly as in the README.
 
@@ -47,6 +48,7 @@ Voice is about 270 words, which is roughly 1:50 at a calm pace. No beat goes ove
 | S7 | No-Nano: banner, then the same lookup with "cloud" lines | Any machine without Nano (the 8 GB Mac as it is) | User | Fresh profile | Same as S6 |
 | S8 | Receipt next to the Network panel | Nano machine | Kanishk | After S6, same session, so the counts are real | – |
 | S9 | Final list with ticks and a move link card | Nano machine | Kanishk | Tick 3 cards in the same session | – |
+| S9b | Second mode: start screen → "Someone has died" → sample → a money card's steps | Any machine | Either | Same fresh profile. Lanes 1 and 3 only are fine here | Hosted scan site with both modes |
 | S10 | Closing cards | Editor | User | – | – |
 
 **Recording:** 1080p, 30 fps. Use system cursor highlighting and no system sound. Record each shot as its own clip with a few seconds of padding. Voice is recorded separately by the User and laid over the clips.
