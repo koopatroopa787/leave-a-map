@@ -617,7 +617,8 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 /* Hero: labels on top, room for the picture, then the lede and a very large headline. */
 .hero { min-height: calc(100svh - 6.5rem); display: grid; grid-template-rows: auto 1fr; gap: var(--space-5); padding-block: var(--space-3) var(--space-5); }
 .hero-text { align-self: end; display: grid; gap: var(--space-4); }
-.hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: 0; max-width: 15ch; }
+/* line-height .86 lets the letters reach about .2em above the box; the top margin keeps them off the lede. */
+.hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: .2em 0 0; max-width: 15ch; }
 h1 .dot { color: var(--accent); margin-left: .04em; }
 @media (max-width: 899px) { .hero { min-height: max(36rem, calc(100svh - 6rem)); } }
 
