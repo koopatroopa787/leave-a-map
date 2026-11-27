@@ -40,11 +40,14 @@ export function SchoolLoginStep({ candidates, connections, onChange, saved }: Pr
   return (
     <details class="step" id="school-login-step">
       <summary>
+        <span class="chev" aria-hidden="true" />
+        <div>
         <h2>Check what uses your school login</h2>
         <p class="bucket-why">
           Your email can't show every app you signed into with your school account. Your account's own page can.
           {count > 0 && <strong> {count} confirmed.</strong>}
         </p>
+        </div>
       </summary>
 
       <div class="provider" role="radiogroup" aria-label="Your school's sign-in">
