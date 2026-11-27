@@ -13,7 +13,7 @@ export function HandoffCheck() {
   const run = async () => { setBusy(true); setResult(null); setResult(await openConsent(ITEMS)); setBusy(false); };
   const outside = () => performance.getEntriesByType('resource').filter((e) => !e.name.startsWith(location.origin)).length;
   return (
-    <main id="main" class="page wide">
+    <main class="page wide">
       <h1>Two-site check</h1>
       <p>Sends 3 fictional sender domains to the consent window on {CLOUD_ORIGIN}. Nothing else leaves this page.</p>
       <button type="button" id="handoff-run" onClick={run} disabled={busy}>{busy ? 'Waiting for the consent window…' : 'Open the consent window'}</button>
