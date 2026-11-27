@@ -20,33 +20,14 @@ import type { AnswerSource } from '../../../../packages/core/cascade.ts';
 import { applyLane3, BASIS_WORD, serviceLines, trail } from '../../../../packages/core/lane3.ts';
 import { applyPack, type Link, type Pack, type ServiceFacts } from '../../../../packages/core/pack.ts';
 import { loadPack } from '../pack-loader.ts';
+import { Check } from '../icons.tsx';
+import { SiteFoot, TopBar } from '../display.tsx';
+import { COPY, listKey, type Mode } from '../mode.ts';
 
 type Props = {
-  settings: ScanSettings; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
+  settings: ScanSettings; mode: Mode; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
   onAccounts: (a: RankedAccount[]) => void; onRestart: () => void;
 };
-
-export const BUCKET_TITLE: Record<Bucket, string> = {
-  sso: 'You sign in with your school account',
-  work: 'Holds your work',
-  reset: 'Can reset your other accounts',
-  money: 'Money',
-  rest: 'Uses your school address',
-};
-const BUCKET_WHY: Record<Bucket, string> = {
-  sso: 'These have no password of their own. They stop working the day the address does.',
-  work: 'Files, code or documents you may lose access to.',
-  reset: 'Password managers, phone and mail accounts that can recover everything else.',
-  money: 'Banks, cards and subscriptions that bill you.',
-  rest: 'Accounts where your school address is the login or contact email.',
-};
-const ALSO: Record<Exclude<Bucket, 'rest'>, string> = { sso: 'school login', work: 'holds work', reset: 'resets others', money: 'money' };
-const OTHER_SECTIONS: { section: Exclude<Section, 'main'>; title: string; note: string }[] = [
-  { section: 'maybe', title: 'Maybe accounts', note: 'Only newsletters or a single email so far. Check these if you have time.' },
-  { section: 'ends-anyway', title: 'Ends with your address anyway', note: 'Run by your school. Nothing to move.' },
-  { section: 'elsewhere', title: 'Tied to another address', note: 'Mail forwarded in from another address. Not affected by the shutoff.' },
-  { section: 'ignored', title: 'Looks fake', note: 'Mail that failed sender checks or imitates a known service. Ignored.' },
-];
 
 export function Badge({ c }: { c: Pick<Cond, 'source'> }) {
   return <span class={`badge src-${c.source}`}>{SOURCE_WORD[c.source]}</span>;
@@ -105,45 +86,71 @@ function MoveSteps({ a, facts }: { a: RankedAccount; facts?: ServiceFacts }) {
   );
 }
 
+/**
+ * Someone has died: general steps, never a link that needs their login. Not legal advice, and it
+ * never suggests signing in as the person.
+ */
+function LossSteps({ a }: { a: RankedAccount }) {
+  const where = a.name;
+  const step = {
+    money: <p>Contact {where}'s bereavement or estates team. They'll say what they need, usually a death certificate and proof that you can act for the estate. Ask about balances, claims and payments that should stop.</p>,
+    work: <p>Ask {where} how it handles a member who has died. Some let family request a copy of photos and files, or turn the account into a memorial. Ask before anything is closed.</p>,
+    sso: <p>{where} is reached through another of their accounts. Contact {where} about the death before you close that other account.</p>,
+    rest: <p>Tell {where} about the death. Cancel anything that bills, then ask them to close or memorialise the account.</p>,
+    reset: <p>Keep {where} open and paid while you work through the rest: notices and codes from other services arrive here. When you're ready to close it, ask {where} about its process for a member who has died.</p>,
+  }[a.bucket];
+  return <div class="move">{step}<p class="meta">Don't sign in as them, even if you know the password. Use each service's own process for families.</p></div>;
+}
+
 function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, rank, moved, onMoved, info, facts }: { a: RankedAccount; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts }) {
+function Card({ a, mode, rank, moved, onMoved, info, facts }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts }) {
   const p = primary(a);
+  const c = COPY[mode];
   const also = (['sso', 'work', 'reset', 'money'] as const)
     .filter((b) => b !== a.bucket && (a[b].tier === 'seen' || a[b].tier === 'likely'));
   return (
     <li class={`card${moved ? ' is-moved' : ''}`} id={`acct-${a.key}`}>
       <div class="card-head">
-        <span class="rank" aria-label={`Rank ${rank}`}>{rank}</span>
+        <span class="rank" role="img" aria-label={`Rank ${rank}${moved ? `, ${c.done.toLowerCase()}` : ''}`}>{moved ? <Check /> : rank}</span>
         <div class="card-title">
           <h3>{a.name}</h3>
-          <span class="domain">{a.key.startsWith('app:') ? 'connected with your school login' : a.key}</span>
+          <span class="domain">{a.key.startsWith('app:') ? c.appKey : a.key}</span>
         </div>
         <label class="moved">
-          <input type="checkbox" checked={moved} onChange={(e) => onMoved(e.currentTarget.checked)} aria-label={`Moved: ${a.name}`} />
-          <span>Moved</span>
+          <input type="checkbox" checked={moved} onChange={(e) => onMoved(e.currentTarget.checked)} aria-label={`${c.done}: ${a.name}`} />
+          <span>{c.done}</span>
         </label>
       </div>
       {p.tier && (
         <p class="reason">
-          <span class={`tier tier-${p.tier}`}>{TIER_WORD[p.tier]}</span> {p.quote ? <q>{p.quote}</q> : signalWords(p.signal)} <Badge c={p} />
+          <span class={`tier tier-${p.tier}`}>{TIER_WORD[p.tier]}</span> {p.quote ? <q>{p.quote}</q> : c.say(signalWords(p.signal))} <Badge c={p} />
         </p>
       )}
-      {(also.length > 0 || a.discount.tier) && (
+      {(also.length > 0 || (mode === 'school' && a.discount.tier)) && (
         <ul class="chips" aria-label="Also">
-          {also.map((b) => <li key={b}>Also {ALSO[b]} <Badge c={a[b]} /></li>)}
-          {a.discount.tier && <li class="chip-warn">Student discount ends anyway. Export your data.</li>}
+          {also.map((b) => <li key={b}>Also {c.also[b]} <Badge c={a[b]} /></li>)}
+          {mode === 'school' && a.discount.tier && <li class="chip-warn">Student discount ends anyway. Export your data.</li>}
         </ul>
       )}
-      <MoveSteps a={a} facts={facts} />
+      {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
       {info && <Lane3 info={info} />}
-      <EvidenceDrawer a={a} />
-      <p class="meta">{a.nLinked} email{a.nLinked === 1 ? '' : 's'} to your school address{a.lastDate ? `, last on ${shortDate(a.lastDate)}` : ''}{a.flags.suspiciousIgnored ? `. ${a.flags.suspiciousIgnored} fake-looking email${a.flags.suspiciousIgnored === 1 ? '' : 's'} ignored` : ''}.</p>
+      <EvidenceDrawer a={a} mode={mode} />
+      <dl class="facts">
+        <div><dt>Emails to {mode === 'loss' ? 'their' : 'your'} address</dt><dd>{a.nLinked}</dd></div>
+        {a.lastDate ? <div><dt>Last one</dt><dd>{shortDate(a.lastDate)}</dd></div> : null}
+        {a.flags.suspiciousIgnored ? <div><dt>Fake ones ignored</dt><dd>{a.flags.suspiciousIgnored}</dd></div> : null}
+      </dl>
     </li>
   );
 }
+
+/** A word of encouragement next to the moved count. */
+const cheer = (mode: Mode, n: number, of: number) => mode === 'loss'
+  ? (n === 0 ? 'Tick each one when it\'s dealt with. There\'s no rush.' : n === of ? 'Everything on this list is dealt with.' : '')
+  : n === 0 ? 'Tick each one as you move it.' : n === of ? 'All done.' : n * 2 >= of ? 'Over halfway.' : n === 1 ? 'First one done.' : 'Keep going.';
 
 function Plain({ a, info }: { a: RankedAccount; info?: ServiceInfo }) {
   const why = a.flags.forwardedIn ? `forwarded from ${a.flags.forwardedIn}`
@@ -152,7 +159,7 @@ function Plain({ a, info }: { a: RankedAccount; info?: ServiceInfo }) {
   return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span>{info && <Lane3 info={info} />}</li>;
 }
 
-export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
+export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
   // The person's school-login ticks sit on top of the scan (and Nano's labels), never inside them.
   const [connections, setConnections] = useState<Connections>(() => loadConnections(settings.schoolDomain));
   const [connSaved, setConnSaved] = useState(true);
@@ -165,60 +172,92 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
   const accounts = useMemo(() => rankAccounts(applyConnections(applyLane3(applyPack(scanned, pack ?? null), lane3), connections)),
     [scanned, connections, lane3, pack]);
   const main = accounts.filter((a) => a.section === 'main');
-  const [moved, setMoved] = useState(() => loadMoved(settings.schoolDomain));
+  const c = COPY[mode];
+  const who = settings.ownAddresses[0] ?? settings.schoolDomain;
+  const store = listKey(mode, settings.schoolDomain, who);
+  const [moved, setMoved] = useState(() => loadMoved(store));
   const [saved, setSaved] = useState(true);
   const toggle = (key: string, v: boolean) => {
     setMoved((prev) => {
       const next = new Set(prev);
       if (v) next.add(key); else next.delete(key);
-      setSaved(saveMoved(settings.schoolDomain, next));
+      setSaved(saveMoved(store, next));
       return next;
     });
   };
   const movedCount = main.filter((a) => moved.has(a.key)).length;
-  const buckets = (['sso', 'work', 'reset', 'money', 'rest'] as const).map((b) => [b, main.filter((a) => a.bucket === b)] as const);
+  const buckets = c.order.map((b) => [b, main.filter((a) => a.bucket === b)] as const);
   // The list replaces the start screen, so move keyboard and screen-reader focus to its heading.
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => { title.current?.focus(); }, []);
   let rank = 0;
   return (
-    <main class="page map">
-      <header class="map-head">
-        {sample && <p class="sample-note" role="note">Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.</p>}
-        <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
-        <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}</h1>
+    <main id="main" class="page map screen">
+      <TopBar />
+      <header class="map-head" data-dots="side">
+        {sample && <p class="sample-note" role="note">{mode === 'loss'
+          ? 'Sample mailbox: Robin Hale, a made-up person. Every person and service in it is fictional.'
+          : 'Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.'}</p>}
+        {mode === 'loss' ? <>
+          <p class="eyebrow">Mail sent to {who}</p>
+          <h1 ref={title} tabIndex={-1}>Their accounts, money first<span class="dot" aria-hidden="true">*</span></h1>
+        </> : <>
+          <p class="eyebrow">@{settings.schoolDomain} shuts off {countdown(settings.shutoffDate)}</p>
+          <h1 ref={title} tabIndex={-1}>What breaks on {longDate(settings.shutoffDate)}<span class="dot" aria-hidden="true">*</span></h1>
+        </>}
         <p class="summary">
-          <strong>{main.length} account{main.length === 1 ? '' : 's'} to move</strong>, most urgent first.
+          <strong>{main.length} account{main.length === 1 ? '' : 's'} {mode === 'loss' ? 'found' : 'to move'}</strong>, {mode === 'loss' ? 'in the order to deal with them' : 'most urgent first'}.
           Read from {stats.messages.toLocaleString()} emails in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
         </p>
         {main.length > 0 && (
           <p class="progress" aria-live="polite">
-            <strong id="moved-count">{movedCount} of {main.length} moved</strong>
+            <strong id="moved-count">{movedCount} of {main.length} {c.done.toLowerCase()}</strong>
+            <span class="cheer">{cheer(mode, movedCount, main.length)}</span>
             <progress max={main.length} value={movedCount} aria-hidden="true" />
             {!saved && <span class="meta"> This browser won't save your ticks, so they'll be gone if you reload.</span>}
+          </p>
+        )}
+        {buckets.some(([, l]) => l.length > 0) && (
+          <nav class="jump" aria-label="Jump to a line">
+            <ul>{buckets.filter(([, l]) => l.length > 0).map(([b, l]) => (
+              <li key={b}><a href={`#h-${b}`} class={`line-${b}`}>{c.title[b]} <span class="count">{l.length}</span></a></li>
+            ))}</ul>
+          </nav>
+        )}
+        {mode === 'school' && main.length > 0 && movedCount === main.length && (
+          <div class="celebrate" role="status">
+            <strong>Every account on this list is moved.</strong>
+            <p>Nothing here depends on @{settings.schoolDomain} any more.</p>
+          </div>
+        )}
+        {mode === 'loss' && (
+          <p class="loss-note" role="note">
+            This is a list, not legal advice. Rules differ by country and by service. A solicitor, the probate
+            or estates office where they lived, or a local bereavement service can tell you who can act and what each
+            place will ask for. Some governments run one service that tells many offices at once.
           </p>
         )}
       </header>
 
       <NoAiBanner />
-      <SchoolLoginStep candidates={scanned} connections={connections} onChange={changeConnections} saved={connSaved} />
+      {mode === 'school' && <SchoolLoginStep candidates={scanned} connections={connections} onChange={changeConnections} saved={connSaved} />}
 
-      {main.length === 0 && <p class="empty">No accounts tied to @{settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.</p>}
+      {main.length === 0 && <p class="empty">{mode === 'loss' ? `No accounts tied to ${who} were found in this file. Check that it's the export of their mailbox.` : `No accounts tied to @${settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.`}</p>}
 
       {buckets.filter(([, list]) => list.length > 0).map(([b, list]) => (
-        <section key={b} class="bucket" aria-labelledby={`h-${b}`}>
-          <h2 id={`h-${b}`}>{BUCKET_TITLE[b]} <span class="count">{list.length}</span></h2>
-          <p class="bucket-why">{BUCKET_WHY[b]}</p>
-          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} />)}</ol>
+        <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`} data-dots="side">
+          <h2 id={`h-${b}`}>{c.title[b]} <span class="count">{list.length}</span></h2>
+          <p class="bucket-why">{c.why[b]}</p>
+          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} />)}</ol>
         </section>
       ))}
 
-      {OTHER_SECTIONS.map(({ section, title, note }) => {
+      {c.other.map(({ section, title, note }) => {
         const list = accounts.filter((a) => a.section === section);
         if (list.length === 0) return null;
         return (
           <details key={section} class="other" open={section === 'maybe' && list.some((a) => lane3.has(a.key))}>
-            <summary><h2>{title} <span class="count">{list.length}</span></h2></summary>
+            <summary><h2><span class="chev" aria-hidden="true" />{title} <span class="count">{list.length}</span></h2></summary>
             <p class="bucket-why">{note}</p>
             <ul class="plain">{list.map((a) => <Plain key={a.key} a={a} info={lane3.get(a.key)} />)}</ul>
           </details>
@@ -229,8 +268,9 @@ export function MapScreen({ settings, sample, accounts: scanned, stats, ms, nano
       {CLOUD_LOOKUP_ON && pack !== undefined && <CloudPanel accounts={accounts} known={pack?.known} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />}
       <Receipt />
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
-      <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to @{settings.schoolDomain} were skipped.</p>
-      <button type="button" class="secondary" onClick={onRestart}>Scan another file</button>
+      <p class="foot">{stats.skipped.personSender.toLocaleString()} emails from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to {mode === 'loss' ? who : `@${settings.schoolDomain}`} were skipped.</p>
+      <div class="end"><button type="button" class="secondary" onClick={onRestart}>Scan another file</button></div>
+      <SiteFoot />
     </main>
   );
 }
