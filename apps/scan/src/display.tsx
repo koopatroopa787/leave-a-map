@@ -1,7 +1,8 @@
 // The Display menu: text size, colours, contrast, animation and letter spacing, chosen by the person
 // and kept in this browser only (localStorage, like the checklist). "Match device" follows the
 // operating system's own settings. Styles read the data-* attributes and .motion-ok on <html>.
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
+import { canTranslate, LANGUAGES, savedLanguage, setLanguage } from './translate.ts';
 import { Mark, Sliders } from './icons.tsx';
 
 import { cleanDisplay, DEFAULT, type Display } from './display-values.ts';
@@ -66,9 +67,37 @@ export function DisplayMenu() {
   );
 }
 
-/** Wordmark and the Display menu, at the top of every main screen. */
+const NOT_HERE = 'This browser can\u2019t translate on this device. In Chrome on a computer it can. Or use your browser\u2019s own Translate option, which may send the page\u2019s text to a translation service.';
+
+/** Language: the page translated on this device by the browser's built-in AI (translate.ts). */
+export function LanguagePicker() {
+  const [lang, setLang] = useState(savedLanguage);
+  const [note, setNote] = useState('');
+  // A language picked earlier comes back on its own when the browser already has it.
+  useEffect(() => {
+    if (lang === 'en') return;
+    void setLanguage(lang).then((r) => { if (r !== 'done') setLang('en'); });
+  }, []);
+  const pick = async (code: string) => {
+    setLang(code);
+    if (code !== 'en' && !canTranslate()) { setNote(NOT_HERE); setLang('en'); return; }
+    const r = await setLanguage(code, setNote);
+    if (r === 'done') setNote(code === 'en' ? '' : 'Translated on this device by your browser\u2019s built-in AI. Nothing was sent anywhere. Some wording may be off; English is the original.');
+    else { setLang('en'); setNote(r === 'unavailable' ? 'That language isn\u2019t available on this device yet. Try another, or English.' : r === 'unsupported' ? NOT_HERE : 'The translation stopped. The page is back in English.'); }
+  };
+  return (
+    <div class="lang-pick">
+      <select id="lang-select" aria-label="Language" value={lang} onChange={(e) => void pick(e.currentTarget.value)} aria-describedby="lang-note">
+        {LANGUAGES.map(([c, name]) => <option key={c} value={c} lang={c}>{name}</option>)}
+      </select>
+      <p id="lang-note" class="lang-note" role="status">{note}</p>
+    </div>
+  );
+}
+
+/** Wordmark, language and the Display menu, at the top of every main screen. */
 export const TopBar = () => (
-  <div class="topbar"><p class="wordmark"><Mark /> Leave a Map</p><DisplayMenu /></div>
+  <div class="topbar"><p class="wordmark"><Mark /> Leave a Map</p><div class="topbar-tools"><LanguagePicker /><DisplayMenu /></div></div>
 );
 
 /** Page footer: how it works, where the Display menu is, and the name spelled in dots (dots.tsx). */

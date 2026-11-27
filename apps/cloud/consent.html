@@ -13,7 +13,7 @@
         --ink: oklch(88.5% 0.012 125); --muted: oklch(72% 0 0); --line: oklch(30% 0 0); --line-strong: oklch(56% 0 0);
         --accent: oklch(70.5% 0.19 47); --accent-hover: oklch(76% 0.16 55); --accent-fg: oklch(0% 0 0); --accent-soft: oklch(17% 0 0);
         --focus: oklch(76% 0.16 55); --warn-fg: oklch(86% 0.12 85); --warn-soft: oklch(24% 0.05 80); --cloud: oklch(20.5% 0 0);
-        --dash: 1px dashed var(--line-strong);
+        --dash: 1px solid var(--line);
       }
       @media (prefers-color-scheme: light) {
         :root {
@@ -48,7 +48,7 @@
       .adult { display: flex; align-items: center; gap: .65rem; min-height: 2.75rem; font-weight: 700; margin: .75rem 0 0; cursor: pointer; }
       .hint { color: var(--muted); min-height: 1.6em; margin: .5rem 0 1rem; font-size: .9rem; }
       .actions { display: flex; flex-wrap: wrap; gap: .6rem; }
-      button { font: inherit; font-weight: 700; min-height: 2.75rem; padding: .6rem 1.15rem; border: 2px dashed var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; transition: background 140ms, border-color 140ms, transform 140ms; }
+      button { font: inherit; font-weight: 700; min-height: 2.75rem; padding: .6rem 1.15rem; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; transition: background 140ms, border-color 140ms, transform 140ms; }
       button:hover { background: var(--sunk); border-color: var(--muted); }
       button:active { transform: translateY(1px); }
       button.primary { background: var(--accent); border-color: var(--accent); border-style: solid; color: var(--accent-fg); }

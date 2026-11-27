@@ -25,8 +25,8 @@ export const COPY: Record<Mode, Copy> = {
       sso: 'You sign in with your school or work account',
       work: 'Holds your work',
       reset: 'Can reset your other accounts',
-      money: 'Money',
-      rest: 'Uses your old address',
+      money: 'Money: banks, bills and subscriptions',
+      rest: 'Other accounts: shopping, social and more',
     },
     why: {
       sso: 'These have no password of their own. They stop working the day the address does.',
@@ -52,7 +52,7 @@ export const COPY: Record<Mode, Copy> = {
       money: 'Money: banks, pensions, insurance, bills',
       work: 'Holds their photos and files',
       sso: 'Signs in through another of their accounts',
-      rest: 'Other accounts in their name',
+      rest: 'Other accounts: shopping, social, memberships',
       reset: 'Their email, phone and passwords',
     },
     why: {
