@@ -51,13 +51,15 @@ Document.prototype.createElementNS = function (this: Document, ns: string | null
   return createElementNS.call(this, ns, name, options as never);
 } as typeof Document.prototype.createElementNS;
 
-// window.open only for other sites (the consent window). A same-origin or about:blank window
-// would hand back a fresh window with WebRTC in it.
+// window.open only for the consent window on the cloud site. A same-origin or about:blank window
+// would hand back a fresh window with WebRTC in it, and a window on any other site could carry
+// data out in its address.
+const CONSENT_ORIGIN: string = import.meta.env.VITE_SCAN_CLOUD_ORIGIN ?? 'https://leave-a-map-cloud.web.app';
 const open = window.open;
 window.open = function (url?: string | URL, target?: string, features?: string) {
   let u: URL | null = null;
   try { u = new URL(String(url ?? ''), location.href); } catch { /* refused below */ }
-  if (!u || (u.protocol !== 'https:' && u.protocol !== 'http:') || u.origin === location.origin) refuse(`window.open(${String(url ?? '')})`);
+  if (!u || u.origin !== CONSENT_ORIGIN || u.origin === location.origin) refuse(`window.open(${u ? u.origin : 'bad address'})`);
   return open.call(window, url, target, features);
 };
 

@@ -1,6 +1,7 @@
 // T27: eval mode (`?eval=1`, docs/EVAL.md). Same page, same CSP, no network. The owner labels
 // their own mail on their own machine; the only thing that can leave is the counts JSON, which
 // they copy by hand. Results stay hidden until labelling is done, so the memory test is honest.
+import { emails } from '../words.ts';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../../packages/core/types.ts';
 import type { Label } from '../../../../packages/core/contract.ts';
@@ -50,7 +51,7 @@ export function EvalApp() {
       const m = e.data;
       if (m.type === 'done') {
         worker.terminate();
-        logLocal(`Eval mode: read ${m.stats.messages.toLocaleString()} emails on this device`);
+        logLocal(`Eval mode: read ${emails(m.stats.messages)} on this device`);
         setScan({ settings, accounts: m.accounts, stats: m.stats, nanoItems: m.nanoItems });
         setStep('nano');
         import('../nano.ts').then((n) => n.probeNano()).then((s) => setNanoState(s === 'unavailable' ? 'unavailable' : 'ready'), () => setNanoState('unavailable'));

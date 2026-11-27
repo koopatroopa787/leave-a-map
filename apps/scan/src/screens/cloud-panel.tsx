@@ -35,7 +35,7 @@ export function CloudPanel({ accounts, onAnswers, known }: Props) {
     <section class="cloud" aria-labelledby="cloud-title">
       <h2 id="cloud-title">Look up services in the cloud</h2>
       <p>
-        {outbox.items.length} service{outbox.items.length === 1 ? '' : 's'} can't be placed from your email alone.
+        {outbox.items.length} service{outbox.items.length === 1 ? '' : 's'} can't be placed from the emails alone.
         A model can say what kind of service each one is from its web address. You choose which ones in a separate
         window, and nothing is sent until you approve.
       </p>
