@@ -1,13 +1,14 @@
 import './lockdown.ts';
 import { logLocal } from './lockdown.ts';
 import { render } from 'preact';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import '@fontsource-variable/atkinson-hyperlegible-mono';
 import '@fontsource-variable/fraunces/full.css';
 import './styles.css';
 import { applyDisplay, loadDisplay, TopBar } from './display.tsx';
+import { sampleFailed, sampleLoaded, sampleWanted, STALE_MESSAGE, storage } from './stale-page.ts';
 
 applyDisplay(loadDisplay());
 import { StartScreen } from './screens/start.tsx';
@@ -36,9 +37,17 @@ function App() {
   };
 
   const trySample = async () => {
-    const { sampleFile, SAMPLE_SETTINGS } = await import('./sample.ts');
-    scan(sampleFile(), SAMPLE_SETTINGS, true);
+    let mod: typeof import('./sample.ts');
+    try { mod = await import('./sample.ts'); } catch {
+      // A page older than the site asks for a sample chunk that's gone (see stale-page.ts).
+      if (sampleFailed(storage(), () => location.reload()) === 'gave-up') setState({ step: 'start', error: STALE_MESSAGE });
+      return;
+    }
+    sampleLoaded(storage());
+    scan(mod.sampleFile(), mod.SAMPLE_SETTINGS, true);
   };
+  // After the reload above, run the sample straight away.
+  useEffect(() => { if (sampleWanted(storage())) void trySample(); }, []);
   if (state.step === 'start') return <StartScreen onScan={scan} onSample={trySample} error={state.error} />;
   if (state.step === 'scanning') {
     const pct = state.totalBytes ? Math.floor((state.bytesRead / state.totalBytes) * 100) : 0;
