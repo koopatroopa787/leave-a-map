@@ -37,10 +37,11 @@ Both MIT sources are under this licence, with the copyright lines in the table a
 
 ## Fonts
 
-The scan site bundles these fonts from [Fontsource](https://fontsource.org). All three are under the [SIL Open Font License 1.1](https://openfontlicense.org).
+The scan site bundles these fonts from [Fontsource](https://fontsource.org). All four are under the [SIL Open Font License 1.1](https://openfontlicense.org).
 
 | Font | Copyright |
 |---|---|
 | Atkinson Hyperlegible Next | Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors |
 | Atkinson Hyperlegible Mono | Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors |
-| Fraunces | Copyright 2020 The Fraunces Project Authors |
+| Plus Jakarta Sans | Copyright 2020 The Plus Jakarta Sans Project Authors |
+| Architects Daughter | Google Inc., as its Fontsource package states (designed by Kimberly Geswein) |

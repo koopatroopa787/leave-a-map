@@ -1,0 +1,653 @@
+From 1795000000000000001@xxx Tue Apr 02 09:07:00 +0000 2019
+X-GM-THRID: 1795000000000000001
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.harbourline.example (mail.harbourline.example. [192.0.2.11])
+        by mx.mailbox.example with ESMTPS id e1x
+        for <robin.hale@mailbox.example>;
+        Tue, 02 Apr 2019 09:07:00 +0000
+Return-Path: <bounce@harbourline.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@harbourline.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@harbourline.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@harbourline.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=harbourline.example
+Message-ID: <estate-1@harbourline.example>
+Date: Tue, 02 Apr 2019 09:07:00 +0000
+From: "Harbourline Bank" <hello@harbourline.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Harbourline Current Account
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Harbourline. Your current account is open.
+
+Estate sample message 1 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000002@xxx Sat Oct 31 10:14:00 +0000 2026
+X-GM-THRID: 1795000000000000002
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.harbourline.example (mail.harbourline.example. [192.0.2.12])
+        by mx.mailbox.example with ESMTPS id e2x
+        for <robin.hale@mailbox.example>;
+        Sat, 31 Oct 2026 10:14:00 +0000
+Return-Path: <bounce@harbourline.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@harbourline.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@harbourline.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@harbourline.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=harbourline.example
+Message-ID: <estate-2@harbourline.example>
+Date: Sat, 31 Oct 2026 10:14:00 +0000
+From: "Harbourline Bank" <statements@harbourline.example>
+To: robin.hale@mailbox.example
+Subject: Your October statement is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your October statement is ready. Sign in to view it.
+
+Estate sample message 2 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000003@xxx Wed Sep 30 11:21:00 +0000 2026
+X-GM-THRID: 1795000000000000003
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.oakmere-pensions.example (mail.oakmere-pensions.example. [192.0.2.13])
+        by mx.mailbox.example with ESMTPS id e3x
+        for <robin.hale@mailbox.example>;
+        Wed, 30 Sep 2026 11:21:00 +0000
+Return-Path: <bounce@oakmere-pensions.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@oakmere-pensions.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@oakmere-pensions.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@oakmere-pensions.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=oakmere-pensions.example
+Message-ID: <estate-3@oakmere-pensions.example>
+Date: Wed, 30 Sep 2026 11:21:00 +0000
+From: "Oakmere Pensions" <statements@oakmere-pensions.example>
+To: robin.hale@mailbox.example
+Subject: Your annual statement is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your annual pension statement is ready. Your pot value: £41,250.00.
+
+Estate sample message 3 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000004@xxx Sat Mar 14 12:28:00 +0000 2026
+X-GM-THRID: 1795000000000000004
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.kestrelmutual.example (mail.kestrelmutual.example. [192.0.2.14])
+        by mx.mailbox.example with ESMTPS id e4x
+        for <robin.hale@mailbox.example>;
+        Sat, 14 Mar 2026 12:28:00 +0000
+Return-Path: <bounce@kestrelmutual.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@kestrelmutual.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@kestrelmutual.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@kestrelmutual.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=kestrelmutual.example
+Message-ID: <estate-4@kestrelmutual.example>
+Date: Sat, 14 Mar 2026 12:28:00 +0000
+From: "Kestrel Mutual" <policies@kestrelmutual.example>
+To: robin.hale@mailbox.example
+Subject: Your annual statement for life policy KM-20417
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your annual statement for life policy KM-20417. Cover amount: £60,000.00. Your premium renews on 14 Mar 2027.
+
+Estate sample message 4 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000005@xxx Sun Jun 01 13:35:00 +0000 2025
+X-GM-THRID: 1795000000000000005
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.coinpurse.example (mail.coinpurse.example. [192.0.2.15])
+        by mx.mailbox.example with ESMTPS id e5x
+        for <robin.hale@mailbox.example>;
+        Sun, 01 Jun 2025 13:35:00 +0000
+Return-Path: <bounce@coinpurse.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@coinpurse.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@coinpurse.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@coinpurse.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=coinpurse.example
+Message-ID: <estate-5@coinpurse.example>
+Date: Sun, 01 Jun 2025 13:35:00 +0000
+From: "Coinpurse" <receipts@coinpurse.example>
+To: robin.hale@mailbox.example
+Subject: You sent £20.00 to Jo Hale
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+You sent £20.00 to Jo Hale. Receipt ID CP-88120.
+
+Estate sample message 5 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000006@xxx Wed Jan 10 14:42:00 +0000 2024
+X-GM-THRID: 1795000000000000006
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.brightwell-energy.example (mail.brightwell-energy.example. [192.0.2.16])
+        by mx.mailbox.example with ESMTPS id e6x
+        for <robin.hale@mailbox.example>;
+        Wed, 10 Jan 2024 14:42:00 +0000
+Return-Path: <bounce@brightwell-energy.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@brightwell-energy.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@brightwell-energy.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@brightwell-energy.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=brightwell-energy.example
+Message-ID: <estate-6@brightwell-energy.example>
+Date: Wed, 10 Jan 2024 14:42:00 +0000
+From: "Brightwell Energy" <hello@brightwell-energy.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Brightwell Energy
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for joining Brightwell Energy. Your account is ready.
+
+Estate sample message 6 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000007@xxx Sun Nov 01 15:49:00 +0000 2026
+X-GM-THRID: 1795000000000000007
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.brightwell-energy.example (mail.brightwell-energy.example. [192.0.2.17])
+        by mx.mailbox.example with ESMTPS id e7x
+        for <robin.hale@mailbox.example>;
+        Sun, 01 Nov 2026 15:49:00 +0000
+Return-Path: <bounce@brightwell-energy.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@brightwell-energy.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@brightwell-energy.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@brightwell-energy.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=brightwell-energy.example
+Message-ID: <estate-7@brightwell-energy.example>
+Date: Sun, 01 Nov 2026 15:49:00 +0000
+From: "Brightwell Energy" <billing@brightwell-energy.example>
+To: robin.hale@mailbox.example
+Subject: Your bill is ready: £64.20
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your energy bill is £64.20. It will be taken by direct debit. Next payment date: 1 Dec.
+
+Estate sample message 7 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000008@xxx Thu Nov 05 16:56:00 +0000 2026
+X-GM-THRID: 1795000000000000008
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.fernway.example (mail.fernway.example. [192.0.2.18])
+        by mx.mailbox.example with ESMTPS id e8x
+        for <robin.hale@mailbox.example>;
+        Thu, 05 Nov 2026 16:56:00 +0000
+Return-Path: <bounce@fernway.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@fernway.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@fernway.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@fernway.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=fernway.example
+Message-ID: <estate-8@fernway.example>
+Date: Thu, 05 Nov 2026 16:56:00 +0000
+From: "Fernway Broadband" <billing@fernway.example>
+To: robin.hale@mailbox.example
+Subject: Your monthly plan renewed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your monthly plan renewed: £32.00. Payment taken from the card ending in 4417.
+
+Estate sample message 8 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000009@xxx Sun Feb 20 17:03:00 +0000 2022
+X-GM-THRID: 1795000000000000009
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.reelhouse.example (mail.reelhouse.example. [192.0.2.19])
+        by mx.mailbox.example with ESMTPS id e9x
+        for <robin.hale@mailbox.example>;
+        Sun, 20 Feb 2022 17:03:00 +0000
+Return-Path: <bounce@reelhouse.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@reelhouse.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@reelhouse.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@reelhouse.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=reelhouse.example
+Message-ID: <estate-9@reelhouse.example>
+Date: Sun, 20 Feb 2022 17:03:00 +0000
+From: "Reelhouse" <hello@reelhouse.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Reelhouse
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Reelhouse. Your account is ready.
+
+Estate sample message 9 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000010@xxx Sun Nov 08 08:10:00 +0000 2026
+X-GM-THRID: 1795000000000000010
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.reelhouse.example (mail.reelhouse.example. [192.0.2.20])
+        by mx.mailbox.example with ESMTPS id e10x
+        for <robin.hale@mailbox.example>;
+        Sun, 08 Nov 2026 08:10:00 +0000
+Return-Path: <bounce@reelhouse.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@reelhouse.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@reelhouse.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@reelhouse.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=reelhouse.example
+Message-ID: <estate-10@reelhouse.example>
+Date: Sun, 08 Nov 2026 08:10:00 +0000
+From: "Reelhouse" <billing@reelhouse.example>
+To: robin.hale@mailbox.example
+Subject: Your subscription renewed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your subscription renewed: £10.99. Next billing date: 8 Dec.
+
+Estate sample message 10 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000011@xxx Mon Oct 12 09:17:00 +0000 2026
+X-GM-THRID: 1795000000000000011
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.signalpoint.example (mail.signalpoint.example. [192.0.2.21])
+        by mx.mailbox.example with ESMTPS id e11x
+        for <robin.hale@mailbox.example>;
+        Mon, 12 Oct 2026 09:17:00 +0000
+Return-Path: <bounce@signalpoint.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@signalpoint.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@signalpoint.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@signalpoint.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=signalpoint.example
+Message-ID: <estate-11@signalpoint.example>
+Date: Mon, 12 Oct 2026 09:17:00 +0000
+From: "Signalpoint Mobile" <billing@signalpoint.example>
+To: robin.hale@mailbox.example
+Subject: Your bill is ready: £18.00
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your mobile bill is ready: £18.00. Your plan renews each month. Next payment date: 12 Nov.
+
+Estate sample message 11 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000012@xxx Wed May 05 10:24:00 +0000 2021
+X-GM-THRID: 1795000000000000012
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.signalpoint.example (mail.signalpoint.example. [192.0.2.22])
+        by mx.mailbox.example with ESMTPS id e12x
+        for <robin.hale@mailbox.example>;
+        Wed, 05 May 2021 10:24:00 +0000
+Return-Path: <bounce@signalpoint.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@signalpoint.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@signalpoint.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@signalpoint.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=signalpoint.example
+Message-ID: <estate-12@signalpoint.example>
+Date: Wed, 05 May 2021 10:24:00 +0000
+From: "Signalpoint Mobile" <hello@signalpoint.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Signalpoint
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Signalpoint. Your account has been created.
+
+Estate sample message 12 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000013@xxx Sat Aug 15 11:31:00 +0000 2020
+X-GM-THRID: 1795000000000000013
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.lumenbox.example (mail.lumenbox.example. [192.0.2.23])
+        by mx.mailbox.example with ESMTPS id e13x
+        for <robin.hale@mailbox.example>;
+        Sat, 15 Aug 2020 11:31:00 +0000
+Return-Path: <bounce@lumenbox.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@lumenbox.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@lumenbox.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@lumenbox.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=lumenbox.example
+Message-ID: <estate-13@lumenbox.example>
+Date: Sat, 15 Aug 2020 11:31:00 +0000
+From: "Lumenbox" <hello@lumenbox.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Lumenbox
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Lumenbox. Your photo library is ready.
+
+Estate sample message 13 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000014@xxx Tue Jul 21 12:38:00 +0000 2026
+X-GM-THRID: 1795000000000000014
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.lumenbox.example (mail.lumenbox.example. [192.0.2.24])
+        by mx.mailbox.example with ESMTPS id e14x
+        for <robin.hale@mailbox.example>;
+        Tue, 21 Jul 2026 12:38:00 +0000
+Return-Path: <bounce@lumenbox.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@lumenbox.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@lumenbox.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@lumenbox.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=lumenbox.example
+Message-ID: <estate-14@lumenbox.example>
+Date: Tue, 21 Jul 2026 12:38:00 +0000
+From: "Lumenbox" <notify@lumenbox.example>
+To: robin.hale@mailbox.example
+Subject: 42 files were added to the album "Garden 2026"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+42 files were added to the album "Garden 2026".
+
+Estate sample message 14 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000015@xxx Sat May 02 13:45:00 +0000 2026
+X-GM-THRID: 1795000000000000015
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.lumenbox.example (mail.lumenbox.example. [192.0.2.25])
+        by mx.mailbox.example with ESMTPS id e15x
+        for <robin.hale@mailbox.example>;
+        Sat, 02 May 2026 13:45:00 +0000
+Return-Path: <bounce@lumenbox.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@lumenbox.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@lumenbox.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@lumenbox.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=lumenbox.example
+Message-ID: <estate-15@lumenbox.example>
+Date: Sat, 02 May 2026 13:45:00 +0000
+From: "Lumenbox" <notify@lumenbox.example>
+To: robin.hale@mailbox.example
+Subject: Jo shared the folder with you: "Family photos"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Jo shared the folder with you. Open "Family photos" to see it.
+
+Estate sample message 15 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000016@xxx Sat Nov 11 14:52:00 +0000 2023
+X-GM-THRID: 1795000000000000016
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.inkwell.example (mail.inkwell.example. [192.0.2.26])
+        by mx.mailbox.example with ESMTPS id e16x
+        for <robin.hale@mailbox.example>;
+        Sat, 11 Nov 2023 14:52:00 +0000
+Return-Path: <bounce@inkwell.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@inkwell.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@inkwell.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@inkwell.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=inkwell.example
+Message-ID: <estate-16@inkwell.example>
+Date: Sat, 11 Nov 2023 14:52:00 +0000
+From: "Inkwell Notes" <team@inkwell.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Inkwell Notes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for signing up. Your notebook is ready.
+
+Estate sample message 16 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000017@xxx Mon Feb 09 15:59:00 +0000 2026
+X-GM-THRID: 1795000000000000017
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.inkwell.example (mail.inkwell.example. [192.0.2.27])
+        by mx.mailbox.example with ESMTPS id e17x
+        for <robin.hale@mailbox.example>;
+        Mon, 09 Feb 2026 15:59:00 +0000
+Return-Path: <bounce@inkwell.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@inkwell.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@inkwell.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@inkwell.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=inkwell.example
+Message-ID: <estate-17@inkwell.example>
+Date: Mon, 09 Feb 2026 15:59:00 +0000
+From: "Inkwell Notes" <notify@inkwell.example>
+To: robin.hale@mailbox.example
+Subject: Jo commented on "Recipes"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Jo commented on your page "Recipes": "Add the lemon cake!"
+
+Estate sample message 17 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000018@xxx Mon Jun 06 16:06:00 +0000 2022
+X-GM-THRID: 1795000000000000018
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.latchvault.example (mail.latchvault.example. [192.0.2.28])
+        by mx.mailbox.example with ESMTPS id e18x
+        for <robin.hale@mailbox.example>;
+        Mon, 06 Jun 2022 16:06:00 +0000
+Return-Path: <bounce@latchvault.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@latchvault.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@latchvault.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@latchvault.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=latchvault.example
+Message-ID: <estate-18@latchvault.example>
+Date: Mon, 06 Jun 2022 16:06:00 +0000
+From: "Latchvault" <hello@latchvault.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Latchvault: your vault is ready
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome to Latchvault. Your password vault is ready.
+
+robin.hale@mailbox.example is your recovery email address.
+
+Estate sample message 18 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000019@xxx Wed Dec 03 17:13:00 +0000 2025
+X-GM-THRID: 1795000000000000019
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.larkspur-books.example (mail.larkspur-books.example. [192.0.2.29])
+        by mx.mailbox.example with ESMTPS id e19x
+        for <robin.hale@mailbox.example>;
+        Wed, 03 Dec 2025 17:13:00 +0000
+Return-Path: <bounce@larkspur-books.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@larkspur-books.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@larkspur-books.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@larkspur-books.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=larkspur-books.example
+Message-ID: <estate-19@larkspur-books.example>
+Date: Wed, 03 Dec 2025 17:13:00 +0000
+From: "Larkspur Books" <orders@larkspur-books.example>
+To: robin.hale@mailbox.example
+Subject: Order confirmation #LB-30981
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Thanks for your order #LB-30981. Order total: £12.99.
+
+Estate sample message 19 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000020@xxx Sat Mar 03 08:20:00 +0000 2018
+X-GM-THRID: 1795000000000000020
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.thornfield-gardens.example (mail.thornfield-gardens.example. [192.0.2.30])
+        by mx.mailbox.example with ESMTPS id e20x
+        for <robin.hale@mailbox.example>;
+        Sat, 03 Mar 2018 08:20:00 +0000
+Return-Path: <bounce@thornfield-gardens.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@thornfield-gardens.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@thornfield-gardens.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@thornfield-gardens.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=thornfield-gardens.example
+Message-ID: <estate-20@thornfield-gardens.example>
+Date: Sat, 03 Mar 2018 08:20:00 +0000
+From: "Thornfield Garden Club" <hello@thornfield-gardens.example>
+To: robin.hale@mailbox.example
+Subject: Welcome to Thornfield Garden Club
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Welcome! Your membership account has been created.
+
+Estate sample message 20 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000021@xxx Thu Sep 19 09:27:00 +0000 2024
+X-GM-THRID: 1795000000000000021
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.murmur.example (mail.murmur.example. [192.0.2.31])
+        by mx.mailbox.example with ESMTPS id e21x
+        for <robin.hale@mailbox.example>;
+        Thu, 19 Sep 2024 09:27:00 +0000
+Return-Path: <bounce@murmur.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@murmur.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@murmur.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@murmur.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=murmur.example
+Message-ID: <estate-21@murmur.example>
+Date: Thu, 19 Sep 2024 09:27:00 +0000
+From: "Murmur" <no-reply@murmur.example>
+To: robin.hale@mailbox.example
+Subject: Confirm your email address
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Confirm your email address to finish creating your Murmur account.
+
+Estate sample message 21 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000022@xxx Tue Aug 04 10:34:00 +0000 2026
+X-GM-THRID: 1795000000000000022
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.riverside-surgery.example (mail.riverside-surgery.example. [192.0.2.32])
+        by mx.mailbox.example with ESMTPS id e22x
+        for <robin.hale@mailbox.example>;
+        Tue, 04 Aug 2026 10:34:00 +0000
+Return-Path: <bounce@riverside-surgery.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@riverside-surgery.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@riverside-surgery.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@riverside-surgery.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=riverside-surgery.example
+Message-ID: <estate-22@riverside-surgery.example>
+Date: Tue, 04 Aug 2026 10:34:00 +0000
+From: "Riverside Surgery" <care@riverside-surgery.example>
+To: robin.hale@mailbox.example
+Subject: Appointment reminder: Tue 11 Aug, 09:40
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+This is a reminder of your appointment on Tue 11 Aug at 09:40. Sign in to the patient portal to change it.
+
+Estate sample message 22 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000023@xxx Mon Jun 01 11:41:00 +0000 2026
+X-GM-THRID: 1795000000000000023
+X-Gmail-Labels: Category Promotions,Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.wayfarer-travel.example (mail.wayfarer-travel.example. [192.0.2.33])
+        by mx.mailbox.example with ESMTPS id e23x
+        for <robin.hale@mailbox.example>;
+        Mon, 01 Jun 2026 11:41:00 +0000
+Return-Path: <bounce@wayfarer-travel.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@wayfarer-travel.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@wayfarer-travel.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@wayfarer-travel.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=wayfarer-travel.example
+Message-ID: <estate-23@wayfarer-travel.example>
+Date: Mon, 01 Jun 2026 11:41:00 +0000
+From: "Wayfarer Travel" <offers@wayfarer-travel.example>
+To: robin.hale@mailbox.example
+Subject: Autumn breaks from £99
+List-Unsubscribe: <mailto:unsubscribe@wayfarer-travel.example>
+Precedence: bulk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Autumn breaks from £99. Book by Sunday.
+
+Estate sample message 23 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000024@xxx Tue Nov 03 12:48:00 +0000 2026
+X-GM-THRID: 1795000000000000024
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.harbourline-secure.example (mail.harbourline-secure.example. [192.0.2.34])
+        by mx.mailbox.example with ESMTPS id e24x
+        for <robin.hale@mailbox.example>;
+        Tue, 03 Nov 2026 12:48:00 +0000
+Return-Path: <bounce@harbourline-secure.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=none;
+       spf=softfail (mailbox.example: domain of transitioning bounce@harbourline-secure.example does not designate 192.0.2.66 as permitted sender) smtp.mailfrom=bounce@harbourline-secure.example;
+       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=harbourline-secure.example
+Message-ID: <estate-24@harbourline-secure.example>
+Date: Tue, 03 Nov 2026 12:48:00 +0000
+From: "Harbourline Bank" <alerts@harbourline-secure.example>
+To: robin.hale@mailbox.example
+Subject: Urgent: verify your account now
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your account is locked. Verify your account now or it will be closed.
+
+Estate sample message 24 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000025@xxx Fri Oct 02 13:55:00 +0000 2026
+X-GM-THRID: 1795000000000000025
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.mailbox.example (mail.mailbox.example. [192.0.2.35])
+        by mx.mailbox.example with ESMTPS id e25x
+        for <robin.hale@mailbox.example>;
+        Fri, 02 Oct 2026 13:55:00 +0000
+Return-Path: <bounce@mailbox.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@mailbox.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@mailbox.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@mailbox.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mailbox.example
+Message-ID: <estate-25@mailbox.example>
+Date: Fri, 02 Oct 2026 13:55:00 +0000
+From: "Mailbox" <accounts@mailbox.example>
+To: robin.hale@mailbox.example
+Subject: Your storage is 90% full
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Your Mailbox storage is 90% full. Upgrade your plan to keep receiving email.
+
+Estate sample message 25 of the Leave a Map sample mailbox. Fictional.
+
+From 1795000000000000026@xxx Tue Oct 20 14:02:00 +0000 2026
+X-GM-THRID: 1795000000000000026
+X-Gmail-Labels: Inbox
+Delivered-To: robin.hale@mailbox.example
+Received: from mail.mailbox.example (mail.mailbox.example. [192.0.2.36])
+        by mx.mailbox.example with ESMTPS id e26x
+        for <robin.hale@mailbox.example>;
+        Tue, 20 Oct 2026 14:02:00 +0000
+Return-Path: <bounce@mailbox.example>
+Authentication-Results: mx.mailbox.example;
+       dkim=pass header.i=@mailbox.example header.s=s1 header.b=AAAA;
+       spf=pass (mailbox.example: domain of bounce@mailbox.example designates 192.0.2.10 as permitted sender) smtp.mailfrom=bounce@mailbox.example;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mailbox.example
+Message-ID: <estate-26@mailbox.example>
+Date: Tue, 20 Oct 2026 14:02:00 +0000
+From: "Jo Hale" <jo.hale@mailbox.example>
+To: robin.hale@mailbox.example
+Subject: Sunday lunch?
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Are you still up for Sunday? I can bring the cake.
+
+Estate sample message 26 of the Leave a Map sample mailbox. Fictional.
