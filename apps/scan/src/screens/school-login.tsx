@@ -42,28 +42,28 @@ export function SchoolLoginStep({ candidates, connections, onChange, saved }: Pr
       <summary>
         <span class="chev" aria-hidden="true" />
         <div>
-        <h2>Check what uses your school login</h2>
+        <h2>Check what uses your school or work login</h2>
         <p class="bucket-why">
-          Your email can't show every app you signed into with your school account. Your account's own page can.
+          Your email can't show every app you signed into with your school or work account. Your account's own page can.
           {count > 0 && <strong> {count} confirmed.</strong>}
         </p>
         </div>
       </summary>
 
-      <div class="provider" role="radiogroup" aria-label="Your school's sign-in">
+      <div class="provider" role="radiogroup" aria-label="Your school or work sign-in">
         <label><input type="radio" name="provider" checked={provider === 'google'} onChange={() => setProvider('google')} /> Google</label>
         <label><input type="radio" name="provider" checked={provider === 'microsoft'} onChange={() => setProvider('microsoft')} /> Microsoft</label>
       </div>
 
       {provider === 'google' ? (
         <ol class="steps">
-          <li>Open <a href={GOOGLE_LINKED_APPS} target="_blank" rel="noopener noreferrer">Linked apps in your Google Account</a> and sign in with your school account.</li>
+          <li>Open <a href={GOOGLE_LINKED_APPS} target="_blank" rel="noopener noreferrer">Linked apps in your Google Account</a> and sign in with your school or work account.</li>
           <li>Look at the apps listed under <strong>Sign in with Google</strong>.</li>
           <li>Tick each one below, or type its name if it isn't listed.</li>
         </ol>
       ) : (
         <ol class="steps">
-          <li>Open <a href={MICROSOFT_MY_APPS} target="_blank" rel="noopener noreferrer">My Apps</a> and sign in with your school account.</li>
+          <li>Open <a href={MICROSOFT_MY_APPS} target="_blank" rel="noopener noreferrer">My Apps</a> and sign in with your school or work account.</li>
           <li>For an app you're not sure about, select its tile's <strong>...</strong>, then <strong>Manage your application</strong>.</li>
           <li>Tick each one below, or type its name if it isn't listed.</li>
         </ol>
@@ -72,7 +72,7 @@ export function SchoolLoginStep({ candidates, connections, onChange, saved }: Pr
       <p class="warn" role="note">
         {provider === 'google'
           ? <>Don't select <strong>Stop using Sign in with Google</strong> until you've added a password or changed the login email at that service. Do this before your shutoff date.</>
-          : <>Don't remove an app's access until you've added a password or changed the login email at that service. Do this before your shutoff date. Your school can hide apps, so this list may be incomplete.</>}
+          : <>Don't remove an app's access until you've added a password or changed the login email at that service. Do this before your shutoff date. Your school or employer can hide apps, so this list may be incomplete.</>}
       </p>
 
       {fromEmail.length > 0 && (

@@ -9,7 +9,7 @@ import { COPY, type Mode } from '../mode.ts';
 
 const ROWS: { key: 'exists' | 'sso' | 'work' | 'reset' | 'money' | 'discount'; label: string }[] = [
   { key: 'exists', label: 'You have an account' },
-  { key: 'sso', label: 'You sign in with your school account' },
+  { key: 'sso', label: 'You sign in with your school or work account' },
   { key: 'work', label: 'Holds your work' },
   { key: 'reset', label: 'Can reset your other accounts' },
   { key: 'money', label: 'Money' },

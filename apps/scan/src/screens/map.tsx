@@ -73,7 +73,7 @@ function MoveSteps({ a, facts }: { a: RankedAccount; facts?: ServiceFacts }) {
     <div class="move">
       {exportFirst && exportStep}
       {a.bucket === 'sso'
-        ? <p>{exportFirst ? 'Then' : 'To move'}: at {where}, add a password or change the login email to one you'll keep. Only then disconnect your school login.</p>
+        ? <p>{exportFirst ? 'Then' : 'To move'}: at {where}, add a password or change the login email to one you'll keep. Only then disconnect your school or work login.</p>
         : change
           ? <p>{exportFirst ? 'Then' : 'To move'}: change the login email to one you'll keep. <PackLink link={change}>{`How to change it at ${name}`}</PackLink>
             {change.checked && <span class="meta"> (checked {change.checked})</span>}</p>
@@ -87,17 +87,17 @@ function MoveSteps({ a, facts }: { a: RankedAccount; facts?: ServiceFacts }) {
 }
 
 /**
- * Someone has died: general steps, never a link that needs their login. Not legal advice, and it
+ * After a loss: general steps, never a link that needs their login. Not legal advice, and it
  * never suggests signing in as the person.
  */
 function LossSteps({ a }: { a: RankedAccount }) {
   const where = a.name;
   const step = {
     money: <p>Contact {where}'s bereavement or estates team. They'll say what they need, usually a death certificate and proof that you can act for the estate. Ask about balances, claims and payments that should stop.</p>,
-    work: <p>Ask {where} how it handles a member who has died. Some let family request a copy of photos and files, or turn the account into a memorial. Ask before anything is closed.</p>,
-    sso: <p>{where} is reached through another of their accounts. Contact {where} about the death before you close that other account.</p>,
-    rest: <p>Tell {where} about the death. Cancel anything that bills, then ask them to close or memorialise the account.</p>,
-    reset: <p>Keep {where} open and paid while you work through the rest: notices and codes from other services arrive here. When you're ready to close it, ask {where} about its process for a member who has died.</p>,
+    work: <p>Ask {where} how it handles a member who has passed away. Some let family request a copy of photos and files, or turn the account into a memorial. Ask before anything is closed.</p>,
+    sso: <p>{where} is reached through another of their accounts. Let {where} know they have passed away before you close that other account.</p>,
+    rest: <p>Let {where} know they have passed away. Cancel anything that bills, then ask them to close or memorialise the account.</p>,
+    reset: <p>Keep {where} open and paid while you work through the rest: notices and codes from other services arrive here. When you're ready to close it, ask {where} about its process for a member who has passed away.</p>,
   }[a.bucket];
   return <div class="move">{step}<p class="meta">Don't sign in as them, even if you know the password. Use each service's own process for families.</p></div>;
 }
@@ -242,7 +242,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
       <NoAiBanner />
       {mode === 'school' && <SchoolLoginStep candidates={scanned} connections={connections} onChange={changeConnections} saved={connSaved} />}
 
-      {main.length === 0 && <p class="empty">{mode === 'loss' ? `No accounts tied to ${who} were found in this file. Check that it's the export of their mailbox.` : `No accounts tied to @${settings.schoolDomain} were found in this file. Check that it's the export of your school mailbox.`}</p>}
+      {main.length === 0 && <p class="empty">{mode === 'loss' ? `No accounts tied to ${who} were found in this file. Check that it's the export of their mailbox.` : `No accounts tied to @${settings.schoolDomain} were found in this file. Check that it's the export of the mailbox for that address.`}</p>}
 
       {buckets.filter(([, list]) => list.length > 0).map(([b, list]) => (
         <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`} data-dots="side">

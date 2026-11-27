@@ -24,13 +24,13 @@ function emailNote(v: string, mode: Mode): { text: string; tone: '' | 'is-warn' 
   if (!t.includes('@')) return { text: `Add the part after the @, like ${eg}.`, tone: 'is-warn' };
   if (!EMAIL_RE.test(t)) return { text: `That doesn't look complete yet, like ${eg}.`, tone: 'is-warn' };
   if (mode === 'loss') return { text: `We'll look for mail sent to ${t.toLowerCase()}.`, tone: 'is-good' };
-  if (PERSONAL.test(t)) return { text: 'That looks like a personal address. Use the school one that\'s shutting down.', tone: 'is-warn' };
+  if (PERSONAL.test(t)) return { text: 'That looks like a personal address. Use the school or work address that\'s closing.', tone: 'is-warn' };
   return { text: `We'll look for mail sent to @${EMAIL_RE.exec(t)![1].toLowerCase()}.`, tone: 'is-good' };
 }
 
 const MODES: [Mode, string, string][] = [
-  ['school', 'My school email is closing', 'Move each account to an address you\'ll keep.'],
-  ['loss', 'Someone has died', 'List their accounts: money, bills, photos, and what to close.'],
+  ['school', 'My email address is closing', 'School, work or an old provider: move each account to an address you\'ll keep.'],
+  ['loss', 'After a loss', 'Sorting out the accounts of someone who has passed away: money, bills, photos, and what to close.'],
 ];
 
 export function StartScreen({ onScan, onSample, error }: Props) {
@@ -57,8 +57,8 @@ export function StartScreen({ onScan, onSample, error }: Props) {
     e.preventDefault();
     const m = EMAIL_RE.exec(email.trim());
     const bad = (field: Field, text: string) => { setProblem({ field, text }); focus(field); };
-    if (!m) return bad('email', loss ? 'Enter their full email address, like name@example.com.' : 'Enter your full school email address, like name@school.edu.');
-    if (!loss && !date) return bad('date', 'Enter the date your school email shuts off, or pick one of the quick choices.');
+    if (!m) return bad('email', loss ? 'Enter their full email address, like name@example.com.' : 'Enter the full email address that\'s closing, like name@school.edu or name@work.com.');
+    if (!loss && !date) return bad('date', 'Enter the date this address shuts off, or pick one of the quick choices.');
     if (!file) return bad('file', 'Choose the exported .mbox file.');
     setProblem(null);
     // ponytail: loss mode has no date; the core never reads shutoffDate.
@@ -85,12 +85,12 @@ export function StartScreen({ onScan, onSample, error }: Props) {
     <main id="main" class={`page start screen${over ? ' drop-anywhere' : ''}`}>
       <TopBar />
       <header class="hero" data-dots="hero">
-        <p class="kicker"><span>{loss ? 'After a death' : 'School email closing'}</span><span class="live">Nothing leaves this device</span></p>
+        <p class="kicker"><span>{loss ? 'After a loss' : 'Email address closing'}</span><span class="live">Nothing leaves this device</span></p>
         <div class="hero-text">
           <p class="lede">{loss
             ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
             : 'Find the accounts tied to it before it does. Three quick steps.'}</p>
-          <h1>{loss ? 'Find the accounts they left behind' : 'Your school email is going away'}<span class="dot" aria-hidden="true">*</span></h1>
+          <h1>{loss ? 'Find the accounts they left behind' : 'Your old email is going away'}<span class="dot" aria-hidden="true">*</span></h1>
         </div>
       </header>
 
@@ -117,7 +117,7 @@ export function StartScreen({ onScan, onSample, error }: Props) {
           <li class={`station${done.email ? ' is-done' : ''}`}>
             <span class="station-n" aria-hidden="true">{++n}</span>
             <div class="field">
-              <label for="f-email">{loss ? 'Their email address' : 'Your school email address'}</label>
+              <label for="f-email">{loss ? 'Their email address' : 'The email address that\'s closing'}</label>
               <input id="f-email" type="email" autoComplete={loss ? 'off' : 'email'} inputMode="email" autoCapitalize="off" autoCorrect="off" spellcheck={false}
                 enterKeyHint="next" placeholder={loss ? 'name@example.com' : 'name@school.edu'} value={email} aria-describedby="f-email-note"
                 onInput={(e) => { setEmail(e.currentTarget.value); if (problem?.field === 'email') setProblem(null); }}
@@ -139,7 +139,7 @@ export function StartScreen({ onScan, onSample, error }: Props) {
                 <input id="f-date" type="date" enterKeyHint="next" value={date} aria-describedby="f-date-note"
                   onInput={(e) => pick(e.currentTarget.value)} onKeyDown={next('date')} required aria-invalid={invalid('date')} />
                 <p id="f-date-note" class={`field-note${date ? ' is-good' : ''}`} aria-live="polite">
-                  {date ? `${longDate(date)}, ${countdown(date)}.` : 'Not sure? Your school\'s IT pages usually say. You can pick a rough date and change it later.'}
+                  {date ? `${longDate(date)}, ${countdown(date)}.` : 'Not sure? Your school\'s or employer\'s IT pages usually say. You can pick a rough date and change it later.'}
                 </p>
               </div>
             </li>

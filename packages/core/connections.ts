@@ -12,7 +12,7 @@ import type { Account, Cond } from './types.ts';
 export type Connections = { ticked: string[]; added: string[] };
 export const NO_CONNECTIONS: Connections = { ticked: [], added: [] };
 
-const SIGNAL = 'listed on your school account\u2019s connected-apps page';
+const SIGNAL = 'listed on your school or work account\u2019s connected-apps page';
 const userCond = (): Cond => ({ tier: 'seen', source: 'user', signal: SIGNAL });
 
 const confirm = (a: Account): Account => {
