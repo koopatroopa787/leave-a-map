@@ -114,6 +114,7 @@ export function Dots() {
     };
 
     const frame = (now: number) => {
+      if (!cols || !rows) return; // zero-size window (e.g. a hidden iframe): nothing to draw
       const moving = live(), t = moving ? now : 0;
       const els = [...document.querySelectorAll<HTMLElement>('[data-dots]')];
       const rects = els.map((e) => e.getBoundingClientRect());
@@ -137,8 +138,10 @@ export function Dots() {
           // As the hero scrolls up, the picture shrinks and rounds into a ball.
           const p = clamp(-r.top / Math.max(1, r.height * .7)), wide = W >= 900;
           const x = wide ? r.left + r.width * .66 : r.left + r.width * .5;
-          const y = (wide ? r.top + r.height * .44 : r.top + r.height * .36) + p * r.height * .25;
-          const s = (wide ? Math.min(r.width * .48, r.height * .82) : Math.min(r.width * .9, r.height * .5)) * (1 - p * .55);
+          // On wide screens the picture fits the band between the labels and the lede, so it never sits behind text.
+          const tt = e.querySelector('.hero-text')?.getBoundingClientRect().top ?? r.bottom, top = r.top + 56, band = tt - 32 - top;
+          const y = (wide ? top + band / 2 : r.top + r.height * .36) + p * r.height * .25;
+          const s = (wide ? Math.min(r.width * .48, band) : Math.min(r.width * .9, r.height * .5)) * (1 - p * .55);
           add(v * (1 - p * .6), (c) => picture(c, t, x, y, s));
           add(v * p * .9, (c) => ball(c, x, y, s));
         } else if (kind === 'side' && i === side) {
