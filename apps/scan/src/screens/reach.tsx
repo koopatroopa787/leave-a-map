@@ -9,6 +9,14 @@ import type { RankedAccount } from '../../../../packages/core/types.ts';
 import type { Mode } from '../mode.ts';
 
 const telHref = (n: string) => `tel:${n.replace(/[^\d+]/g, '')}`;
+// .example domains (the samples) don't exist, so they're shown as text, not links.
+const isExample = (d: string) => /\.(?:example|test|invalid|localhost)$/.test(d);
+
+function Website({ domain }: { domain: string }) {
+  return isExample(domain)
+    ? <span>{domain} <span class="meta">(made-up sample site)</span></span>
+    : <a href={`https://${domain}`} target="_blank" rel="noopener noreferrer">{domain}</a>;
+}
 
 export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: Mode; contacts?: Contacts; address: string }) {
   const loss = mode === 'loss';
@@ -27,6 +35,7 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
         <div class="reach-found">
           <p class="reach-head">How to reach {a.name}</p>
           <dl>
+            <div><dt>Website</dt><dd><Website domain={a.key} /></dd></div>
             {contacts!.emails.length > 0 && <div><dt>Email</dt><dd>{contacts!.emails.map((e) => <a key={e} href={`mailto:${e}`}>{e}</a>)}</dd></div>}
             {contacts!.phones.length > 0 && <div><dt>Phone</dt><dd>{contacts!.phones.map((p) => <a key={p} href={telHref(p)}>{p}</a>)}</dd></div>}
             {contacts!.addresses.length > 0 && <div><dt>Post</dt><dd>{contacts!.addresses.map((p) => <span key={p}>{p}</span>)}</dd></div>}
@@ -34,7 +43,11 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
           <p class="meta">Found in {loss ? 'their' : 'your'} emails from {a.name} that passed the sender checks. Before you share anything personal, check them against {a.name}'s own website.</p>
         </div>
       ) : (
-        <p class="meta reach-none">No contact details in {loss ? 'their' : 'your'} emails from {a.name}. Their website's help or contact page will have them{loss ? '; look for "bereavement" or "deceased customer"' : ''}.</p>
+        <div class="reach-found">
+          <p class="reach-head">How to reach {a.name}</p>
+          <dl><div><dt>Website</dt><dd><Website domain={a.key} /></dd></div></dl>
+          <p class="meta">No email address or phone number in {loss ? 'their' : 'your'} emails from {a.name}. Look for "Contact us" or "Help" on the website{loss ? ', and for "bereavement" or "deceased customer"' : ''}.</p>
+        </div>
       )}
       <details class="draft">
         <summary><span class="chev" aria-hidden="true" />{loss ? `Write to ${a.name}: a ready-made message` : `Ask ${a.name} to change the email: a ready-made message`}</summary>

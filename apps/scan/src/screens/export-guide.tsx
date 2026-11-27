@@ -1,12 +1,13 @@
 // apps/scan/src/screens/export-guide.tsx: "How do I get this file?" under step 3 of the start form.
 // Pick the email provider, get numbered steps. Static text only; the links open in a new tab.
 import { useState } from 'preact/hooks';
-import { GUIDES, PROVIDERS, type Provider } from '../export-steps.ts';
+import { guides, PROVIDERS, type Provider } from '../export-steps.ts';
 import type { Mode } from '../mode.ts';
 
 export function ExportGuide({ mode }: { mode: Mode }) {
   const [p, setP] = useState<Provider>('gmail');
-  const g = GUIDES[p];
+  const all = guides(mode);
+  const g = all[p];
   const loss = mode === 'loss';
   return (
     <details class="guide">
@@ -29,18 +30,20 @@ export function ExportGuide({ mode }: { mode: Mode }) {
             {PROVIDERS.map((k) => (
               <label key={k}>
                 <input type="radio" name="export-provider" checked={p === k} onChange={() => setP(k)} />
-                {GUIDES[k].label}
+                {all[k].label}
               </label>
             ))}
           </div>
         </fieldset>
         {g.note && <p class="field-hint">{g.note}</p>}
+        <p class="guide-before"><strong>Before you start:</strong> you'll need a computer, {loss ? 'access to their email address' : 'the email address that\u2019s closing'} and its password, and about 15 minutes. Some steps then take a while on their own.</p>
         {g.intro && <p>{g.intro}</p>}
         <ol class="guide-steps" aria-live="polite">
           {g.steps.map((s, i) => (
             <li key={`${p}-${i}`}>
               {s.text}
               {s.link && <> <a href={s.link.href} target="_blank" rel="noopener noreferrer">{s.link.label}</a></>}
+              {s.detail && <span class="guide-detail">{s.detail}</span>}
             </li>
           ))}
         </ol>

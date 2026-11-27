@@ -25,6 +25,7 @@ import { Check } from '../icons.tsx';
 import { SiteFoot, TopBar } from '../display.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
 import { Reach } from './reach.tsx';
+import { groupLine } from '../../../../packages/core/subcategory.ts';
 import type { Contacts } from '../../../../packages/core/contacts.ts';
 
 type Props = {
@@ -120,7 +121,7 @@ function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address }:
       <div class="card-head">
         <span class="rank" role="img" aria-label={`Rank ${rank}${moved ? `, ${c.done.toLowerCase()}` : ''}`}>{moved ? <Check /> : rank}</span>
         <div class="card-title">
-          <h3>{a.name}</h3>
+          <h3 class="keep-words">{a.name}</h3>
           <span class="domain">{a.key.startsWith('app:') ? c.appKey : a.key}</span>
         </div>
         <label class="moved">
@@ -253,7 +254,12 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`} data-dots="side">
           <h2 id={`h-${b}`}>{c.title[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{c.why[b]}</p>
-          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} />)}</ol>
+          {groupLine(list, b).map(({ label, items }) => (
+            <div key={label || 'all'} class={label ? 'subgroup' : undefined}>
+              {label && <h3 class="subgroup-title">{label} <span class="count">{items.length}</span></h3>}
+              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} />)}</ol>
+            </div>
+          ))}
         </section>
       ))}
 
