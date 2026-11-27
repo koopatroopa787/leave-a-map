@@ -34,3 +34,13 @@ Both MIT sources are under this licence, with the copyright lines in the table a
 > THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 `data/hand-links.json` is ours. Real links in it were opened and read by a person on the date in `checked`. Entries marked `"example": true` belong to the fictional sample mailbox and their links don't resolve.
+
+## Fonts
+
+The scan site bundles these fonts from [Fontsource](https://fontsource.org). All three are under the [SIL Open Font License 1.1](https://openfontlicense.org).
+
+| Font | Copyright |
+|---|---|
+| Atkinson Hyperlegible Next | Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors |
+| Atkinson Hyperlegible Mono | Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors |
+| Fraunces | Copyright 2020 The Fraunces Project Authors |
