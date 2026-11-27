@@ -8,7 +8,7 @@ import { NanoPanel } from './nano-panel.tsx';
 import { countdown, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { loadConnections, loadMoved, saveConnections, saveMoved } from '../checklist.ts';
+import { loadConnections, loadMoved, loadNotes, NOTE_MAX, saveConnections, saveMoved, saveNotes } from '../checklist.ts';
 import { applyConnections, type Connections } from '../../../../packages/core/connections.ts';
 import { rank as rankAccounts } from '../../../../packages/core/rank.ts';
 import { SchoolLoginStep } from './school-login.tsx';
@@ -111,7 +111,7 @@ function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string }) {
+function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, note, onNote }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string; note: string; onNote: (v: string) => void }) {
   const p = primary(a);
   const c = COPY[mode];
   const also = (['sso', 'work', 'reset', 'money'] as const)
@@ -142,6 +142,12 @@ function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address }:
       )}
       {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
       {!a.key.startsWith('app:') && <Reach a={a} mode={mode} contacts={contacts} address={address} />}
+      <div class="note">
+        <label for={`note-${a.key}`}>My notes</label>
+        <textarea id={`note-${a.key}`} rows={2} maxLength={NOTE_MAX} value={note} placeholder="For example: rang them on 3 Dec, reference 88120, they'll post a form"
+          onInput={(e) => onNote(e.currentTarget.value)} />
+        {note && <p class="note-print">{note}</p>}
+      </div>
       {info && <Lane3 info={info} />}
       <EvidenceDrawer a={a} mode={mode} />
       <dl class="facts">
@@ -183,6 +189,14 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
   const store = listKey(mode, settings.schoolDomain, who);
   const [moved, setMoved] = useState(() => loadMoved(store));
   const [saved, setSaved] = useState(true);
+  // Notes per account, kept in this browser with the ticks.
+  const [notes, setNotes] = useState(() => loadNotes(store));
+  const note = (key: string, v: string) => setNotes((prev) => {
+    const next = { ...prev, [key]: v };
+    if (!v) delete next[key];
+    saveNotes(store, next);
+    return next;
+  });
   const toggle = (key: string, v: boolean) => {
     setMoved((prev) => {
       const next = new Set(prev);
@@ -223,6 +237,10 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
             {!saved && <span class="meta"> This browser won't save your ticks, so they'll be gone if you reload.</span>}
           </p>
         )}
+        {main.length > 0 && (
+          <p class="print-row"><button type="button" class="secondary" onClick={() => print()}>Print or save as PDF</button>
+            <span class="meta"> The list with your ticks and notes, to keep or share. To get a PDF, choose "Save as PDF" as the printer.</span></p>
+        )}
         {buckets.some(([, l]) => l.length > 0) && (
           <nav class="jump" aria-label="Jump to a line">
             <ul>{buckets.filter(([, l]) => l.length > 0).map(([b, l]) => (
@@ -257,7 +275,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
           {groupLine(list, b).map(({ label, items }) => (
             <div key={label || 'all'} class={label ? 'subgroup' : undefined}>
               {label && <h3 class="subgroup-title">{label} <span class="count">{items.length}</span></h3>}
-              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} />)}</ol>
+              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} note={notes[a.key] ?? ''} onNote={(v) => note(a.key, v)} />)}</ol>
             </div>
           ))}
         </section>

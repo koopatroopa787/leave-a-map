@@ -2,11 +2,16 @@
 // Contacts come from the company's own, checked emails (packages/core/contacts.ts). The draft is
 // plain text the person edits here; it's copied or opened in their own email app, never sent from
 // this page.
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
+import type { RewriteStyle } from '../nano.ts';
 import type { Contacts } from '../../../../packages/core/contacts.ts';
 import { draftMessage, mailtoHref } from '../../../../packages/core/draft.ts';
 import type { RankedAccount } from '../../../../packages/core/types.ts';
 import type { Mode } from '../mode.ts';
+
+// Whether Gemini Nano can run here, asked once for the whole list.
+let nanoHere: Promise<boolean> | null = null;
+const canRewrite = () => (nanoHere ??= import('../nano.ts').then((m) => m.probeNano()).then((s) => s !== 'unavailable', () => false));
 
 const telHref = (n: string) => `tel:${n.replace(/[^\d+]/g, '')}`;
 // .example domains (the samples) don't exist, so they're shown as text, not links.
@@ -23,6 +28,20 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
   const any = !!contacts && (contacts.emails.length + contacts.phones.length + contacts.addresses.length) > 0;
   const [draft, setDraft] = useState(() => draftMessage({ mode, bucket: a.bucket, company: a.name, address }));
   const [copied, setCopied] = useState<'' | 'yes' | 'no'>('');
+  const [nano, setNano] = useState(false);
+  const [busy, setBusy] = useState('');
+  useEffect(() => { let live = true; void canRewrite().then((v) => { if (live) setNano(v); }); return () => { live = false; }; }, []);
+  const rewrite = async (style: RewriteStyle) => {
+    setBusy('Rewriting on this device…'); setCopied('');
+    try {
+      const { rewriteOnDevice } = await import('../nano.ts');
+      const body = await rewriteOnDevice(draft.body, style, (l) => setBusy(`Getting the on-device model ready: ${Math.round(l * 100)}%`));
+      setDraft((d) => ({ ...d, body }));
+      setBusy('Rewritten on this device by Gemini Nano. Nothing left this computer. Check it before you send it.');
+    } catch (e) {
+      setBusy((e as Error).message === 'lost-blanks' ? 'The rewrite dropped some of the [blanks], so your version is kept.' : 'Couldn\u2019t rewrite it on this device. Your version is kept.');
+    }
+  };
   const to = contacts?.emails[0];
   const copy = async () => {
     try { await navigator.clipboard.writeText(`Subject: ${draft.subject}\n\n${draft.body}`); setCopied('yes'); }
@@ -57,6 +76,15 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
           <input id={`${id}-s`} type="text" value={draft.subject} onInput={(e) => { setDraft({ ...draft, subject: e.currentTarget.value }); setCopied(''); }} />
           <label for={`${id}-b`}>Message</label>
           <textarea id={`${id}-b`} rows={14} value={draft.body} onInput={(e) => { setDraft({ ...draft, body: e.currentTarget.value }); setCopied(''); }} />
+          {nano && (
+            <div class="draft-actions rewrite" role="group" aria-label="Rewrite on this device">
+              <span class="meta">Rewrite on this device:</span>
+              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('shorter')}>Shorter</button>
+              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('formal')}>More formal</button>
+              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('simple')}>Simpler words</button>
+            </div>
+          )}
+          {busy && <p class="meta" role="status">{busy}</p>}
           <div class="draft-actions">
             <button type="button" class="secondary" onClick={copy}>Copy message</button>
             <a class="button-link" href={mailtoHref(to, draft)}>{to ? `Open in my email app, to ${to}` : 'Open in my email app'}</a>

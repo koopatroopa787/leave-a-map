@@ -53,3 +53,30 @@ export function saveConnections(schoolDomain: string, c: { ticked: string[]; add
     return false;
   }
 }
+
+/** Notes per account ("rang them on 3 Dec, ref 88120"), per list. Only in this browser. */
+const notesKey = (list: string) => `lam.notes.${list.toLowerCase()}`;
+export const NOTE_MAX = 2000;
+
+export function loadNotes(list: string, store: Store | null = storage()): Record<string, string> {
+  try {
+    const raw = store?.getItem(notesKey(list));
+    const o: unknown = raw ? JSON.parse(raw) : {};
+    if (!o || typeof o !== 'object' || Array.isArray(o)) return {};
+    const out: Record<string, string> = {};
+    for (const [k, v] of Object.entries(o).slice(0, 2000)) if (typeof v === 'string' && v) out[k] = v.slice(0, NOTE_MAX);
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export function saveNotes(list: string, notes: Record<string, string>, store: Store | null = storage()): boolean {
+  try {
+    if (!store) return false;
+    store.setItem(notesKey(list), JSON.stringify(notes));
+    return true;
+  } catch {
+    return false;
+  }
+}
