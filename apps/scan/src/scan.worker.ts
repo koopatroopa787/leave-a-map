@@ -6,15 +6,17 @@ import { makeLinkContext } from '../../../packages/core/rules/school-link.ts';
 import { Aggregator } from '../../../packages/core/rules/aggregate.ts';
 import { rank } from '../../../packages/core/rank.ts';
 import type { FromWorker, ToWorker } from '../../../packages/core/types.ts';
+import { ContactBook, type ContactsMsg } from '../../../packages/core/contacts.ts';
 
-const post = (m: FromWorker) => (self as unknown as { postMessage(m: FromWorker): void }).postMessage(m);
+const post = (m: FromWorker | ContactsMsg) => (self as unknown as { postMessage(m: FromWorker | ContactsMsg): void }).postMessage(m);
 
 self.onmessage = async (e: MessageEvent<ToWorker>) => {
   if (e.data?.type !== 'scan') return;
   const { file, settings } = e.data;
   const started = performance.now();
   try {
-    const agg = new Aggregator(makeLinkContext(settings.schoolDomain, settings.ownAddresses));
+    const book = new ContactBook(settings.ownAddresses);
+    const agg = new Aggregator(makeLinkContext(settings.schoolDomain, settings.ownAddresses), { onTrusted: (k, m, b) => book.add(k, m, b) });
     const splitter = new MboxSplitter({ keepBodyBytes: KEEP_BODY_BYTES });
     const reader = file.stream().getReader();
     let bytesRead = 0;
@@ -40,6 +42,7 @@ self.onmessage = async (e: MessageEvent<ToWorker>) => {
     agg.stats.bytes = bytesRead;
     post({ type: 'progress', bytesRead, totalBytes: file.size, messages });
     const accounts = rank(agg.accountsOut());
+    post({ type: 'contacts', byKey: book.out() });
     post({ type: 'done', accounts, stats: agg.stats, ms: Math.round(performance.now() - started), nanoItems: agg.nanoItems(accounts) });
   } catch (err) {
     post({ type: 'error', message: err instanceof Error ? err.message : String(err) });

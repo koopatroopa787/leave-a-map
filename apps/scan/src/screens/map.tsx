@@ -24,9 +24,12 @@ import { loadPack } from '../pack-loader.ts';
 import { Check } from '../icons.tsx';
 import { SiteFoot, TopBar } from '../display.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
+import { Reach } from './reach.tsx';
+import type { Contacts } from '../../../../packages/core/contacts.ts';
 
 type Props = {
   settings: ScanSettings; mode: Mode; sample?: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[];
+  contacts?: Record<string, Contacts>;
   onAccounts: (a: RankedAccount[]) => void; onRestart: () => void;
 };
 
@@ -107,7 +110,7 @@ function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, mode, rank, moved, onMoved, info, facts }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts }) {
+function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string }) {
   const p = primary(a);
   const c = COPY[mode];
   const also = (['sso', 'work', 'reset', 'money'] as const)
@@ -137,6 +140,7 @@ function Card({ a, mode, rank, moved, onMoved, info, facts }: { a: RankedAccount
         </ul>
       )}
       {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
+      {!a.key.startsWith('app:') && <Reach a={a} mode={mode} contacts={contacts} address={address} />}
       {info && <Lane3 info={info} />}
       <EvidenceDrawer a={a} mode={mode} />
       <dl class="facts">
@@ -160,7 +164,7 @@ function Plain({ a, info }: { a: RankedAccount; info?: ServiceInfo }) {
   return <li><strong>{a.name}</strong> <span class="domain">{a.key}</span> <span class="meta">· {why}</span>{info && <Lane3 info={info} />}</li>;
 }
 
-export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms, nanoItems, onAccounts, onRestart }: Props) {
+export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms, nanoItems, contacts = {}, onAccounts, onRestart }: Props) {
   // The person's school-login ticks sit on top of the scan (and Nano's labels), never inside them.
   const [connections, setConnections] = useState<Connections>(() => loadConnections(settings.schoolDomain));
   const [connSaved, setConnSaved] = useState(true);
@@ -249,7 +253,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         <section key={b} class={`bucket line-${b}`} aria-labelledby={`h-${b}`} data-dots="side">
           <h2 id={`h-${b}`}>{c.title[b]} <span class="count">{list.length}</span></h2>
           <p class="bucket-why">{c.why[b]}</p>
-          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} />)}</ol>
+          <ol class="cards">{list.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} />)}</ol>
         </section>
       ))}
 

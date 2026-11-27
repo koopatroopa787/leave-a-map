@@ -4,6 +4,7 @@ import { Lock, Upload } from '../icons.tsx';
 import { SiteFoot, TopBar } from '../display.tsx';
 import { countdown, longDate } from '../dates.ts';
 import type { Mode } from '../mode.ts';
+import { ExportGuide } from './export-guide.tsx';
 
 /** What was typed last time, so a failed scan doesn't empty the form. The file isn't kept: it was the problem. */
 export type StartValues = { mode: Mode; email: string; date: string };
@@ -162,6 +163,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
                   onChange={(e) => { setFile(e.currentTarget.files?.[0] ?? null); if (problem?.field === 'file') setProblem(null); }}
                   required aria-invalid={invalid('file')} />
               </label>
+              <ExportGuide mode={mode} />
             </div>
           </li>
         </ol>

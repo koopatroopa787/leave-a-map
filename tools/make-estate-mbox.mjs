@@ -52,25 +52,25 @@ const add = (o) => M.push(msg(M.length + 1, o));
 add({ date: '2019-04-02', from: 'hello@harbourline.example', name: 'Harbourline Bank', subject: 'Welcome to Harbourline Current Account',
   body: 'Welcome to Harbourline. Your current account is open.' });
 add({ date: '2026-10-31', from: 'statements@harbourline.example', name: 'Harbourline Bank', subject: 'Your October statement is ready',
-  body: 'Your October statement is ready. Sign in to view it.' });
+  body: 'Your October statement is ready. Sign in to view it.\n\nQuestions? Call us on 01632 960 112, Monday to Friday, or email help@harbourline.example.\nBereavement support: bereavement@harbourline.example or call 01632 960 113.\nHarbourline Bank, 4 Quay Row, Eastbury ZZ99 1HB.' });
 add({ date: '2026-09-30', from: 'statements@oakmere-pensions.example', name: 'Oakmere Pensions', subject: 'Your annual statement is ready',
-  body: 'Your annual pension statement is ready. Your pot value: £41,250.00.' });
+  body: 'Your annual pension statement is ready. Your pot value: £41,250.00.\n\nNeed help? Call 01632 960 214 or email members@oakmere-pensions.example.\nOakmere Pensions, Weir House, 9 Mill Lane, Westford ZZ99 2OP.' });
 add({ date: '2026-03-14', from: 'policies@kestrelmutual.example', name: 'Kestrel Mutual', subject: 'Your annual statement for life policy KM-20417',
-  body: 'Your annual statement for life policy KM-20417. Cover amount: £60,000.00. Your premium renews on 14 Mar 2027.' });
+  body: 'Your annual statement for life policy KM-20417. Cover amount: £60,000.00. Your premium renews on 14 Mar 2027.\n\nTo make a claim, call 01632 960 330 or email claims@kestrelmutual.example.\nKestrel Mutual, 21 Harbour Street, Northam ZZ99 3KM.' });
 add({ date: '2025-06-01', from: 'receipts@coinpurse.example', name: 'Coinpurse', subject: 'You sent £20.00 to Jo Hale',
   body: 'You sent £20.00 to Jo Hale. Receipt ID CP-88120.' });
 add({ date: '2024-01-10', from: 'hello@brightwell-energy.example', name: 'Brightwell Energy', subject: 'Welcome to Brightwell Energy',
   body: 'Thanks for joining Brightwell Energy. Your account is ready.' });
 add({ date: '2026-11-01', from: 'billing@brightwell-energy.example', name: 'Brightwell Energy', subject: 'Your bill is ready: £64.20',
-  body: 'Your energy bill is £64.20. It will be taken by direct debit. Next payment date: 1 Dec.' });
+  body: 'Your energy bill is £64.20. It will be taken by direct debit. Next payment date: 1 Dec.\n\nQuestions about your bill? Call 01632 960 450 or email help@brightwell-energy.example.\nBrightwell Energy, PO Box 77, Southby ZZ99 4BE.' });
 add({ date: '2026-11-05', from: 'billing@fernway.example', name: 'Fernway Broadband', subject: 'Your monthly plan renewed',
-  body: 'Your monthly plan renewed: £32.00. Payment taken from the card ending in 4417.' });
+  body: 'Your monthly plan renewed: £32.00. Payment taken from the card ending in 4417.\n\nHelp: support@fernway.example or phone 01632 960 518.' });
 add({ date: '2022-02-20', from: 'hello@reelhouse.example', name: 'Reelhouse', subject: 'Welcome to Reelhouse',
   body: 'Welcome to Reelhouse. Your account is ready.' });
 add({ date: '2026-11-08', from: 'billing@reelhouse.example', name: 'Reelhouse', subject: 'Your subscription renewed',
-  body: 'Your subscription renewed: £10.99. Next billing date: 8 Dec.' });
+  body: 'Your subscription renewed: £10.99. Next billing date: 8 Dec.\n\nQuestions? Email help@reelhouse.example.' });
 add({ date: '2026-10-12', from: 'billing@signalpoint.example', name: 'Signalpoint Mobile', subject: 'Your bill is ready: £18.00',
-  body: 'Your mobile bill is ready: £18.00. Your plan renews each month. Next payment date: 12 Nov.' });
+  body: 'Your mobile bill is ready: £18.00. Your plan renews each month. Next payment date: 12 Nov.\n\nCall 01632 960 607 from any phone, or email care@signalpoint.example.\nSignalpoint Mobile, 3 Tower Road, Easton ZZ99 6SM.' });
 add({ date: '2021-05-05', from: 'hello@signalpoint.example', name: 'Signalpoint Mobile', subject: 'Welcome to Signalpoint',
   body: 'Welcome to Signalpoint. Your account has been created.' });
 
@@ -106,7 +106,7 @@ add({ date: '2026-08-04', from: 'care@riverside-surgery.example', name: 'Riversi
 add({ date: '2026-06-01', from: 'offers@wayfarer-travel.example', name: 'Wayfarer Travel', subject: 'Autumn breaks from £99', bulk: true,
   body: 'Autumn breaks from £99. Book by Sunday.' });
 add({ date: '2026-11-03', from: 'alerts@harbourline-secure.example', name: 'Harbourline Bank', subject: 'Urgent: verify your account now', auth: 'fail',
-  body: 'Your account is locked. Verify your account now or it will be closed.' });
+  body: 'Your account is locked. Verify your account now or it will be closed.\n\nCall 01632 960 999 now or email unlock@harbourline-secure.example.' });
 add({ date: '2026-10-02', from: 'accounts@mailbox.example', name: 'Mailbox', subject: 'Your storage is 90% full',
   body: 'Your Mailbox storage is 90% full. Upgrade your plan to keep receiving email.' });
 

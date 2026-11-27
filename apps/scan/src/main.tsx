@@ -18,12 +18,13 @@ import { StartScreen } from './screens/start.tsx';
 import { MapScreen } from './screens/map.tsx';
 import type { Mode } from './mode.ts';
 import type { StartValues } from './screens/start.tsx';
+import type { Contacts, ContactsMsg } from '../../../packages/core/contacts.ts';
 import type { FromWorker, NanoItem, RankedAccount, ScanSettings, ScanStats } from '../../../packages/core/types.ts';
 
 type State =
   | { step: 'start'; error?: string; last?: StartValues }
   | { step: 'scanning'; settings: ScanSettings; mode: Mode; sample: boolean; bytesRead: number; totalBytes: number; messages: number }
-  | { step: 'done'; settings: ScanSettings; mode: Mode; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[] };
+  | { step: 'done'; settings: ScanSettings; mode: Mode; sample: boolean; accounts: RankedAccount[]; stats: ScanStats; ms: number; nanoItems: NanoItem[]; contacts: Record<string, Contacts> };
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const SAMPLE_MODE_KEY = 'leave-a-map:sample-mode';
@@ -63,10 +64,12 @@ function App() {
     // If the file turns out to be unreadable, the form comes back with what was typed, not empty.
     const last: StartValues | undefined = sample ? undefined : { mode, email: settings.ownAddresses[0] ?? '', date: settings.shutoffDate };
     setState({ step: 'scanning', settings, mode, sample, bytesRead: 0, totalBytes: file.size, messages: 0 });
-    worker.onmessage = (e: MessageEvent<FromWorker>) => {
+    let contacts: Record<string, Contacts> = {};
+    worker.onmessage = (e: MessageEvent<FromWorker | ContactsMsg>) => {
       const m = e.data;
-      if (m.type === 'progress') setState({ step: 'scanning', settings, mode, sample, ...m });
-      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${emails(m.stats.messages)} in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, mode, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems }); }
+      if (m.type === 'contacts') contacts = m.byKey;
+      else if (m.type === 'progress') setState({ step: 'scanning', settings, mode, sample, ...m });
+      else if (m.type === 'done') { worker.terminate(); logLocal(`Read ${emails(m.stats.messages)} in ${m.ms} ms, in a Worker on this device`); setState({ step: 'done', settings, mode, sample, accounts: m.accounts, stats: m.stats, ms: m.ms, nanoItems: m.nanoItems, contacts }); }
       else { worker.terminate(); setState({ step: 'start', error: m.message, last }); }
     };
     worker.onerror = (e) => { worker.terminate(); setState({ step: 'start', error: e.message || 'The scan stopped unexpectedly.', last }); };

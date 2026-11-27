@@ -662,3 +662,39 @@ h1 .dot { color: var(--accent); margin-left: .04em; }
   .topbar { padding-left: var(--space-3); }
   button.display-btn { padding-inline: .5rem; letter-spacing: .1em; }
 }
+
+/* "How do I get this file?" under the file step (export-guide.tsx). */
+.guide { margin-top: var(--space-3); border: var(--dash); border-radius: var(--radius-m); background: var(--surface); }
+.guide > summary { padding: var(--space-3) var(--space-4); font-weight: 700; }
+.guide > summary:hover { background: var(--sunk); }
+.guide-body { padding: 0 var(--space-4) var(--space-4); display: grid; gap: var(--space-3); }
+.guide-body .seg { margin: 0; }
+.guide-steps { margin: 0; padding-left: 1.4rem; display: grid; gap: var(--space-2); max-width: 60ch; }
+.guide-steps li::marker { font-family: var(--font-mono); font-weight: 700; color: var(--accent); }
+.guide-steps a, .guide-loss a { overflow-wrap: anywhere; }
+.guide-loss { padding: var(--space-3); border-left: 3px solid var(--accent); background: var(--sunk); }
+.guide-loss p, .guide-loss ul { margin: 0 0 var(--space-2); max-width: 60ch; }
+.guide-loss ul { padding-left: 1.2rem; display: grid; gap: var(--space-1); }
+
+/* How to reach them, and the ready-made message (reach.tsx). */
+.reach { margin-top: var(--space-3); display: grid; gap: var(--space-3); }
+.reach-found { padding: var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-s); background: var(--sunk); }
+.reach-head { margin: 0 0 var(--space-2); font-weight: 700; }
+.reach dl { margin: 0 0 var(--space-2); display: grid; gap: var(--space-2); }
+.reach dl > div { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-2); }
+.reach dt { font-family: var(--font-mono); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); padding-top: .2em; }
+.reach dd { margin: 0; display: grid; gap: var(--space-1); overflow-wrap: anywhere; }
+.reach-found .meta, .reach-none { margin: 0; }
+.draft { border: var(--dash); border-radius: var(--radius-s); }
+.draft > summary { padding: var(--space-3); font-weight: 700; }
+.draft > summary:hover { background: var(--sunk); }
+.draft-body { padding: 0 var(--space-3) var(--space-3); display: grid; gap: var(--space-2); }
+.draft-body label { font-weight: 700; font-size: var(--step--1); }
+.draft-body input, .draft-body textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: var(--step--1); line-height: 1.5; padding: var(--space-2); color: var(--ink); background: var(--surface); border: 2px solid var(--line-strong); border-radius: var(--radius-s); }
+.draft-body textarea { resize: vertical; }
+.draft-body .meta { margin: 0; }
+.draft-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.button-link { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 var(--space-4); border: 2px solid var(--accent); border-radius: var(--radius-s); color: var(--accent); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
+.button-link:hover { background: var(--accent-soft); }
+
+.example-link, .example-link .meta { overflow-wrap: anywhere; }

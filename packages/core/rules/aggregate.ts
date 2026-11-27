@@ -53,7 +53,11 @@ function offer(acc: Acc, cond: CondName, tier: Tier, signal: string, m: MessageR
   acc.conds[cond] = { tier, source, signal, msgId: String(m.index), ...(quote ? { quote } : {}), ...(m.date ? { date: m.date } : {}) };
 }
 
-export type AggregatorOptions = { pack?: PackNames };
+/**
+ * `onTrusted` sees each message that is linked to the person's address, isn't suspicious and passed
+ * the sender checks (contacts.ts reads phone numbers and addresses from these only).
+ */
+export type AggregatorOptions = { pack?: PackNames; onTrusted?: (key: string, m: MessageRecord, body: BodyInfo) => void };
 
 export class Aggregator {
   private readonly accounts = new Map<string, Acc>();
@@ -61,6 +65,7 @@ export class Aggregator {
   private readonly ctx: LinkContext;
   private readonly schoolKey: string;
   private readonly pack: PackNames;
+  private readonly onTrusted?: AggregatorOptions['onTrusted'];
   readonly stats: ScanStats = { bytes: 0, messages: 0, schoolLinked: 0,
     skipped: { forwardedManually: 0, personSender: 0, noFrom: 0 } };
 
@@ -68,6 +73,7 @@ export class Aggregator {
     this.ctx = ctx;
     this.schoolKey = registrableDomain(ctx.school);
     this.pack = opts.pack ?? EMPTY_PACK;
+    this.onTrusted = opts.onTrusted;
   }
 
   add(m: MessageRecord, body: BodyInfo = EMPTY_BODY) {
@@ -107,6 +113,7 @@ export class Aggregator {
     if (auth === 'pass' || auth === 'pass-forwarded') a.authPass++;
     if (link.kind === 'other-address') { a.otherAddress ??= link.address; return; }
     if (link.kind === 'none') return;
+    if (this.onTrusted && (auth === 'pass' || auth === 'pass-forwarded')) this.onTrusted(key, m, body);
 
     this.stats.schoolLinked++;
     a.link = bestTier(a.link, link.tier);

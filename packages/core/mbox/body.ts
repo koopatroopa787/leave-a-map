@@ -4,11 +4,14 @@ import PostalMime from 'postal-mime';
 export type BodyInfo = {
   /** Plain text (or HTML with tags stripped), spaces collapsed, one newline between lines, first 4,000 characters. */
   text: string;
+  /** The last 1,500 characters when the text is longer than `text` keeps: footers with contact details live there. */
+  tail?: string;
   /** Gmail email markup for an order, invoice or parcel (RECEIPT signal). */
   orderMarkup: boolean;
 };
 
 export const TEXT_MAX = 4000;
+export const TAIL_MAX = 1500;
 /** Raw bytes kept per message while streaming. Enough for the text part of nearly all mail. */
 export const KEEP_BODY_BYTES = 96 * 1024;
 
@@ -41,7 +44,8 @@ export async function readBody(raw: Uint8Array | null): Promise<BodyInfo> {
     const email = await PostalMime.parse(raw, { attachmentEncoding: 'base64', maxRfc822NestingDepth: 2 });
     const html = email.html ?? '';
     const plain = email.text && email.text.trim() ? email.text : htmlToText(html);
-    return { text: collapse(plain).slice(0, TEXT_MAX), orderMarkup: ORDER_MARKUP.test(html) };
+    const full = collapse(plain);
+    return { text: full.slice(0, TEXT_MAX), tail: full.length > TEXT_MAX ? full.slice(-TAIL_MAX) : '', orderMarkup: ORDER_MARKUP.test(html) };
   } catch {
     return EMPTY_BODY;
   }
