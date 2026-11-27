@@ -617,7 +617,8 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 /* Hero: labels on top, room for the picture, then the lede and a very large headline. */
 .hero { min-height: calc(100svh - 6.5rem); display: grid; grid-template-rows: auto 1fr; gap: var(--space-5); padding-block: var(--space-3) var(--space-5); }
 .hero-text { align-self: end; display: grid; gap: var(--space-4); }
-.hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: 0; max-width: 15ch; }
+/* line-height .86 lets the letters reach about .2em above the box; the top margin keeps them off the lede. */
+.hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: .2em 0 0; max-width: 15ch; }
 h1 .dot { color: var(--accent); margin-left: .04em; }
 @media (max-width: 899px) { .hero { min-height: max(36rem, calc(100svh - 6rem)); } }
 
@@ -655,13 +656,6 @@ h1 .dot { color: var(--accent); margin-left: .04em; }
 /* Small text keeps a readable line length inside the 46rem column. */
 .field-hint, .sample p, .field-note, .bucket-why { max-width: 54ch; }
 
-/* Narrow phones: the top bar's narrow sizes, repeated here because the rules above come later
- * than the first narrow block and would otherwise win. Without this, Display is cut off at 320px. */
-@media (max-width: 30rem) {
-  .wordmark { letter-spacing: .12em; font-size: .8rem; }
-  .topbar { padding-left: var(--space-3); }
-  button.display-btn { padding-inline: .5rem; letter-spacing: .1em; }
-}
 
 /* "How do I get this file?" under the file step (export-guide.tsx). */
 .guide { margin-top: var(--space-3); border: var(--dash); border-radius: var(--radius-m); background: var(--surface); }
@@ -698,3 +692,13 @@ h1 .dot { color: var(--accent); margin-left: .04em; }
 .button-link:hover { background: var(--accent-soft); }
 
 .example-link, .example-link .meta { overflow-wrap: anywhere; }
+
+/* The top bar, kept plain: the name in the heading font, no dashed box, and a quiet Display
+ * button. Last in the file so it wins over the earlier top-bar rules at every width. */
+.topbar { padding: var(--space-2) 0; border: 0; gap: var(--space-3); }
+.wordmark { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; text-transform: none; letter-spacing: -0.01em; gap: var(--space-2); }
+.wordmark svg { width: 1.4rem; height: 1.4rem; }
+button.display-btn { gap: .45rem; min-height: 2.75rem; padding: 0 .85rem; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--ink); font-family: var(--font-body); font-size: var(--step--1); font-weight: 600; text-transform: none; letter-spacing: 0; }
+button.display-btn:hover { background: var(--sunk); border-color: var(--muted); }
+.display-btn svg { order: 0; width: 1.05rem; height: 1.05rem; padding: 0; background: none; color: currentColor; }
+
