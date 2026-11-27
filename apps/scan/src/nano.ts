@@ -81,3 +81,42 @@ export class NanoClassifier {
     return label;
   }
 }
+
+export type RewriteStyle = 'shorter' | 'formal' | 'simple';
+const STYLE_WORDS: Record<RewriteStyle, string> = {
+  shorter: 'Make it shorter and to the point. Keep every request.',
+  formal: 'Make it more formal and polite, as a letter to a bank or insurer.',
+  simple: 'Use simple, plain words that are easy to read. Keep every request.',
+};
+const REWRITE_SYSTEM = 'You rewrite a letter that someone will send to a company. Keep its meaning and every request. ' +
+  'Keep every part in square brackets, like [your name], exactly as written, brackets included. Do not add facts, names, ' +
+  'numbers, dates or addresses. Reply with the letter text only, no subject line and no notes.';
+
+let rewriter: ReturnType<typeof getGenerativeModel> | null = null;
+
+/** The [blanks] a draft has, so a rewrite that drops one can be refused. */
+export const blanks = (s: string) => [...new Set(s.match(/\[[^\]\n]{1,80}\]/g) ?? [])];
+
+/**
+ * Rewrite a draft letter with Gemini Nano, on this device only (it holds the most personal details
+ * in the app). Throws if Nano isn't here, if the answer didn't come from the device, or if a
+ * [blank] went missing. Call from a click: a first download needs it.
+ */
+export async function rewriteOnDevice(body: string, style: RewriteStyle, onProgress: (loaded: number) => void = () => {}): Promise<string> {
+  if ((await probeNano()) === 'unavailable') throw new Error('nano-unavailable');
+  if (!rewriter) {
+    const ai = getAI(initializeApp(NO_CLOUD_CONFIG, 'scan-rewrite'), { backend: new GoogleAIBackend() });
+    rewriter = getGenerativeModel(ai, {
+      mode: InferenceMode.ONLY_ON_DEVICE,
+      onDeviceParams: { createOptions: { ...CORE_OPTIONS, initialPrompts: [{ role: 'system', content: [{ type: 'text', value: REWRITE_SYSTEM }] }] } },
+    });
+  }
+  const model = rewriter;
+  await model.initializeDeviceModel(onProgress);
+  const { response } = await model.generateContent(`${STYLE_WORDS[style]}\n\nLetter:\n${body}`);
+  if (response.inferenceSource !== InferenceSource.ON_DEVICE) throw new Error('left the device');
+  const out = response.text().trim();
+  const missing = blanks(body).filter((b) => !out.includes(b));
+  if (out.length < 40 || missing.length) throw new Error('lost-blanks');
+  return out;
+}

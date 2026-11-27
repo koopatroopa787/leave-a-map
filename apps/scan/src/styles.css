@@ -720,3 +720,27 @@ button.display-btn:hover { background: var(--sunk); border-color: var(--muted); 
 .lang-note:empty { display: none; }
 .lang-note { position: absolute; right: 0; top: calc(100% + .4rem); z-index: 5; width: min(22rem, 80vw); margin: 0; padding: var(--space-2) var(--space-3); background: var(--surface); border: 1px solid var(--line-strong); font-size: var(--step--1); color: var(--ink); }
 
+/* Notes on each card (checklist.ts). The textarea is for the screen; the paragraph is for paper. */
+.note { margin-top: var(--space-3); display: grid; gap: var(--space-1); }
+.note label { font-weight: 700; font-size: var(--step--1); }
+.note textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: var(--step--1); line-height: 1.5; padding: var(--space-2); color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); resize: vertical; }
+.note-print { display: none; }
+.print-row { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.rewrite { align-items: center; }
+
+/* Paper: dark text on white whatever the theme, and only what's worth printing. */
+@media print {
+  :root, :root[data-theme] {
+    color-scheme: light;
+    --paper: #fff; --surface: #fff; --sunk: #fff; --ink: #000; --muted: #333; --line: #bbb; --line-strong: #666;
+    --accent: #b34700; --accent-soft: #fff; --accent-fg: #fff;
+  }
+  body { background: #fff !important; color: #000; }
+  .topbar-tools, .lang-pick, .print-row, .jump, .draft, .guide, .note label, .note textarea, .moved input, .end, .site-foot, .receipt, .sample-note, .chips, .lane3, .drawer, details.other:not([open]) { display: none !important; }
+  .note-print { display: block; margin: 0; padding: var(--space-2); border-left: 3px solid #000; white-space: pre-wrap; }
+  .card { border: 1px solid #999; padding: 10pt; margin-bottom: 8pt; }
+  a { color: #000; }
+}
+.own { display: flex; gap: var(--space-2); align-items: flex-start; max-width: 54ch; margin-bottom: var(--space-3); font-size: var(--step--1); cursor: pointer; }
+.own input { width: 1.2rem; height: 1.2rem; margin-top: .15rem; flex: none; }
+

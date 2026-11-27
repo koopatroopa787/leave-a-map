@@ -13,7 +13,7 @@ type Props = { onScan: (file: File, settings: ScanSettings, mode: Mode) => void;
 const EMAIL_RE = /^[^@\s]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)$/i;
 // Common personal providers. Only used for a friendly hint; the scan still runs if the person insists.
 const PERSONAL = /@(gmail|googlemail|outlook|hotmail|live|msn|yahoo|ymail|icloud|me|mac|proton|protonmail|pm|aol|gmx|zoho)\.[a-z.]+$/i;
-type Field = 'email' | 'date' | 'file';
+type Field = 'email' | 'date' | 'file' | 'own';
 
 const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const inDays = (n: number) => { const d = new Date(); d.setDate(d.getDate() + n); return iso(d); };
@@ -42,6 +42,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
   const [touched, setTouched] = useState(!!initial?.email);
   const [date, setDate] = useState(initial?.date ?? '');
   const [file, setFile] = useState<File | null>(null);
+  const [own, setOwn] = useState(!!initial); // ticked last time if the form came back after a failed scan
   const [problem, setProblem] = useState<{ field: Field; text: string } | null>(null);
   const [over, setOver] = useState(false);
   const loss = mode === 'loss';
@@ -63,6 +64,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
     if (!m) return bad('email', loss ? 'Enter their full email address, like name@example.com.' : 'Enter the full email address that\'s closing, like name@school.edu or name@work.com.');
     if (!loss && !date) return bad('date', 'Enter the date this address shuts off, or pick one of the quick choices.');
     if (!file) return bad('file', 'Choose the exported .mbox file.');
+    if (!own) return bad('own', loss ? 'Tick the box to confirm you\u2019re allowed to open this mailbox.' : 'Tick the box to confirm this is your own mailbox.');
     setProblem(null);
     // ponytail: loss mode has no date; the core never reads shutoffDate.
     onScan(file, { schoolDomain: m[1].toLowerCase(), ownAddresses: [email.trim().toLowerCase()], shutoffDate: loss ? '' : date }, mode);
@@ -81,7 +83,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
   const done = { email: EMAIL_RE.test(email.trim()), date: !!date, file: !!file };
   const note = touched || problem?.field === 'email' ? emailNote(email, mode) : { text: '', tone: '' };
   const message = problem?.text || error;
-  const allSet = done.email && (loss || done.date) && done.file;
+  const allSet = done.email && (loss || done.date) && done.file && own;
   let n = 0;
 
   return (
@@ -168,6 +170,12 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
           </li>
         </ol>
         <div class="form-foot">
+          <label class="own">
+            <input id="f-own" type="checkbox" checked={own} aria-invalid={invalid('own')} onChange={(e) => { setOwn(e.currentTarget.checked); if (problem?.field === 'own') setProblem(null); }} />
+            <span>{loss
+              ? 'I\u2019m allowed to open this mailbox, for example as their executor or next of kin, with the email provider\u2019s permission.'
+              : 'This is my own mailbox.'}</span>
+          </label>
           {message && <p class="error" id="start-error" role="alert">{message}</p>}
           <button type="submit" class={allSet ? 'is-ready' : undefined}>{loss ? 'Make the list' : 'Find my accounts'}</button>
         </div>
