@@ -97,13 +97,23 @@ let rewriter: ReturnType<typeof getGenerativeModel> | null = null;
 /** The [blanks] a draft has, so a rewrite that drops one can be refused. */
 export const blanks = (s: string) => [...new Set(s.match(/\[[^\]\n]{1,80}\]/g) ?? [])];
 
+/** How long the model may take to answer once it's on the device, before we give up and keep the letter. */
+const REWRITE_MS = 60_000;
+
+/**
+ * Where a rewrite is: downloading Chrome's built-in model first (once, a few GB; pct when Chrome
+ * reports it), or rewriting.
+ */
+export type RewriteStage = { stage: 'download'; pct?: number } | { stage: 'rewrite' };
+
 /**
  * Rewrite a draft letter with Gemini Nano, on this device only (it holds the most personal details
  * in the app). Throws if Nano isn't here, if the answer didn't come from the device, or if a
- * [blank] went missing. Call from a click: a first download needs it.
+ * [blank] went missing, or 'timed-out' if the model takes too long to answer. Call from a click: a first download needs it.
  */
-export async function rewriteOnDevice(body: string, style: RewriteStyle, onProgress: (loaded: number) => void = () => {}): Promise<string> {
-  if ((await probeNano()) === 'unavailable') throw new Error('nano-unavailable');
+export async function rewriteOnDevice(body: string, style: RewriteStyle, onStage: (s: RewriteStage) => void = () => {}): Promise<string> {
+  const state = await probeNano();
+  if (state === 'unavailable') throw new Error('nano-unavailable');
   if (!rewriter) {
     const ai = getAI(initializeApp(NO_CLOUD_CONFIG, 'scan-rewrite'), { backend: new GoogleAIBackend() });
     rewriter = getGenerativeModel(ai, {
@@ -112,8 +122,14 @@ export async function rewriteOnDevice(body: string, style: RewriteStyle, onProgr
     });
   }
   const model = rewriter;
-  await model.initializeDeviceModel(onProgress);
-  const { response } = await model.generateContent(`${STYLE_WORDS[style]}\n\nLetter:\n${body}`);
+  // A first download can take many minutes, so it has no time limit here; the page offers "Stop waiting".
+  if (state === 'needs-download') onStage({ stage: 'download' });
+  await model.initializeDeviceModel((loaded) => { if (state === 'needs-download') onStage({ stage: 'download', pct: Math.round(loaded * 100) }); });
+  onStage({ stage: 'rewrite' });
+  const { response } = await Promise.race([
+    model.generateContent(`${STYLE_WORDS[style]}\n\nLetter:\n${body}`),
+    new Promise<never>((_, no) => setTimeout(() => no(new Error('timed-out')), REWRITE_MS)),
+  ]);
   if (response.inferenceSource !== InferenceSource.ON_DEVICE) throw new Error('left the device');
   const out = response.text().trim();
   const missing = blanks(body).filter((b) => !out.includes(b));
