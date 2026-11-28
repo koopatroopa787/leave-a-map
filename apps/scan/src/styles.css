@@ -744,3 +744,8 @@ button.display-btn:hover { background: var(--sunk); border-color: var(--muted); 
 .own { display: flex; gap: var(--space-2); align-items: flex-start; max-width: 54ch; margin-bottom: var(--space-3); font-size: var(--step--1); cursor: pointer; }
 .own input { width: 1.2rem; height: 1.2rem; margin-top: .15rem; flex: none; }
 
+
+/* iPhone Safari gives date fields a native minimum width, so at phone widths the box ran past the
+ * edge. Without the native look it fits the column; tapping still opens the system date picker. */
+input[type="date"] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; box-sizing: border-box; text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
