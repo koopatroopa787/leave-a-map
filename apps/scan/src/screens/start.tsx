@@ -5,6 +5,39 @@ import { SiteFoot, TopBar } from '../display.tsx';
 import { countdown, longDate } from '../dates.ts';
 import type { Mode } from '../mode.ts';
 import { ExportGuide } from './export-guide.tsx';
+import { GMAIL_ERROR, IN_EXTENSION, readGmail, type GmailProgress } from '../gmail-source.ts';
+
+/** Extension only: read the mailbox from the Gmail tab that's open, instead of an exported file. */
+function FromGmail({ loss, onFile }: { loss: boolean; onFile: (f: File, address: string) => void }) {
+  const [busy, setBusy] = useState<AbortController | null>(null);
+  const [said, setSaid] = useState('');
+  const progress = (p: GmailProgress) => setSaid(p.stage === 'list'
+    ? `Searching Gmail for account emails: ${p.found.toLocaleString()} conversations so far…`
+    : `Reading ${p.done.toLocaleString()} of ${p.of.toLocaleString()} emails, from ${p.senders.toLocaleString()} senders…`);
+  const go = async () => {
+    const stop = new AbortController();
+    setBusy(stop); setSaid('Opening the Gmail tab…');
+    try {
+      const r = await readGmail(progress, stop.signal);
+      onFile(r.file, r.address);
+      setSaid(`Read ${r.fetched.toLocaleString()} emails from ${r.senders.toLocaleString()} senders${r.failed ? ` (${r.failed} couldn’t be opened)` : ''}. They stay in this browser. Press ${loss ? 'Make the list' : 'Find my accounts'} below.`);
+    } catch (e) {
+      const why = (e as Error).message;
+      setSaid(GMAIL_ERROR[why] ?? why);
+    } finally { setBusy(null); }
+  };
+  return (
+    <div class="from-gmail">
+      <p><strong>Use the Gmail that's open in this browser.</strong> Leave a Map reads {loss ? 'their' : 'your'} account emails straight from the Gmail tab, on this device. No export, nothing uploaded, nothing changed in the mailbox.</p>
+      <div class="draft-actions">
+        <button type="button" class="secondary" disabled={!!busy} onClick={() => void go()}>Read from Gmail</button>
+        {busy && <button type="button" class="secondary" onClick={() => busy.abort()}>Stop</button>}
+      </div>
+      <p class="meta" role="status">{said}</p>
+      <p class="meta">Or use an exported .mbox file:</p>
+    </div>
+  );
+}
 
 /** What was typed last time, so a failed scan doesn't empty the form. The file isn't kept: it was the problem. */
 export type StartValues = { mode: Mode; email: string; date: string };
@@ -63,7 +96,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
     const bad = (field: Field, text: string) => { setProblem({ field, text }); focus(field); };
     if (!m) return bad('email', loss ? 'Enter their full email address, like name@example.com.' : 'Enter the full email address that\'s closing, like name@school.edu or name@work.com.');
     if (!loss && !date) return bad('date', 'Enter the date this address shuts off, or pick one of the quick choices.');
-    if (!file) return bad('file', 'Choose the exported .mbox file.');
+    if (!file) return bad('file', IN_EXTENSION ? 'Press Read from Gmail, or choose an exported .mbox file.' : 'Choose the exported .mbox file.');
     if (!own) return bad('own', loss ? 'Tick the box to confirm you\u2019re allowed to open this mailbox.' : 'Tick the box to confirm this is your own mailbox.');
     setProblem(null);
     // ponytail: loss mode has no date; the core never reads shutoffDate.
@@ -158,6 +191,7 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
               <span class="field-hint">{loss
                 ? "The .mbox file. Only use a mailbox you're allowed to open, for example as their executor or through the email provider's process for families. You can drop it anywhere on this page."
                 : 'The .mbox file, or the file named "mbox" inside an exported .mbox folder. You can drop it anywhere on this page.'}</span>
+              {IN_EXTENSION && <FromGmail loss={loss} onFile={(f, a) => { setFile(f); if (problem?.field === 'file') setProblem(null); if (!email.trim() && a) { setEmail(a); setTouched(true); } }} />}
               <label class={`drop${over ? ' is-over' : ''}${file ? ' has-file' : ''}`}>
                 <Upload />
                 {file

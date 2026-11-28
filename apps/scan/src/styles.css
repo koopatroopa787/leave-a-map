@@ -779,3 +779,7 @@ input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
 .breach { margin: var(--space-3) 0 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-m); background: var(--warn-soft); }
 .breach p { margin: 0; }
 .breach .meta { margin-top: var(--space-1); }
+
+/* Extension: read from the open Gmail tab */
+.from-gmail { margin: var(--space-3) 0; padding: var(--space-4); border: 1px solid var(--line-strong); border-radius: var(--radius-m); background: var(--surface); }
+.from-gmail > p:first-child { margin-top: 0; }
