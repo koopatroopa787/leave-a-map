@@ -195,7 +195,7 @@ That's the whole claim. It doesn't cover your browser's own background traffic, 
 | Leak test from the live page | **2 of 2 attempts to reach example.com stopped, 0 sent** | **Try to send something out** in the privacy receipt | 28 Nov 2026 |
 | Chrome extension against a stand-in Gmail (55 sample emails, 3 pages) | **55 of 55 read, the same 13 accounts as the .mbox route, 0 requests from the extension page** | `tools/extension-e2e.mjs` in Chromium | 28 Nov 2026 |
 | Chrome extension on a real Gmail account | **Read the account emails from the open tab** | By hand, Chrome on Windows | 28 Nov 2026 |
-| Gemini Nano letter rewrites, both samples × 3 styles × 3 | **18 of 18 kept every [blank], made none up, guessed no gender; about 3 s each, 0 outside requests** | `e2e-rewrite.mjs` on the Nano machine | 28 Nov 2026 |
+| Gemini Nano letter rewrites, both samples × 3 styles × 3 | **18 of 18 kept every [blank], made none up, guessed no gender; about 3 s each, 0 outside requests** | `tools/e2e-rewrite.mjs` on the Nano machine | 28 Nov 2026 |
 
 ### Evaluation (pre-registered)
 
