@@ -4,7 +4,11 @@
 import type { Bucket } from './types.ts';
 
 export type Draft = { subject: string; body: string };
-export type DraftInput = { mode: 'school' | 'loss'; bucket: Bucket; company: string; address: string };
+export type DraftInput = {
+  mode: 'school' | 'loss'; bucket: Bucket; company: string; address: string;
+  /** The shutoff date from the start screen, already in words ("31 March 2027"), and whether it has passed. */
+  closing?: { date: string; past: boolean };
+};
 
 const ASK_LOSS: Record<Bucket, string[]> = {
   money: [
@@ -31,7 +35,7 @@ const ASK_LOSS: Record<Bucket, string[]> = {
   ],
 };
 
-export function draftMessage({ mode, bucket, company, address }: DraftInput): Draft {
+export function draftMessage({ mode, bucket, company, address, closing }: DraftInput): Draft {
   if (mode === 'loss') {
     const asks = ASK_LOSS[bucket].map((a) => `- ${a}`).join('\n');
     return {
@@ -55,7 +59,7 @@ Thank you,
     subject: `Please change the email address on my account`,
     body: `Dear ${company} team,
 
-My email address ${address} is closing on [date it shuts off]. Please change the email address on my account to [new email address].
+My email address ${address} ${closing ? `${closing.past ? 'closed' : 'is closing'} on ${closing.date}` : 'is closing on [date it shuts off]'}. Please change the email address on my account to [new email address].
 
 Account name: [your full name]
 Account or customer number: [number, if you have it]

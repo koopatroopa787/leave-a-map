@@ -96,6 +96,8 @@ export function StartScreen({ onScan, onSample, error, initial }: Props) {
             ? 'Their mailbox shows which banks, insurers, bills and sites they used. Make a list, then work through it at your own pace.'
             : 'An email address is closing? Find every account tied to it before it does. Three quick steps.'}</p>
           <h1>Map what an inbox leaves behind<span class="dot" aria-hidden="true">*</span></h1>
+          {/* The quickest way to see a result: the same sample as the section further down, for the mode that's selected. */}
+          <p class="hero-sample">No mailbox handy? <button type="button" id="try-sample-top" class="secondary" onClick={() => onSample(mode)}>Try it on a made-up sample</button></p>
         </div>
       </header>
 
