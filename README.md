@@ -12,18 +12,24 @@ Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device 
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
 > **Status (28 Nov 2026):**
-> - Lanes 1, 2 and 3 work end to end, and both sites are live with the current code, in both modes.
+> - Lanes 1, 2 and 3 work end to end, and both sites are live, in both modes.
+> - **New on 28 Nov:** the answer key, breach flags, the leak test on the privacy receipt and the Chrome extension. They reach the live site on the next deploy. Until then, `npm ci && npm run build && npx vite preview --config apps/scan/vite.config.ts` shows them.
 > - **The hosted cloud lookup is live** on Gemini's paid tier, with App Check (reCAPTCHA Enterprise) enforced. A click-through on the live sites got answers back on 24 Nov. Hosting and AI Logic are on separate Firebase projects; only the cloud site talks to AI Logic.
 > - Every result marked *pending* below is filled in from the pre-registered evaluation, including bad results.
+> - **Chrome extension (28 Nov):** reads the mailbox straight from an open Gmail tab, so no export is needed. Tested on a real Gmail account and against a stand-in Gmail in Chromium.
 
 ## Judges: three minutes, no install
 
 1. Open https://leave-a-map.web.app, pick **After a loss**, and click **Try it on a made-up sample**.
 2. Open **Answer key** at the top of the list. It should read **15 of 15 accounts found, 14 of 14 in the right line, 3 of 3 traps caught**. The key was written from how the sample was made, and the score is worked out on the page from the list you see.
 3. Look at the first card, Harbourline Bank: who to contact, a letter to send, and why it's there, quoted from the email. Reelhouse shows a known data breach (made up for the sample; on real mail it comes from Have I Been Pwned).
-4. With Gemini Nano in your Chrome, open a card's letter and press **More formal**: it's rewritten on your device, and the page checks the [blanks] survived.
+4. With Gemini Nano in your Chrome, open a card's letter and press **More formal**: it's rewritten on your device, and the page checks the [blanks] survived. No Nano on your computer? A banner says so, the rules and the move pack still make the whole list, and the rewrite buttons say why they're greyed out.
 5. Scroll to **Privacy receipt** and press **Try to send something out**. Both attempts are stopped by the page, and "Requests from this page to other sites" stays **0**.
 6. Go back and run the other mode, **My email address is closing**: 20 of 20 accounts, 13 of 13 in the right line, 7 of 7 traps.
+
+**Three more minutes: the Chrome extension on your own Gmail.** Build it (`npm ci && npm run build:extension`) and load `dist/extension` at `chrome://extensions` (Developer mode → Load unpacked). Open Gmail, click the Leave a Map toolbar button, and press **Read from Gmail**. It reads the account emails from that tab on your device, with no export. [Details](#chrome-extension).
+
+**Where the hybrid AI is:** Gemini Nano on the device reads your mail (`ONLY_ON_DEVICE`, never a cloud fallback). Gemini in the cloud only answers about the public web addresses you tick in a consent window (`ONLY_IN_CLOUD`), on a second site. [How it works](#how-it-works-three-lanes) · [Where `firebase/ai` is called](#where-firebaseai-is-called) · [How we tested the privacy claim](#privacy-the-claim-and-how-we-tested-it) · [Measured numbers](#measured-numbers)
 
 ## The problem
 
@@ -271,12 +277,13 @@ Its permissions are `scripting` and `mail.google.com` only. Nothing in the mailb
 |---|---|
 | `apps/scan` | Site 1: import, rules, Nano, the list. No network access |
 | `apps/cloud` | Site 2: consent window and the lane 3 cascade |
+| `apps/extension` | Chrome extension: manifest, toolbar script and the Gmail reader. Built with the scan app by `tools/build-extension.mjs` |
 | `packages/core` | Pure TypeScript: mbox splitter, rules, evidence caps, ranking, contracts, cascade, move pack |
 | `data` | Move pack snapshot and hand-checked links |
-| `fixtures` | The fictional sample mailbox and its golden file |
+| `fixtures` | The fictional sample mailboxes and the golden file (answer keys: `packages/core/answer-key.ts`) |
 | `docs` | [`PRIVACY.md`](docs/PRIVACY.md), [`EVAL.md`](docs/EVAL.md) |
 | `tests/unit` | Vitest tests |
-| `tools` | Fixture, sample, pack, stress and capture tools |
+| `tools` | Fixture, sample, pack, breach list, stress, capture, extension and Nano rewrite checks |
 
 ## What we reused
 
