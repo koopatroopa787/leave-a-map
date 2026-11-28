@@ -8,12 +8,22 @@ Built for #BuildHybridAI 2026 with Firebase AI Logic: Gemini Nano on the device 
 
 - **Try it:** https://leave-a-map.web.app. No login is needed: pick a mode, then click **Try the sample**. Each mode has its own fictional sample mailbox.
 - **Use it on your own mail:** export the mailbox of the address that's closing as an `.mbox` file and pick it on the start screen.
+- **Or skip the export with the Chrome extension:** it reads the account emails straight from the Gmail tab you have open, on your device. See [Chrome extension](#chrome-extension).
 - **For adults (18+) only.** The Gemini API terms don't allow apps aimed at under-18s. It's meant for graduates and alumni.
 
 > **Status (28 Nov 2026):**
 > - Lanes 1, 2 and 3 work end to end, and both sites are live with the current code, in both modes.
 > - **The hosted cloud lookup is live** on Gemini's paid tier, with App Check (reCAPTCHA Enterprise) enforced. A click-through on the live sites got answers back on 24 Nov. Hosting and AI Logic are on separate Firebase projects; only the cloud site talks to AI Logic.
 > - Every result marked *pending* below is filled in from the pre-registered evaluation, including bad results.
+
+## Judges: three minutes, no install
+
+1. Open https://leave-a-map.web.app, pick **After a loss**, and click **Try it on a made-up sample**.
+2. Open **Answer key** at the top of the list. It should read **15 of 15 accounts found, 14 of 14 in the right line, 3 of 3 traps caught**. The key was written from how the sample was made, and the score is worked out on the page from the list you see.
+3. Look at the first card, Harbourline Bank: who to contact, a letter to send, and why it's there, quoted from the email. Reelhouse shows a known data breach (made up for the sample; on real mail it comes from Have I Been Pwned).
+4. With Gemini Nano in your Chrome, open a card's letter and press **More formal**: it's rewritten on your device, and the page checks the [blanks] survived.
+5. Scroll to **Privacy receipt** and press **Try to send something out**. Both attempts are stopped by the page, and "Requests from this page to other sites" stays **0**.
+6. Go back and run the other mode, **My email address is closing**: 20 of 20 accounts, 13 of 13 in the right line, 7 of 7 traps.
 
 ## The problem
 
@@ -181,6 +191,11 @@ That's the whole claim. It doesn't cover your browser's own background traffic, 
 | Lane 3 cascade from a production build, real App Check (no debug token), no Nano in the browser | **3 of 3 held-out sites answered in the cloud, all valid, 0.75–2.2 s each** | `cascade-check.html` (check build, not deployed), on `localhost` | 24 Nov 2026 |
 | Lane 3 on the live sites, App Check enforced | **Answers sent back to the scan page** | Click-through on the hosted sites | 24 Nov 2026 |
 | Hosted run of all three lanes on a Nano machine, with per-field sources | *pending* | T32 | – |
+| Sample answer keys, rules and move pack, no AI | **School: 20/20 found, 13/13 sorted, 7/7 traps. After a loss: 15/15, 14/14, 3/3** | `tests/unit/answer-key.test.ts`, and live on the page | 28 Nov 2026 |
+| Leak test from the live page | **2 of 2 attempts to reach example.com stopped, 0 sent** | **Try to send something out** in the privacy receipt | 28 Nov 2026 |
+| Chrome extension against a stand-in Gmail (55 sample emails, 3 pages) | **55 of 55 read, the same 13 accounts as the .mbox route, 0 requests from the extension page** | `tools/extension-e2e.mjs` in Chromium | 28 Nov 2026 |
+| Chrome extension on a real Gmail account | **Read the account emails from the open tab** | By hand, Chrome on Windows | 28 Nov 2026 |
+| Gemini Nano letter rewrites, both samples × 3 styles × 3 | **18 of 18 kept every [blank], made none up, guessed no gender; about 3 s each, 0 outside requests** | `e2e-rewrite.mjs` on the Nano machine | 28 Nov 2026 |
 
 ### Evaluation (pre-registered)
 
@@ -201,7 +216,8 @@ Known issues, recorded before the run:
 ## Limits
 
 - **Chrome on desktop with Gemini Nano** for lane 2. Elsewhere a banner says so, and lanes 1 and 3 still run.
-- **`.mbox` only.** The common export formats are tested.
+- **`.mbox`, or Gmail through the extension.** The common export formats are tested. The extension reads Gmail's web pages, so a change to Gmail's page can break it until we update it; the `.mbox` route still works.
+- **The extension keeps up to 6 conversations per sender** (the 3 oldest and 3 newest) from a search for account words, to stay quick on a big mailbox. Message counts on its cards are counts of what it read, not of the whole mailbox.
 - **English-only patterns** and prompts.
 - **One cloud model** (`gemini-3.5-flash-lite`), and the cloud lookup needs App Check.
 - **Lane 3 knows services, not you.** It describes what a kind of service usually holds, never what your account holds.
@@ -229,6 +245,25 @@ Open the printed local address and click **Try the sample**, or enter the addres
 - **Local testing without reCAPTCHA:** put an App Check debug token in the git-ignored `.env.debug` and run `npm run dev:cloud -- --mode debug`. Production builds ignore it.
 - **Build both sites:** `npm run build`. This writes `dist/scan` and `dist/cloud`.
 - **Rebuild the move pack** from downloaded snapshots: `node tools/build-pack.ts <dir> data/pack-snapshot.json`.
+- **Rebuild the breach snapshot:** `node tools/build-breaches.mjs` (Have I Been Pwned's public list, CC BY 4.0).
+
+### Chrome extension
+
+The extension is the same app, with a **Read from Gmail** button in the mailbox step. You don't have to export anything.
+
+1. `npm run build:extension` writes `dist/extension`.
+2. In Chrome, open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and pick `dist/extension`.
+3. Open Gmail in a tab, signed in to the mailbox that's closing, and let the inbox load.
+4. Click the Leave a Map toolbar button, then **Read from Gmail**.
+
+What it does when you press the button:
+- It puts a small reader ([`apps/extension/gmail-reader.js`](apps/extension/gmail-reader.js)) into that Gmail tab.
+- The reader searches the mailbox for account words. It takes the oldest and newest 3 conversations per sender and opens each one's **Show original** with your own Gmail session.
+- It hands the raw emails back to the extension page over a local port. They become an `.mbox` in memory for the same scan.
+
+Its permissions are `scripting` and `mail.google.com` only. Nothing in the mailbox is changed, nothing is uploaded, and the extension page can't reach the network (`connect-src 'none'`). The cloud lookup is off in the extension. Gemini Nano still labels and rewrites on the device.
+
+`node tools/extension-e2e.mjs <chromium.exe>` checks it end to end in Chromium against a stand-in Gmail on your machine. It needs Playwright's Chromium, because Chrome ignores `--load-extension`.
 
 ## Repository layout
 
