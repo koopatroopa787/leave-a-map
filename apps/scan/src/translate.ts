@@ -124,7 +124,8 @@ const within = <T,>(p: Promise<T>, ms: number): Promise<T> =>
   Promise.race([p, new Promise<T>((_, no) => setTimeout(() => no(new Error('timed out')), ms))]);
 
 /** Call from the picker's change event: a first download needs that click. */
-export async function setLanguage(code: string, onProgress?: (msg: string) => void): Promise<LangResult> {
+/** onProgress gets how far along it is, 0 to 100, or nothing while it's getting started. */
+export async function setLanguage(code: string, onProgress?: (pct?: number) => void): Promise<LangResult> {
   if (!CODES.has(code)) code = 'en';
   observer?.disconnect(); observer = null;
   restore(); translator?.destroy?.(); translator = null; cache.clear();
@@ -138,10 +139,10 @@ export async function setLanguage(code: string, onProgress?: (msg: string) => vo
   try {
     const opts = { sourceLanguage: 'en', targetLanguage: code };
     if (await within(T.availability(opts), 10_000) === 'unavailable') { back(); return 'unavailable'; }
-    onProgress?.('Getting the language ready on this device…');
+    onProgress?.();
     translator = await within(T.create({ ...opts, monitor: (m) => m.addEventListener('downloadprogress', (e) => {
       const loaded = (e as Event & { loaded?: number }).loaded ?? 0;
-      onProgress?.(`Downloading the language to this device: ${Math.round(loaded * 100)}%`);
+      onProgress?.(Math.round(loaded * 50)); // the download is the first half
     }) }), 5 * 60_000);
     if (current !== code) return 'done';
     // Watch first, so text that appears while the page is being translated isn't missed.
@@ -157,7 +158,7 @@ export async function setLanguage(code: string, onProgress?: (msg: string) => vo
     observer.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: [...ATTRS] });
     const nodes = { t: [] as Text[], e: [] as Element[] };
     collect(document.body, nodes);
-    await run(nodes, (d, of) => onProgress?.(`Translating on this device: ${Math.round((d / Math.max(of, 1)) * 100)}%`));
+    await run(nodes, (d, of) => onProgress?.(50 + Math.round((d / Math.max(of, 1)) * 50)));
     return 'done';
   } catch {
     observer?.disconnect(); observer = null;

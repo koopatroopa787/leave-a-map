@@ -3,6 +3,7 @@
 // operating system's own settings. Styles read the data-* attributes and .motion-ok on <html>.
 import { useEffect, useState } from 'preact/hooks';
 import { canTranslate, LANGUAGES, savedLanguage, setLanguage } from './translate.ts';
+import { noteWords, type NoteState } from './language-notes.ts';
 import { Mark, Sliders } from './icons.tsx';
 
 import { cleanDisplay, DEFAULT, type Display } from './display-values.ts';
@@ -67,12 +68,13 @@ export function DisplayMenu() {
   );
 }
 
-const NOT_HERE = 'This browser can\u2019t translate on this device. In Chrome on a computer it can. Or use your browser\u2019s own Translate option, which may send the page\u2019s text to a translation service.';
+/** The note that opens under the picker, in the picked language (language-notes.ts). */
+type Note = { code: string; state: NoteState; pct?: number } | null;
 
 /** Language: the page translated on this device by the browser's built-in AI (translate.ts). */
 export function LanguagePicker() {
   const [lang, setLang] = useState(savedLanguage);
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState<Note>(null);
   // A language picked earlier comes back on its own when the browser already has it.
   useEffect(() => {
     if (lang === 'en') return;
@@ -80,17 +82,27 @@ export function LanguagePicker() {
   }, []);
   const pick = async (code: string) => {
     setLang(code);
-    if (code !== 'en' && !canTranslate()) { setNote(NOT_HERE); setLang('en'); return; }
-    const r = await setLanguage(code, setNote);
-    if (r === 'done') setNote(code === 'en' ? '' : 'Translated on this device by your browser\u2019s built-in AI. Nothing was sent anywhere. Some wording may be off; English is the original.');
-    else { setLang('en'); setNote(r === 'unavailable' ? 'That language isn\u2019t available on this device yet. Try another, or English.' : r === 'unsupported' ? NOT_HERE : 'The translation stopped. The page is back in English.'); }
+    if (code === 'en') { setNote(null); await setLanguage('en'); return; }
+    if (!canTranslate()) { setNote({ code, state: 'unsupported' }); setLang('en'); return; }
+    setNote({ code, state: 'working' });
+    const r = await setLanguage(code, (pct) => setNote((n) => n?.code === code ? { code, state: 'working', pct } : n));
+    if (r !== 'done') setLang('en');
+    setNote((n) => n?.code === code ? { code, state: r === 'done' ? 'done' : r } : n);
   };
+  const w = note && noteWords(note.code);
   return (
     <div class="lang-pick">
       <select id="lang-select" aria-label="Language" value={lang} onChange={(e) => void pick(e.currentTarget.value)} aria-describedby="lang-note">
         {LANGUAGES.map(([c, name]) => <option key={c} value={c} lang={c}>{name}</option>)}
       </select>
-      <p id="lang-note" class="lang-note" role="status">{note}</p>
+      <div id="lang-note" class="lang-note" role="status" lang={note?.code} hidden={!note}>
+        {note && w && <>
+          <p>{w.about}</p>
+          <p>{w.privacy}</p>
+          <p class="lang-state">{w[note.state]}{note.state === 'working' && note.pct !== undefined ? ` ${note.pct}%` : ''}</p>
+          <button type="button" class="lang-ok" onClick={() => setNote(null)}>{w.ok}</button>
+        </>}
+      </div>
     </div>
   );
 }

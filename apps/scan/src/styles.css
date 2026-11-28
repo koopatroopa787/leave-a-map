@@ -711,14 +711,19 @@ button.display-btn:hover { background: var(--sunk); border-color: var(--muted); 
 /* Language picker in the top bar (display.tsx, translate.ts). */
 .topbar { flex-wrap: wrap; row-gap: var(--space-2); }
 .topbar-tools { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.lang-pick { position: relative; }
+/* The language note hangs from the whole top bar, so on a phone it can't run off the left edge. */
+.topbar { position: relative; }
+.lang-pick { position: static; }
 .lang-pick select { min-height: 2.75rem; max-width: 9.5rem; padding: 0 2rem 0 .85rem; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: var(--step--1); font-weight: 600; cursor: pointer; appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: calc(100% - 1rem) 55%, calc(100% - .7rem) 55%; background-size: .3rem .3rem; background-repeat: no-repeat; }
 .lang-pick select:hover { background-color: var(--sunk); }
 .lang-pick option { color: initial; background: initial; }
-.lang-note:empty { display: none; }
-.lang-note { position: absolute; right: 0; top: calc(100% + .4rem); z-index: 5; width: min(22rem, 80vw); margin: 0; padding: var(--space-2) var(--space-3); background: var(--surface); border: 1px solid var(--line-strong); font-size: var(--step--1); color: var(--ink); }
+.lang-note[hidden] { display: none; }
+.lang-note { position: absolute; right: 0; top: calc(100% + .4rem); z-index: 5; width: min(24rem, 100%); box-sizing: border-box; margin: 0; padding: var(--space-3); background: var(--surface); border: 1px solid var(--line-strong); font-size: var(--step--1); line-height: 1.5; color: var(--ink); display: grid; gap: var(--space-2); }
+.lang-note p { margin: 0; }
+.lang-note .lang-state { font-weight: 700; }
+.lang-note .lang-ok { justify-self: end; min-height: 2.5rem; padding: 0 1rem; }
 
 /* Notes on each card (checklist.ts). The textarea is for the screen; the paragraph is for paper. */
 .note { margin-top: var(--space-3); display: grid; gap: var(--space-1); }
