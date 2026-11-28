@@ -45,3 +45,10 @@ The scan site bundles these fonts from [Fontsource](https://fontsource.org). All
 | Atkinson Hyperlegible Mono | Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors |
 | Plus Jakarta Sans | Copyright 2020 The Plus Jakarta Sans Project Authors |
 | Architects Daughter | Google Inc., as its Fontsource package states (designed by Kimberly Geswein) |
+
+## Have I Been Pwned breach list
+
+`data/breaches.json` is a trimmed snapshot of the public breach list from Have I Been Pwned
+(https://haveibeenpwned.com/API/v3#AllBreaches), made by `tools/build-breaches.mjs`. The breach data
+is licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). We kept only verified
+breaches with a domain, and only the title, date, size and kinds of data.

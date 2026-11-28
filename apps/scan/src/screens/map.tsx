@@ -26,6 +26,8 @@ import { SiteFoot, TopBar } from '../display.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
 import { Reach } from './reach.tsx';
 import { Scorecard } from './scorecard.tsx';
+import { loadBreaches } from '../breach-loader.ts';
+import { breachesFor, breachLine, hadPasswords, type Breach, type BreachFile } from '../../../../packages/core/breaches.ts';
 import { groupLine } from '../../../../packages/core/subcategory.ts';
 import type { Contacts } from '../../../../packages/core/contacts.ts';
 
@@ -112,7 +114,22 @@ function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, closing, note, onNote }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string; closing?: { date: string; past: boolean }; note: string; onNote: (v: string) => void }) {
+/** Known data breaches for this account, from the bundled Have I Been Pwned snapshot. */
+function BreachNote({ list, mode }: { list: Breach[]; mode: Mode }) {
+  if (list.length === 0) return null;
+  const made = list.some((b) => b.sample);
+  const act = mode === 'loss'
+    ? 'Ask them to close it soon: an account caught in a breach is easier for someone else to misuse.'
+    : hadPasswords(list) ? 'If you had the account then, change its password when you move it.' : 'Watch for emails that use these details to look genuine.';
+  return (
+    <div class="breach" role="note">
+      <p><strong>In a known data breach{made ? ' (made up for the sample)' : ''}:</strong> {list.slice(0, 2).map(breachLine).join('; ')}{list.length > 2 ? `; and ${list.length - 2} more` : ''}.</p>
+      <p class="meta">{act} {made ? 'On a real mailbox, breaches come' : 'Matched on this device by web address,'} from Have I Been Pwned's public list.</p>
+    </div>
+  );
+}
+
+function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, closing, note, onNote, breaches = [] }: { breaches?: Breach[]; a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string; closing?: { date: string; past: boolean }; note: string; onNote: (v: string) => void }) {
   const p = primary(a);
   const c = COPY[mode];
   const also = (['sso', 'work', 'reset', 'money'] as const)
@@ -141,6 +158,7 @@ function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, c
           {mode === 'school' && a.discount.tier && <li class="chip-warn">Student discount ends anyway. Export your data.</li>}
         </ul>
       )}
+      <BreachNote list={breaches} mode={mode} />
       {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
       {!a.key.startsWith('app:') && <Reach a={a} mode={mode} contacts={contacts} address={address} closing={closing} />}
       <div class="note">
@@ -182,9 +200,12 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
   // The move pack loads as its own chunk. undefined while loading, null if it failed.
   const [pack, setPack] = useState<Pack | null | undefined>(undefined);
   useEffect(() => { let live = true; loadPack().then((p) => { if (live) setPack(p); }); return () => { live = false; }; }, []);
+  const [breachFile, setBreachFile] = useState<BreachFile | null>(null);
+  useEffect(() => { let live = true; loadBreaches().then((b) => { if (live) setBreachFile(b); }); return () => { live = false; }; }, []);
   const accounts = useMemo(() => rankAccounts(applyConnections(applyLane3(applyPack(scanned, pack ?? null), lane3), connections)),
     [scanned, connections, lane3, pack]);
   const main = accounts.filter((a) => a.section === 'main');
+  const breached = main.filter((a) => breachesFor(breachFile, a.key).length > 0).length;
   const c = COPY[mode];
   const who = settings.ownAddresses[0] ?? settings.schoolDomain;
   const store = listKey(mode, settings.schoolDomain, who);
@@ -230,6 +251,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         <p class="summary">
           <strong>{main.length} account{main.length === 1 ? '' : 's'} {mode === 'loss' ? 'found' : 'to move'}</strong>, {mode === 'loss' ? 'in the order to deal with them' : 'most urgent first'}.
           Read from {emails(stats.messages)} in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device. <a href="#privacy-receipt">See what left this page</a>.
+          {breached > 0 && <> <strong>{breached} of them {breached === 1 ? 'was' : 'were'} in a known data breach.</strong></>}
         </p>
         {main.length > 0 && (
           <p class="progress" aria-live="polite">
@@ -277,7 +299,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
           {groupLine(list, b).map(({ label, items }) => (
             <div key={label || 'all'} class={label ? 'subgroup' : undefined}>
               {label && <h3 class="subgroup-title">{label} <span class="count">{items.length}</span></h3>}
-              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} closing={mode === 'loss' ? undefined : letterDate(settings.shutoffDate)} note={notes[a.key] ?? ''} onNote={(v) => note(a.key, v)} />)}</ol>
+              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} closing={mode === 'loss' ? undefined : letterDate(settings.shutoffDate)} note={notes[a.key] ?? ''} onNote={(v) => note(a.key, v)} breaches={breachesFor(breachFile, a.key)} />)}</ol>
             </div>
           ))}
         </section>
@@ -299,6 +321,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
       {CLOUD_LOOKUP_ON && pack !== undefined && <CloudPanel accounts={accounts} known={pack?.known} onAnswers={(m) => setLane3((prev) => new Map([...prev, ...m]))} />}
       <Receipt />
       {pack && <p class="foot">Move and delete links: a snapshot from {pack.taken} of 2FA Directory, the Passkeys directory (CC BY 4.0) and JustDeleteMe, plus links we checked by hand. Credits in NOTICE.md.</p>}
+      {breachFile && <p class="foot">Data breaches: a snapshot from {breachFile.taken} of Have I Been Pwned's public breach list (CC BY 4.0), matched on this device.</p>}
       <p class="foot">{emails(stats.skipped.personSender)} from people and {(stats.messages - stats.schoolLinked).toLocaleString()} not sent to {mode === 'loss' ? who : `@${settings.schoolDomain}`} were skipped.</p>
       <div class="end"><button type="button" class="secondary" onClick={onRestart}>Scan another file</button></div>
       <SiteFoot />

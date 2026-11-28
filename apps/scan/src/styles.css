@@ -774,3 +774,8 @@ input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
 .scorecard .misses { margin: var(--space-3) 0 0; padding-left: 1.1rem; }
 .key-list { margin-bottom: 0; }
 .key-list li { padding: var(--space-1) 0; }
+
+/* A known data breach on a card */
+.breach { margin: var(--space-3) 0 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-m); background: var(--warn-soft); }
+.breach p { margin: 0; }
+.breach .meta { margin-top: var(--space-1); }
