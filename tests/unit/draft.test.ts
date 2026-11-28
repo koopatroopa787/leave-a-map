@@ -17,3 +17,18 @@ describe('ready-made messages', () => {
     expect(h).toBe('mailto:help@bank.example?subject=A%20%26%20B&body=x%0Ay');
   });
 });
+
+describe('closing date in the change-of-email letter', () => {
+  const base = { mode: 'school' as const, bucket: 'rest' as const, company: 'Quillpad', address: 'me@uni.example' };
+  it('fills in the date from the start screen', () => {
+    const d = draftMessage({ ...base, closing: { date: '31 March 2027', past: false } });
+    expect(d.body).toContain('me@uni.example is closing on 31 March 2027.');
+    expect(d.body).not.toContain('[date it shuts off]');
+  });
+  it('says "closed" once the date has passed', () => {
+    expect(draftMessage({ ...base, closing: { date: '1 January 2026', past: true } }).body).toContain('closed on 1 January 2026.');
+  });
+  it('leaves the blank when there is no date', () => {
+    expect(draftMessage(base).body).toContain('[date it shuts off]');
+  });
+});

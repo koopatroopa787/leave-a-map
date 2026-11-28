@@ -5,7 +5,7 @@ import type { Bucket, Cond, NanoItem, RankedAccount, ScanSettings, ScanStats, Se
 import { SOURCE_WORD, TIER_WORD } from '../../../../packages/core/evidence.ts';
 import { signalWords } from '../../../../packages/core/signal-words.ts';
 import { NanoPanel } from './nano-panel.tsx';
-import { countdown, longDate, shortDate } from '../dates.ts';
+import { countdown, letterDate, longDate, shortDate } from '../dates.ts';
 import { EvidenceDrawer } from './evidence-drawer.tsx';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { loadConnections, loadMoved, loadNotes, NOTE_MAX, saveConnections, saveMoved, saveNotes } from '../checklist.ts';
@@ -111,7 +111,7 @@ function primary(a: RankedAccount): Cond {
   return a.bucket === 'rest' ? a.exists : a[a.bucket];
 }
 
-function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, note, onNote }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string; note: string; onNote: (v: string) => void }) {
+function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, closing, note, onNote }: { a: RankedAccount; mode: Mode; rank: number; moved: boolean; onMoved: (v: boolean) => void; info?: ServiceInfo; facts?: ServiceFacts; contacts?: Contacts; address: string; closing?: { date: string; past: boolean }; note: string; onNote: (v: string) => void }) {
   const p = primary(a);
   const c = COPY[mode];
   const also = (['sso', 'work', 'reset', 'money'] as const)
@@ -141,7 +141,7 @@ function Card({ a, mode, rank, moved, onMoved, info, facts, contacts, address, n
         </ul>
       )}
       {mode === 'loss' ? <LossSteps a={a} /> : <MoveSteps a={a} facts={facts} />}
-      {!a.key.startsWith('app:') && <Reach a={a} mode={mode} contacts={contacts} address={address} />}
+      {!a.key.startsWith('app:') && <Reach a={a} mode={mode} contacts={contacts} address={address} closing={closing} />}
       <div class="note">
         <label for={`note-${a.key}`}>My notes</label>
         <textarea id={`note-${a.key}`} rows={2} maxLength={NOTE_MAX} value={note} placeholder="For example: rang them on 3 Dec, reference 88120, they'll post a form"
@@ -275,7 +275,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
           {groupLine(list, b).map(({ label, items }) => (
             <div key={label || 'all'} class={label ? 'subgroup' : undefined}>
               {label && <h3 class="subgroup-title">{label} <span class="count">{items.length}</span></h3>}
-              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} note={notes[a.key] ?? ''} onNote={(v) => note(a.key, v)} />)}</ol>
+              <ol class="cards">{items.map((a) => <Card key={a.key} a={a} mode={mode} rank={++rank} moved={moved.has(a.key)} onMoved={(v) => toggle(a.key, v)} info={lane3.get(a.key)} facts={pack?.lookup(a.key)} contacts={contacts[a.key]} address={who} closing={mode === 'loss' ? undefined : letterDate(settings.shutoffDate)} note={notes[a.key] ?? ''} onNote={(v) => note(a.key, v)} />)}</ol>
             </div>
           ))}
         </section>

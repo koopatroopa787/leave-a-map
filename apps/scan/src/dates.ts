@@ -17,3 +17,10 @@ export const longDate = (iso: string) => {
 };
 
 export const shortDate = (ms: number) => new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+/** The shutoff date as a letter would write it ("31 March 2027"), and whether it has passed. Nothing for a missing date. */
+export function letterDate(iso: string, now = Date.now()): { date: string; past: boolean } | undefined {
+  const t = Date.parse(`${iso}T00:00:00`);
+  if (!Number.isFinite(t)) return undefined;
+  return { date: new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }), past: t + DAY <= now };
+}

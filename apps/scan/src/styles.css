@@ -620,6 +620,7 @@ button.chip-btn[aria-pressed="true"] { background: var(--accent-soft); border-co
 /* line-height .86 lets the letters reach about .2em above the box; the top margin keeps them off the lede. */
 .hero h1 { font-size: clamp(3rem, 1rem + 8.4vw, 10.5rem); font-weight: 700; line-height: .86; letter-spacing: -0.05em; margin: .2em 0 0; max-width: 15ch; }
 h1 .dot { color: var(--accent); margin-left: .04em; }
+.hero-sample { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0; color: var(--muted); }
 @media (max-width: 899px) { .hero { min-height: max(36rem, calc(100svh - 6rem)); } }
 
 /* Mono labels: small, uppercase, widely spaced. */

@@ -23,12 +23,13 @@ function Website({ domain }: { domain: string }) {
     : <a href={`https://${domain}`} target="_blank" rel="noopener noreferrer">{domain}</a>;
 }
 
-export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: Mode; contacts?: Contacts; address: string }) {
+export function Reach({ a, mode, contacts, address, closing }: { a: RankedAccount; mode: Mode; contacts?: Contacts; address: string; closing?: { date: string; past: boolean } }) {
   const loss = mode === 'loss';
   const any = !!contacts && (contacts.emails.length + contacts.phones.length + contacts.addresses.length) > 0;
-  const [draft, setDraft] = useState(() => draftMessage({ mode, bucket: a.bucket, company: a.name, address }));
+  const [draft, setDraft] = useState(() => draftMessage({ mode, bucket: a.bucket, company: a.name, address, closing }));
   const [copied, setCopied] = useState<'' | 'yes' | 'no'>('');
-  const [nano, setNano] = useState(false);
+  // null while checking; the buttons always show, and are greyed out where Nano can't run.
+  const [nano, setNano] = useState<boolean | null>(null);
   const [busy, setBusy] = useState('');
   useEffect(() => { let live = true; void canRewrite().then((v) => { if (live) setNano(v); }); return () => { live = false; }; }, []);
   const rewrite = async (style: RewriteStyle) => {
@@ -42,6 +43,7 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
       setBusy((e as Error).message === 'lost-blanks' ? 'The rewrite dropped some of the [blanks], so your version is kept.' : 'Couldn\u2019t rewrite it on this device. Your version is kept.');
     }
   };
+  const working = busy.endsWith('\u2026') || busy.includes('%');
   const to = contacts?.emails[0];
   const copy = async () => {
     try { await navigator.clipboard.writeText(`Subject: ${draft.subject}\n\n${draft.body}`); setCopied('yes'); }
@@ -76,14 +78,13 @@ export function Reach({ a, mode, contacts, address }: { a: RankedAccount; mode: 
           <input id={`${id}-s`} type="text" value={draft.subject} onInput={(e) => { setDraft({ ...draft, subject: e.currentTarget.value }); setCopied(''); }} />
           <label for={`${id}-b`}>Message</label>
           <textarea id={`${id}-b`} rows={14} value={draft.body} onInput={(e) => { setDraft({ ...draft, body: e.currentTarget.value }); setCopied(''); }} />
-          {nano && (
-            <div class="draft-actions rewrite" role="group" aria-label="Rewrite on this device">
-              <span class="meta">Rewrite on this device:</span>
-              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('shorter')}>Shorter</button>
-              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('formal')}>More formal</button>
-              <button type="button" class="secondary" disabled={busy.endsWith('…') || busy.includes('%')} onClick={() => void rewrite('simple')}>Simpler words</button>
-            </div>
-          )}
+          <div class="draft-actions rewrite" role="group" aria-label="Rewrite on this device" aria-describedby={nano === false ? `${id}-nonano` : undefined}>
+            <span class="meta">Rewrite on this device:</span>
+            {([['shorter', 'Shorter'], ['formal', 'More formal'], ['simple', 'Simpler words']] as [RewriteStyle, string][]).map(([style, label]) => (
+              <button key={style} type="button" class="secondary" disabled={!nano || working} onClick={() => void rewrite(style)}>{label}</button>
+            ))}
+          </div>
+          {nano === false && <p id={`${id}-nonano`} class="meta">Rewriting on this device needs Chrome on a computer with its built-in AI.</p>}
           {busy && <p class="meta" role="status">{busy}</p>}
           <div class="draft-actions">
             <button type="button" class="secondary" onClick={copy}>Copy message</button>
