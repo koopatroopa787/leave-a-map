@@ -25,6 +25,7 @@ import { Check } from '../icons.tsx';
 import { SiteFoot, TopBar } from '../display.tsx';
 import { COPY, listKey, type Mode } from '../mode.ts';
 import { Reach } from './reach.tsx';
+import { Scorecard } from './scorecard.tsx';
 import { groupLine } from '../../../../packages/core/subcategory.ts';
 import type { Contacts } from '../../../../packages/core/contacts.ts';
 
@@ -218,6 +219,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         {sample && <p class="sample-note" role="note">{mode === 'loss'
           ? 'Sample mailbox: Robin Hale, a made-up person. Every person and service in it is fictional.'
           : 'Sample mailbox: Jordan Reyes, a made-up student. Every person and service is fictional except three real non-profit research sites (arxiv.org, zenodo.org, openreview.net). Their emails here are made up too.'}</p>}
+        {sample && <Scorecard accounts={accounts} mode={mode} />}
         {mode === 'loss' ? <>
           <p class="eyebrow">Mail sent to {who}</p>
           <h1 ref={title} tabIndex={-1}>Their accounts, money first<span class="dot" aria-hidden="true">*</span></h1>
@@ -227,7 +229,7 @@ export function MapScreen({ settings, mode, sample, accounts: scanned, stats, ms
         </>}
         <p class="summary">
           <strong>{main.length} account{main.length === 1 ? '' : 's'} {mode === 'loss' ? 'found' : 'to move'}</strong>, {mode === 'loss' ? 'in the order to deal with them' : 'most urgent first'}.
-          Read from {emails(stats.messages)} in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device.
+          Read from {emails(stats.messages)} in {ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`}, on this device. <a href="#privacy-receipt">See what left this page</a>.
         </p>
         {main.length > 0 && (
           <p class="progress" aria-live="polite">

@@ -5,7 +5,7 @@ import { P, SSO_PHRASE } from './patterns.ts';
 import { escapeRe } from './school-link.ts';
 
 export type SignalName = 'WELCOME' | 'VERIFY' | 'RESET' | 'SECURITY' | 'RECEIPT' | 'STATEMENT' | 'RECURRING'
-  | 'CARD ON FILE' | 'RECOVERY ADDRESS' | 'WORK STRONG' | 'WORK WEAK' | 'STUDENT DISCOUNT' | 'HEALTH' | 'SSO-WELCOME' | 'NO-PASSWORD HINT';
+  | 'CARD ON FILE' | 'RECOVERY ADDRESS' | 'PASSWORD MANAGER' | 'WORK STRONG' | 'WORK WEAK' | 'STUDENT DISCOUNT' | 'HEALTH' | 'SSO-WELCOME' | 'NO-PASSWORD HINT';
 export type Fired = { name: SignalName; quote: string };
 
 /** Signals that prove an account exists, and so stop List-Unsubscribe mail counting as bulk. */
@@ -49,6 +49,7 @@ export function messageSignals(m: MessageRecord, body: BodyInfo, ownAddresses: r
   add('STATEMENT', find(P.STATEMENT_S, S));
   if (amount) add('RECURRING', either(P.RECURRING));
   add('CARD ON FILE', find(P.CARD_ON_FILE, B));
+  add('PASSWORD MANAGER', either(P.PASSWORD_MANAGER));
   add('WORK STRONG', either(P.WORK_STRONG));
   if (!out.some((f) => f.name === 'WORK STRONG')) add('WORK WEAK', either(P.WORK_WEAK));
   add('STUDENT DISCOUNT', either(P.STUDENT_DISCOUNT));

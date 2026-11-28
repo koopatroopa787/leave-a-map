@@ -1,13 +1,28 @@
 // T26: the privacy receipt. Built on this page from the page's own log (lockdown.ts), updated live,
 // and never sent anywhere. Its numbers are the ones the T25 capture checks from outside.
 import { useEffect, useState } from 'preact/hooks';
-import { egressLog, onEgress } from '../lockdown.ts';
+import { egressLog, logLocal, onEgress } from '../lockdown.ts';
 import { buildReceipt, headline, receiptText } from '../receipt.ts';
 
 const time = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
+// Real attempts to reach another site, for anyone who wants to see the page stop them. example.com is
+// reserved for tests (RFC 2606), and nothing about the person goes in the address.
+const TEST_URL = 'https://example.com/leave-a-map-test';
+async function tryToLeak(): Promise<string> {
+  const before = egressLog.filter((e) => e.kind === 'blocked').length;
+  try { await fetch(TEST_URL, { cache: 'no-store' }); } catch { /* blocked by connect-src 'none' */ }
+  await new Promise<void>((done) => { const img = new Image(); img.onload = img.onerror = () => done(); img.src = `${TEST_URL}.gif`; setTimeout(done, 1500); });
+  const webrtc = typeof (globalThis as { RTCPeerConnection?: unknown }).RTCPeerConnection === 'undefined';
+  logLocal(`Leak test: tried a fetch and an image from example.com${webrtc ? '; WebRTC is removed from this page' : ''}`);
+  await new Promise((r) => setTimeout(r, 50));
+  const stopped = egressLog.filter((e) => e.kind === 'blocked').length - before;
+  return `Tried 2 ways to reach example.com: ${stopped} stopped by the page's rules, ${2 - Math.min(2, stopped)} got through.${webrtc ? ' WebRTC, a third way out, isn’t on this page at all.' : ''}`;
+}
+
 export function Receipt() {
   const [, bump] = useState(0);
+  const [test, setTest] = useState('');
   useEffect(() => onEgress(() => bump((n) => n + 1)), []);
   const r = buildReceipt(egressLog);
 
@@ -47,7 +62,11 @@ export function Receipt() {
         Made on this page from what it saw, and not sent anywhere. It can't see your browser's own traffic, such as
         updates or sign-in. How we tested it: docs/PRIVACY.md in the project's code.
       </p>
-      <button type="button" class="secondary" onClick={save}>Save a copy</button>
+      <div class="draft-actions">
+        <button type="button" class="secondary" onClick={save}>Save a copy</button>
+        <button type="button" class="secondary" onClick={() => { setTest('Trying…'); void tryToLeak().then(setTest); }}>Try to send something out</button>
+      </div>
+      <p class="meta" role="status">{test}</p>
     </section>
   );
 }

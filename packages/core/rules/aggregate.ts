@@ -25,8 +25,9 @@ const FEEDS: Partial<Record<SignalName, [CondName, 'same' | 'weaker'][]>> = {
   WELCOME: [['exists', 'same']], VERIFY: [['exists', 'same']], RESET: [['exists', 'same']],
   SECURITY: [['exists', 'same']], RECEIPT: [['exists', 'same']],
   STATEMENT: [['exists', 'same'], ['money', 'same']],
-  RECURRING: [['money', 'same']], 'CARD ON FILE': [['money', 'weaker']],
-  'RECOVERY ADDRESS': [['reset', 'same']],
+  // A renewal with an amount is a paid account, so it proves the account exists too.
+  RECURRING: [['money', 'same'], ['exists', 'same']], 'CARD ON FILE': [['money', 'weaker']],
+  'RECOVERY ADDRESS': [['reset', 'same']], 'PASSWORD MANAGER': [['reset', 'same']],
   'WORK STRONG': [['work', 'same']], 'WORK WEAK': [['work', 'weaker']],
   'STUDENT DISCOUNT': [['discount', 'same']],
 };

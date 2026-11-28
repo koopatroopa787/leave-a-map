@@ -15,6 +15,7 @@ const WORDS: Record<string, string> = {
   'CARD ON FILE': 'a saved card or payment method',
   HEALTH: 'health-related mail',
   'RECOVERY ADDRESS': 'your old address set as a recovery address',
+  'PASSWORD MANAGER': 'a password manager, which can open your other accounts',
   'SSO-WELCOME': 'a sign-up with your school or work account',
   'NO-PASSWORD HINT': 'a sign the account has no password of its own',
   'IDP-NOTICE': 'a notice that it was given access to your school or work account',

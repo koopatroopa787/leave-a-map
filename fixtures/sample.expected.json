@@ -25,14 +25,6 @@
       "suspiciousIgnored": 0
     },
     {
-      "key": "proofwright.example",
-      "section": "main",
-      "bucket": "work",
-      "tier": "seen",
-      "discount": null,
-      "suspiciousIgnored": 0
-    },
-    {
       "key": "sketchloom.example",
       "section": "main",
       "bucket": "work",
@@ -41,10 +33,26 @@
       "suspiciousIgnored": 0
     },
     {
+      "key": "proofwright.example",
+      "section": "main",
+      "bucket": "work",
+      "tier": "seen",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
       "key": "stowbin.example",
       "section": "main",
       "bucket": "work",
       "tier": "likely",
+      "discount": null,
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "latchkin.example",
+      "section": "main",
+      "bucket": "reset",
+      "tier": "seen",
       "discount": null,
       "suspiciousIgnored": 0
     },
@@ -65,27 +73,19 @@
       "suspiciousIgnored": 1
     },
     {
-      "key": "paywisp.example",
-      "section": "main",
-      "bucket": "money",
-      "tier": "seen",
-      "discount": null,
-      "suspiciousIgnored": 0
-    },
-    {
-      "key": "latchkin.example",
-      "section": "main",
-      "bucket": "money",
-      "tier": "seen",
-      "discount": null,
-      "suspiciousIgnored": 0
-    },
-    {
       "key": "tunefield.example",
       "section": "main",
       "bucket": "money",
       "tier": "seen",
       "discount": "seen",
+      "suspiciousIgnored": 0
+    },
+    {
+      "key": "paywisp.example",
+      "section": "main",
+      "bucket": "money",
+      "tier": "seen",
+      "discount": null,
       "suspiciousIgnored": 0
     },
     {
